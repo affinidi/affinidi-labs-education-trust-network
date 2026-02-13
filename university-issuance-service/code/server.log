@@ -1,0 +1,26 @@
+Loading environment from: .env.hk.localhost
+Initializing MpxSDK...
+Using existing permanent channel DID for issuer
+Permanent DID: did:key:zDnaeqywEPug77WjCBndF3eAveEErmErgxmHGi5HxdwpC8afi
+Creating VDIP Client
+Subscribing for VDIP Requests
+MpxClient ready with permanent DID: did:key:zDnaeqywEPug77WjCBndF3eAveEErmErgxmHGi5HxdwpC8afi
+issuer did:web already generated for domain localhost:3000/hongkong-university
+Server listening on http://0.0.0.0:3000
+A problem has occurred:
+{
+  "id": "7607f126-b900-4b48-b6b4-7aa3feee0b44",
+  "type": "https://didcomm.org/report-problem/2.0/problem-report",
+  "from": "did:web:apse1.mediator.affinidi.io:.well-known",
+  "to": [
+    "did:key:zDnaeqywEPug77WjCBndF3eAveEErmErgxmHGi5HxdwpC8afi"
+  ],
+  "created_time": 1766919249,
+  "body": {
+    "code": "w.websocket.duplicate-channel",
+    "comment": "A new duplicate websocket connection for this DID has caused this websocket to terminate"
+  },
+  "typ": "application/didcomm-plain+json"
+}
+497B
+

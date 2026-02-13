@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "569838878924",
+    "project_id": "certizen-7d257",
+    "storage_bucket": "certizen-7d257.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:569838878924:android:44615555a3b989f3684269",
+        "android_client_info": {
+          "package_name": "com.experience.certizen"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_FAmcHCYZ643ZgOPx6_QyeYbz7b2vX_k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

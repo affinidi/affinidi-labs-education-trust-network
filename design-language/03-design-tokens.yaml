@@ -1,0 +1,516 @@
+# Certizen Design Tokens
+# Version: 1.0.0
+# Last Updated: 2026-01-06
+#
+# This file is the SINGLE SOURCE OF TRUTH for all design values.
+# All implementations (Flutter, web, documentation) must reference these tokens.
+# Never hardcode values—always reference tokens.
+#
+# PLATFORM CONTEXT:
+# Certizen trust registry prototype spanning HK, Macau, SG jurisdictions.
+# Supports: Trust Registry Admin Portal, Student Vault Mobile App,
+#           University Issuance Services, Employer Verification Portal.
+# Stakeholders: National Education governors, universities, students, employers.
+# Protocols: DIDComm, VDIP (issuance), VDSP (sharing), TRQP (registry queries).
+
+---
+
+# =============================================================================
+# COLOR SYSTEM
+# =============================================================================
+
+colors:
+  # ---------------------------------------------------------------------------
+  # Primary Colors (Warm Orange - Approachable, Energetic, Educational)
+  # ---------------------------------------------------------------------------
+  primary:
+    50: "#FFF6E1"    # Lightest cream
+    100: "#FFEEC8"
+    200: "#FFCF9f"
+    300: "#FFB166"
+    400: "#FFAA4A"
+    500: "#FF8E32"   # Primary brand color (warm orange)
+    600: "#E67E28"   # Darker for hover states
+    700: "#D56E1F"
+    800: "#BD5E15"
+    900: "#A04E0C"   # Darkest orange
+
+  # ---------------------------------------------------------------------------
+  # Secondary Colors (Warm Cream - Supporting, Informative, Friendly)
+  # ---------------------------------------------------------------------------
+  secondary:
+    50: "#FFFDF7"
+    100: "#FFFBF7"
+    200: "#FFF6E1"
+    300: "#FFEEC8"
+    400: "#FFE8B3"
+    500: "#FFDC99"   # Secondary brand color (warm cream)
+    600: "#F2D9A6"
+    700: "#E5C98f"
+    800: "#D8BA7a"
+    900: "#CBAA66"
+
+  # ---------------------------------------------------------------------------
+  # Neutral Colors (Grays - Text, Backgrounds, Borders)
+  # ---------------------------------------------------------------------------
+  neutral:
+    0: "#FFFFFF"     # Pure white
+    50: "#FAFAFA"    # Off-white
+    100: "#F5F5F5"   # Lightest gray
+    200: "#EEEEEE"
+    300: "#E0E0E0"
+    400: "#BDBDBD"
+    500: "#9E9E9E"   # Mid gray
+    600: "#757575"
+    700: "#636363"   # Text gray
+    800: "#424242"
+    900: "#212121"   # Dark gray
+    950: "#0A0A0A"   # Near black
+    1000: "#000000"  # Pure black
+
+  # ---------------------------------------------------------------------------
+  # Semantic Colors (Feedback and Status)
+  # ---------------------------------------------------------------------------
+  semantic:
+    success:
+      light: "#81C784"
+      main: "#4CAF50"    # Green - Success, active, valid
+      dark: "#388E3C"
+      contrast: "#FFFFFF"
+    
+    warning:
+      light: "#FFD54F"
+      main: "#D99A06"    # Amber - Warning, caution
+      dark: "#F57C00"
+      contrast: "#000000"
+    
+    error:
+      light: "#E57373"
+      main: "#F44336"    # Red - Error, destructive, invalid
+      dark: "#D32F2F"
+      contrast: "#FFFFFF"
+    
+    info:
+      light: "#64B5F6"
+      main: "#2196F3"    # Blue - Informational
+      dark: "#1976D2"
+      contrast: "#FFFFFF"
+
+  # ---------------------------------------------------------------------------
+  # Custom Semantic Colors (Extended Palette)
+  # ---------------------------------------------------------------------------
+  extended:
+    cyan: "#00BCD4"
+    purple: "#9C27B0"
+    rose: "#D31F82"
+    violet: "#B81FD3"
+    brown: "#795548"
+    orange: "#FF9800"
+
+  # ---------------------------------------------------------------------------
+  # Surface Colors (Light Mode - Default Theme)
+  # ---------------------------------------------------------------------------
+  surface:
+    dark:
+      background: "#000000"        # Main app background
+      surface: "#000000"           # Card background
+      surfaceVariant: "#2E3034"    # Alternative surface
+      surfaceContainerHigh: "#2E3034"
+      surfaceContainerHighest: "#000000"
+      surfaceContainer: "#000000"
+    
+    light:
+      background: "#FFFDF7"        # Warm off-white background
+      surface: "#FFEEC8"           # Warm cream card background
+      surfaceVariant: "#FFFBF7"    # Alternative surface (light cream)
+      surfaceContainerHigh: "#FFF6E1"
+      surfaceContainerHighest: "#FFFCF9"
+      surfaceContainer: "#FFFAF7"
+
+  # ---------------------------------------------------------------------------
+  # Text Colors (On Surface)
+  # ---------------------------------------------------------------------------
+  text:
+    dark:
+      primary: "#FFFFFF"           # Primary text on dark
+      secondary: "#B0B0B0"         # Secondary text on dark
+      disabled: "#636363"          # Disabled text on dark
+      
+    light:
+      primary: "#1E1E1E"           # Primary text on light (dark near-black)
+      secondary: "#4A4A4A"         # Secondary text on light (mid-gray)
+      disabled: "#9E9E9E"          # Disabled text on light
+
+  # ---------------------------------------------------------------------------
+  # Overlay Colors (Modals, Tooltips, Backdrops)
+  # ---------------------------------------------------------------------------
+  overlay:
+    backdrop: "rgba(0, 0, 0, 0.5)"      # Modal backdrop
+    whiteOverlay30: "rgba(255, 255, 255, 0.3)"
+    disabled: "rgba(180, 180, 180, 0.4)"
+
+# =============================================================================
+# TYPOGRAPHY SYSTEM
+# =============================================================================
+
+typography:
+  # ---------------------------------------------------------------------------
+  # Font Families
+  # ---------------------------------------------------------------------------
+  fontFamily:
+    primary: "IBM Plex Sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
+    secondary: "IBM Plex Sans, sans-serif"
+    monospace: "'Fira Code', 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace"
+
+  # ---------------------------------------------------------------------------
+  # Font Sizes (8px baseline grid)
+  # ---------------------------------------------------------------------------
+  fontSize:
+    xs: "10px"       # Caption, labels (used sparingly)
+    sm: "12px"       # Small text, metadata
+    base: "14px"     # Body text (medium)
+    md: "16px"       # Body text (large) - minimum for readability
+    lg: "18px"       # Subheadings, body emphasis
+    xl: "20px"       # H3, card titles
+    2xl: "24px"      # H2, major sections
+    3xl: "28px"      # H1 (mobile)
+    4xl: "32px"      # H1 (tablet)
+    5xl: "36px"      # H1 (desktop)
+    6xl: "48px"      # Display text (hero)
+
+  # ---------------------------------------------------------------------------
+  # Font Weights
+  # ---------------------------------------------------------------------------
+  fontWeight:
+    light: 300       # Rarely used
+    regular: 400     # Body text default
+    medium: 500      # Emphasis, subheadings
+    semibold: 600    # Strong emphasis
+    bold: 700        # Headings, buttons
+
+  # ---------------------------------------------------------------------------
+  # Line Heights (Relative to font size)
+  # ---------------------------------------------------------------------------
+  lineHeight:
+    tight: 1.2       # Headings, tight layouts
+    normal: 1.5      # Body text default
+    relaxed: 1.75    # Long-form content
+
+  # ---------------------------------------------------------------------------
+  # Letter Spacing
+  # ---------------------------------------------------------------------------
+  letterSpacing:
+    tight: "-0.02em"   # Large headings
+    normal: "0em"      # Default
+    wide: "0.05em"     # All-caps text, buttons
+
+# =============================================================================
+# SPACING SYSTEM (8px Grid)
+# =============================================================================
+
+spacing:
+  0: "0px"         # No spacing
+  1: "8px"         # Micro spacing
+  2: "16px"        # Small spacing (most common)
+  3: "24px"        # Medium spacing
+  4: "32px"        # Large spacing
+  5: "40px"        # XL spacing
+  6: "48px"        # 2XL spacing
+  8: "64px"        # 3XL spacing
+  10: "80px"       # 4XL spacing
+  12: "96px"       # 5XL spacing
+  16: "128px"      # 6XL spacing (rarely used)
+
+# =============================================================================
+# BORDER RADIUS
+# =============================================================================
+
+radius:
+  none: "0px"      # Sharp corners
+  sm: "4px"        # Subtle rounding
+  md: "8px"        # Default for most elements
+  lg: "12px"       # Cards, large containers
+  xl: "16px"       # Prominent rounding
+  2xl: "24px"      # Very rounded
+  3xl: "30px"      # Pills, rounded inputs
+  full: "9999px"   # Perfect circles, pills
+
+# =============================================================================
+# SHADOWS & ELEVATION
+# =============================================================================
+
+shadows:
+  # ---------------------------------------------------------------------------
+  # Light Mode Shadows
+  # ---------------------------------------------------------------------------
+  light:
+    none: "none"
+    sm: "0 1px 2px 0 rgba(0, 0, 0, 0.05)"
+    md: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)"
+    lg: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)"
+    xl: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
+    2xl: "0 25px 50px -12px rgba(0, 0, 0, 0.25)"
+
+  # ---------------------------------------------------------------------------
+  # Dark Mode Shadows (Lighter surfaces instead of shadows)
+  # ---------------------------------------------------------------------------
+  dark:
+    none: "none"
+    sm: "0 1px 2px 0 rgba(255, 255, 255, 0.05)"
+    md: "0 4px 6px -1px rgba(255, 255, 255, 0.1), 0 2px 4px -1px rgba(255, 255, 255, 0.06)"
+    lg: "0 10px 15px -3px rgba(255, 255, 255, 0.1), 0 4px 6px -2px rgba(255, 255, 255, 0.05)"
+    xl: "0 20px 25px -5px rgba(255, 255, 255, 0.1), 0 10px 10px -5px rgba(255, 255, 255, 0.04)"
+    2xl: "0 25px 50px -12px rgba(255, 255, 255, 0.25)"
+
+# ---------------------------------------------------------------------------
+# Material Elevation Levels (for Flutter)
+# ---------------------------------------------------------------------------
+elevation:
+  0: 0    # Flat, no shadow
+  1: 1    # Subtle
+  2: 2    # Cards (default)
+  3: 3    # Raised elements
+  4: 4    # AppBar, snackbars
+  6: 6    # FAB resting
+  8: 8    # FAB pressed, navigation drawer
+  12: 12  # Dialogs
+  16: 16  # Modal dialogs
+  24: 24  # Highest elevation (rarely used)
+
+# =============================================================================
+# BORDER WIDTHS
+# =============================================================================
+
+borderWidth:
+  none: "0px"
+  thin: "1px"      # Default borders
+  medium: "2px"    # Emphasis, focus states
+  thick: "4px"     # Very strong emphasis
+
+# =============================================================================
+# OPACITY LEVELS
+# =============================================================================
+
+opacity:
+  0: 0.0           # Invisible
+  10: 0.1
+  20: 0.2
+  30: 0.3
+  40: 0.4
+  48: 0.48         # Disabled state borders
+  50: 0.5
+  60: 0.6
+  70: 0.7
+  80: 0.8
+  90: 0.9
+  100: 1.0         # Fully opaque
+
+# =============================================================================
+# ANIMATION & TIMING
+# =============================================================================
+
+animation:
+  # ---------------------------------------------------------------------------
+  # Duration
+  # ---------------------------------------------------------------------------
+  duration:
+    instant: "0ms"       # No animation
+    fast: "150ms"        # Quick feedback (button hover)
+    normal: "300ms"      # Standard transitions
+    slow: "500ms"        # Page transitions, modals
+    slower: "700ms"      # Complex animations
+
+  # ---------------------------------------------------------------------------
+  # Easing Curves
+  # ---------------------------------------------------------------------------
+  easing:
+    linear: "linear"
+    easeIn: "cubic-bezier(0.4, 0, 1, 1)"         # Accelerating
+    easeOut: "cubic-bezier(0, 0, 0.2, 1)"        # Decelerating (most common)
+    easeInOut: "cubic-bezier(0.4, 0, 0.2, 1)"    # Smooth both ends
+    spring: "cubic-bezier(0.34, 1.56, 0.64, 1)"  # Bouncy effect
+
+# =============================================================================
+# RESPONSIVE BREAKPOINTS
+# =============================================================================
+
+breakpoints:
+  mobile: "0px"         # 0-639px
+  mobileLg: "480px"     # Large phones
+  tablet: "640px"       # Small tablets, landscape phones
+  tabletLg: "768px"     # Large tablets
+  desktop: "1024px"     # Laptops, desktops
+  desktopLg: "1280px"   # Large desktops
+  wide: "1440px"        # Wide screens
+  ultraWide: "1920px"   # Ultra-wide monitors
+
+# =============================================================================
+# Z-INDEX LAYERS
+# =============================================================================
+
+zIndex:
+  base: 0              # Normal flow
+  dropdown: 1000       # Dropdowns, select menus
+  sticky: 1100         # Sticky headers
+  fixed: 1200          # Fixed position elements
+  modalBackdrop: 1300  # Modal backdrops
+  modal: 1400          # Modals, dialogs
+  popover: 1500        # Popovers
+  tooltip: 1600        # Tooltips (highest)
+
+# =============================================================================
+# ICON SIZES
+# =============================================================================
+
+iconSize:
+  xs: "16px"       # Small inline icons
+  sm: "20px"       # Button icons
+  md: "24px"       # Default icon size
+  lg: "32px"       # Large icons
+  xl: "48px"       # Hero icons
+  2xl: "64px"      # Feature icons
+
+# =============================================================================
+# COMPONENT-SPECIFIC TOKENS
+# =============================================================================
+
+components:
+  # ---------------------------------------------------------------------------
+  # Buttons
+  # ---------------------------------------------------------------------------
+  button:
+    paddingHorizontal: "24px"    # spacing-3
+    paddingVertical: "14px"      # Slightly larger for prominence
+    borderRadius: "8px"          # radius-md
+    fontSize: "16px"             # fontSize-md
+    fontWeight: 500              # fontWeight-medium
+    minHeight: "48px"            # Touch target minimum (increased from 44px)
+    minWidth: "64px"
+    
+  buttonSmall:
+    paddingHorizontal: "16px"    # spacing-2
+    paddingVertical: "8px"       # spacing-1
+    fontSize: "14px"             # fontSize-base
+    minHeight: "36px"
+
+  buttonLarge:
+    paddingHorizontal: "32px"    # spacing-4
+    paddingVertical: "18px"      # Increased from 16px for prominence
+    fontSize: "18px"             # fontSize-lg
+    minHeight: "56px"            # Increased from 52px for CTA prominence (Claim Credential)
+
+  # ---------------------------------------------------------------------------
+  # Input Fields
+  # ---------------------------------------------------------------------------
+  input:
+    paddingHorizontal: "16px"    # spacing-2
+    paddingVertical: "12px"
+    borderRadius: "8px"          # radius-md
+    borderWidth: "1px"           # borderWidth-thin
+    fontSize: "16px"             # fontSize-md
+    minHeight: "44px"            # Touch target
+
+  inputRounded:
+    borderRadius: "30px"         # radius-3xl
+    paddingHorizontal: "16px"
+    paddingVertical: "8px"
+
+  # ---------------------------------------------------------------------------
+  # Cards
+  # ---------------------------------------------------------------------------
+  card:
+    padding: "16px"              # spacing-2
+    borderRadius: "12px"         # radius-lg
+    elevation: 1                 # Reduced from 2 for lighter aesthetic (Headspace-inspired)
+    
+  cardLarge:
+    padding: "24px"              # spacing-3
+    borderRadius: "12px"
+
+  # ---------------------------------------------------------------------------
+  # App Bar
+  # ---------------------------------------------------------------------------
+  appBar:
+    height: "56px"               # Standard app bar height
+    elevation: 0                 # Flat design
+    titleFontSize: "16px"        # fontSize-md
+    titleFontWeight: 500         # fontWeight-medium
+
+  # ---------------------------------------------------------------------------
+  # Navigation Bar (Bottom)
+  # ---------------------------------------------------------------------------
+  navigationBar:
+    height: "64px"
+    labelFontSize: "12px"        # fontSize-sm
+    iconSize: "24px"             # iconSize-md
+
+  # ---------------------------------------------------------------------------
+  # Avatars
+  # ---------------------------------------------------------------------------
+  avatar:
+    small: "32px"
+    medium: "48px"
+    large: "64px"
+    extraLarge: "96px"
+
+  # ---------------------------------------------------------------------------
+  # Badges
+  # ---------------------------------------------------------------------------
+  badge:
+    size: "20px"
+    fontSize: "10px"             # fontSize-xs
+    borderRadius: "9999px"       # radius-full
+
+  # ---------------------------------------------------------------------------
+  # Dividers
+  # ---------------------------------------------------------------------------
+  divider:
+    thickness: "1px"
+    opacity: 0.2
+
+  # ---------------------------------------------------------------------------
+  # Focus Indicators
+  # ---------------------------------------------------------------------------
+  focus:
+    outlineWidth: "2px"          # borderWidth-medium
+    outlineOffset: "2px"
+    outlineColor: "primary-500"  # colors.primary.500
+
+# =============================================================================
+# TOUCH TARGETS (Mobile Accessibility)
+# =============================================================================
+
+touchTarget:
+  minimum: "44px"      # iOS minimum
+  recommended: "48px"  # Material Design recommendation
+  comfortable: "56px"  # Extra comfort for primary actions
+
+# =============================================================================
+# CONTAINER MAX WIDTHS
+# =============================================================================
+
+container:
+  mobile: "100%"       # Full width on mobile
+  tablet: "768px"      # Max width on tablet
+  desktop: "1440px"    # Max width on desktop
+  content: "600px"     # Max width for readable content (forms, articles)
+
+# =============================================================================
+# NOTES
+# =============================================================================
+
+# Token Naming Convention:
+# - Use descriptive, semantic names
+# - Format: category-property-variant
+# - Examples: color-primary-500, spacing-2, fontSize-md
+#
+# Usage in Code:
+# - Always reference tokens, never hardcode
+# - Example (Dart): AppColors.primary500, AppSpacing.spacing2
+# - Example (YAML): colors.primary.500, spacing.2
+#
+# Version Control:
+# - Document changes in version-history.md
+# - Major version for breaking changes
+# - Minor version for additions
+# - Patch version for corrections

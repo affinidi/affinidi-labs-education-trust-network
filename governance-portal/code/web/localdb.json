@@ -1,0 +1,20 @@
+{
+  "resources": [
+    {
+      "id": "1",
+      "schemaId": "Employment",
+      "schemaName": "Employment Credential",
+      "creator": "Affinidi",
+      "jsonUrl": "https://schema.affinidi.io/EmploymentV1R0.json",
+      "jsonLdUrl": "https://schema.affinidi.io/EmploymentV1R0.json"
+    },
+    {
+      "id": "2",
+      "schemaId": "StudentCredential",
+      "schemaName": "Student Credential",
+      "creator": "Affinidi",
+      "jsonUrl": "https://schema.affinidi.io/TStudentCredentialV1R2.json",
+      "jsonLdUrl": "https://schema.affinidi.io/TStudentCredentialV1R2.jsonld"
+    }
+  ]
+}

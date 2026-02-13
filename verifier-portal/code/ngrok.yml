@@ -1,0 +1,12 @@
+# ngrok configuration with CORS headers
+version: "3"
+tunnels:
+  verifier:
+    proto: http
+    addr: 4000
+    # Add response headers for CORS
+    response_headers:
+      add:
+        - "Access-Control-Allow-Origin: *"
+        - "Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS"
+        - "Access-Control-Allow-Headers: Content-Type, Authorization"

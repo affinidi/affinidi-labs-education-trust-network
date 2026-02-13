@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  hk-issuance-service:
+    build:
+      context: ./code
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=production
+      - PORT=8080
+      - AUTH_TOKEN=my_secure_token
+      - STORAGE_BACKEND=${ISS_STORAGE_BACKEND}
+      # - REDIS_HOST=${ISS_REDIS_HOST}
+      # - REDIS_PORT=${ISS_REDIS_PORT}
+      # - REDIS_SECURE=${ISS_REDIS_SECURE}
+      - SERVICE_DID=${SERVICE_DID}
+      - MEDIATOR_DID=${MEDIATOR_DID}
+      - ALLOWED_EMAIL_DOMAIN=${ALLOWED_EMAIL_DOMAIN}
+      - UNIVERSITY_DOMAIN=${UNIVERSITY_DOMAIN}
+      - ISSUER_MEDIATOR=${MEDIATOR_DOMAIN}
+      - ISSUER_DOMAIN=${ISSUER_DOMAIN}
+    volumes:
+      - ./data:/app/data
+
+    restart: unless-stopped
+
+networks:
+  certizen-network:
+    driver: bridge

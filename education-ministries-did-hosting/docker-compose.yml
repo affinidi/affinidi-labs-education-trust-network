@@ -1,0 +1,21 @@
+services:
+  education-ministries:
+    build:
+      context: ./code
+      dockerfile: Dockerfile
+    container_name: education-ministries-did-hosting
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./instance/data:/app/data
+      - ./instance/.env.ngrok:/app/.env.ngrok:ro
+    environment:
+      - PORT=3100
+    command: ["/app/bin/server", "--env-file=/app/.env.ngrok"]
+    restart: unless-stopped
+    networks:
+      - certizen-network
+
+networks:
+  certizen-network:
+    external: true

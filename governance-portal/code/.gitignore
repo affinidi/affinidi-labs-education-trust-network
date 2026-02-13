@@ -1,0 +1,13 @@
+analysis_options.yaml
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+flutter_*.log
+.env
+
+# User configuration with private keys
+assets/user_config*.json

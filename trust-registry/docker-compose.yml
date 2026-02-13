@@ -1,0 +1,76 @@
+services:
+  # Hong Kong Trust Registry
+  trust-registry-hk:
+    build:
+      context: ./affinidi-trust-registry-rs
+      dockerfile: trust-registry/Dockerfile
+    image: trust-registry:local
+    container_name: trust-registry-hk
+    ports:
+      - "3232:3232"
+    environment:
+      - LISTEN_ADDRESS=0.0.0.0:3232
+      - TR_STORAGE_BACKEND=csv
+      - FILE_STORAGE_PATH=/data/data.csv
+      - CORS_ALLOWED_ORIGINS=http://localhost:3000,http://localhost:3001,http://localhost:4000,http://localhost:8050,http://localhost:8051,http://localhost:8052
+      - AUDIT_LOG_FORMAT=json
+      - ENABLE_DIDCOMM=true
+      # - ONLY_ADMIN_OPERATIONS=true
+      - MEDIATOR_DID=${HK_MEDIATOR_DID}
+      - ADMIN_DIDS=${HK_ADMIN_DID}
+      - PROFILE_CONFIG=${HK_PROFILE_CONFIG}
+    volumes:
+      - ./hk/data:/data
+    restart: unless-stopped
+
+  # Macau Trust Registry
+  trust-registry-macau:
+    build:
+      context: ./affinidi-trust-registry-rs
+      dockerfile: trust-registry/Dockerfile
+    image: trust-registry:local
+    container_name: trust-registry-macau
+    ports:
+      - "3233:3232"
+    environment:
+      - LISTEN_ADDRESS=0.0.0.0:3232
+      - TR_STORAGE_BACKEND=csv
+      - FILE_STORAGE_PATH=/data/data.csv
+      - CORS_ALLOWED_ORIGINS=http://localhost:3000,http://localhost:3001,http://localhost:4000,http://localhost:8050,http://localhost:8051,http://localhost:8052
+      - AUDIT_LOG_FORMAT=json
+      - ENABLE_DIDCOMM=true
+      # - ONLY_ADMIN_OPERATIONS=true
+      - MEDIATOR_DID=${MACAU_MEDIATOR_DID}
+      - ADMIN_DIDS=${MACAU_ADMIN_DID}
+      - PROFILE_CONFIG=${MACAU_PROFILE_CONFIG}
+    volumes:
+      - ./macau/data:/data
+    restart: unless-stopped
+
+  # Singapore Trust Registry
+  trust-registry-sg:
+    build:
+      context: ./affinidi-trust-registry-rs
+      dockerfile: trust-registry/Dockerfile
+    image: trust-registry:local
+    container_name: trust-registry-sg
+    ports:
+      - "3234:3232"
+    environment:
+      - LISTEN_ADDRESS=0.0.0.0:3232
+      - TR_STORAGE_BACKEND=csv
+      - FILE_STORAGE_PATH=/data/data.csv
+      - CORS_ALLOWED_ORIGINS=http://localhost:3000,http://localhost:3001,http://localhost:4000,http://localhost:8050,http://localhost:8051,http://localhost:8052
+      - AUDIT_LOG_FORMAT=json
+      - ENABLE_DIDCOMM=true
+      # - ONLY_ADMIN_OPERATIONS=true
+      - MEDIATOR_DID=${SG_MEDIATOR_DID}
+      - ADMIN_DIDS=${SG_ADMIN_DID}
+      - PROFILE_CONFIG=${SG_PROFILE_CONFIG}
+    volumes:
+      - ./sg/data:/data
+    restart: unless-stopped
+
+networks:
+  default:
+    name: certizen-network
