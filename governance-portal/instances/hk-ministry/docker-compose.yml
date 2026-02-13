@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  hk-governance-portal:
+    build:
+      context: ../../code
+      dockerfile: Dockerfile
+    container_name: hk-governance-portal
+    ports:
+      - "3401:3401"
+    env_file:
+      - .env
+    environment:
+      - PORT=3401
+      - MINISTRY_NAME=Hong Kong Ministry of Education
+      - API_BASE_URL=http://hk-trust-registry:3232/api
+    networks:
+      - certizen-network
+    depends_on:
+      - hk-trust-registry
+    restart: unless-stopped
+
+networks:
+  certizen-network:
+    external: true

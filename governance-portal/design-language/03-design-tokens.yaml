@@ -1,0 +1,526 @@
+# Governance Portal Design Tokens
+# Version: 2.0.0
+# Last Updated: 2026-01-15
+#
+# This file is the SINGLE SOURCE OF TRUTH for all design values.
+# All implementations (Flutter, web, documentation) must reference these tokens.
+# Never hardcode values—always reference tokens.
+#
+# PLATFORM CONTEXT:
+# Governance Portal Dashboard for governance administration across HK, Macau, SG jurisdictions.
+# Administrators create, view, edit, and audit authorization records for credential issuers.
+# Design: Light mode content area, dark contrast left navigation, professional neutral palette.
+
+---
+
+# =============================================================================
+# COLOR SYSTEM
+# =============================================================================
+
+colors:
+  # ---------------------------------------------------------------------------
+  # Brand Colors (Neutral Dark Blue - Authority, Credibility, Professional)
+  # ---------------------------------------------------------------------------
+  brand:
+    primary: "#0F2741"           # Main brand color (neutral dark blue)
+    primaryLight: "#1D3C67"      # Lighter variant for gradients
+    primaryDark: "#081729"       # Darker variant
+    
+  # ---------------------------------------------------------------------------
+  # Accent Colors (Vibrant Blue-Purple Gradient - Primary CTAs)
+  # ---------------------------------------------------------------------------
+  # Used for primary action buttons to stand out from dark navy background
+  accent:
+    blue: "#2563EB"              # Vibrant blue (gradient start)
+    purple: "#7C3AED"            # Purple (gradient end)
+    
+  # ---------------------------------------------------------------------------
+  # Navigation Colors (Dark Contrast)
+  # ---------------------------------------------------------------------------
+  navigation:
+    background: "#0B1B2B"        # Dark nav background
+    text: "#FFFFFF"              # White text on dark nav
+    textSecondary: "#A0AEC0"     # Secondary text (icons, labels)
+    hover: "#1D3C67"             # Hover state on nav items
+    selected: "#0F2741"          # Selected nav item background
+    
+  # ---------------------------------------------------------------------------
+  # Neutral Colors (Cool-leaning - Professional, Credible)
+  # ---------------------------------------------------------------------------
+  neutral:
+    0: "#FFFFFF"                 # Pure white
+    50: "#F7F9FC"                # Off-white (very light blue-gray)
+    100: "#EEF2F7"               # Lightest gray
+    200: "#E3E8EF"               # Light gray (borders, dividers)
+    300: "#C2CCDA"               # Mid-light gray
+    400: "#64758B"               # Mid gray (secondary text)
+    500: "#1D2633"               # Dark gray (primary text)
+    
+  # ---------------------------------------------------------------------------
+  # Link & Info Blue
+  # ---------------------------------------------------------------------------
+  link:
+    main: "#2F6BDE"              # Actionable links, informational elements
+    hover: "#1E4BB8"             # Link hover state
+    visited: "#5B4CCC"           # Visited link (optional)
+    
+  # ---------------------------------------------------------------------------
+  # Focus Color
+  # ---------------------------------------------------------------------------
+  focus:
+    ring: "#2563EB"              # Focus ring color (blue)
+    
+  # ---------------------------------------------------------------------------
+  # Semantic Colors (Feedback and Status)
+  # ---------------------------------------------------------------------------
+  semantic:
+    success:
+      main: "#14B8A6"            # Teal - Success (NOT green)
+      light: "#5EEAD4"
+      dark: "#0F766E"
+      contrast: "#FFFFFF"
+    
+    warning:
+      main: "#F59E0B"            # Amber - Warning, caution
+      light: "#FCD34D"
+      dark: "#D97706"
+      contrast: "#000000"
+    
+    error:
+      main: "#F43F5E"            # Red - Error, destructive, invalid
+      light: "#FB7185"
+      dark: "#BE123C"
+      contrast: "#FFFFFF"
+    
+    info:
+      main: "#2F6BDE"            # Blue - Informational (same as link)
+      light: "#60A5FA"
+      dark: "#1E40AF"
+      contrast: "#FFFFFF"
+
+  # ---------------------------------------------------------------------------
+  # Rainbow Gradient (Key Sections Only - NOT for buttons)
+  # ---------------------------------------------------------------------------
+  rainbow:
+    purple: "#7C3AED"            # Violet
+    blue: "#2563EB"              # Blue
+    cyan: "#06B6D4"              # Cyan
+    teal: "#14B8A6"              # Teal
+    amber: "#F59E0B"             # Amber
+    rose: "#F43F5E"              # Rose/Pink
+    
+  # ---------------------------------------------------------------------------
+  # Gradients
+  # ---------------------------------------------------------------------------
+  gradients:
+    primaryButton:
+      start: "#0F2741"           # Brand primary
+      end: "#1D3C67"             # Brand primary light
+      
+    rainbowOutline:              # For key sections only
+      stops: "#7C3AED, #2563EB, #06B6D4, #14B8A6, #F59E0B, #F43F5E"
+      
+  # ---------------------------------------------------------------------------
+  # Surface Colors (Light Mode - Default)
+  # ---------------------------------------------------------------------------
+  surface:
+    background: "#FFFFFF"        # Main content background
+    backgroundAlt: "#F7F9FC"     # Alternative background (neutral-50)
+    card: "#FFFFFF"              # Card background
+    cardAlt: "#F7F9FC"           # Alternative card background
+    hover: "#EEF2F7"             # Hover state for table rows
+    selected: "#E3E8EF"          # Selected state
+    disabled: "#EEF2F7"          # Disabled element background
+    
+  # ---------------------------------------------------------------------------
+  # Text Colors (On Light Surfaces)
+  # ---------------------------------------------------------------------------
+  text:
+    primary: "#1D2633"           # Primary text (neutral-500)
+    secondary: "#64758B"         # Secondary text (neutral-400)
+    tertiary: "#C2CCDA"          # Tertiary text (neutral-300)
+    disabled: "#C2CCDA"          # Disabled text
+    onDark: "#FFFFFF"            # Text on dark backgrounds (nav)
+    onDarkSecondary: "#A0AEC0"   # Secondary text on dark
+    link: "#2F6BDE"              # Link text
+    
+  # ---------------------------------------------------------------------------
+  # Border Colors
+  # ---------------------------------------------------------------------------
+  border:
+    default: "#E3E8EF"           # Default borders (neutral-200)
+    strong: "#C2CCDA"            # Strong borders (neutral-300)
+    subtle: "#EEF2F7"            # Subtle borders (neutral-100)
+    focus: "#2563EB"             # Focus state border
+    error: "#F43F5E"             # Error state border
+    
+  # ---------------------------------------------------------------------------
+  # Overlay Colors (Modals, Backdrops)
+  # ---------------------------------------------------------------------------
+  overlay:
+    backdrop: "rgba(11, 27, 43, 0.6)"   # Modal backdrop (dark nav color)
+    white10: "rgba(255, 255, 255, 0.1)"
+    white20: "rgba(255, 255, 255, 0.2)"
+    disabled: "rgba(194, 204, 218, 0.4)"
+
+# =============================================================================
+# TYPOGRAPHY SYSTEM
+# =============================================================================
+
+typography:
+  # ---------------------------------------------------------------------------
+  # Font Families
+  # ---------------------------------------------------------------------------
+  fontFamily:
+    primary: "IBM Plex Sans, -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
+    secondary: "IBM Plex Sans, -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif"
+    monospace: "'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace"
+
+  # ---------------------------------------------------------------------------
+  # Font Sizes (8px baseline with 4px fine steps)
+  # ---------------------------------------------------------------------------
+  fontSize:
+    xs: "10px"       # Micro text (use sparingly)
+    sm: "12px"       # Small text, table metadata
+    base: "14px"     # Body text in tables, forms (minimum for data-dense)
+    md: "16px"       # Body text (comfortable reading)
+    lg: "18px"       # Subheadings, emphasis
+    xl: "20px"       # H3, card titles
+    2xl: "24px"      # H2, section headers
+    3xl: "28px"      # H1 (mobile/tablet)
+    4xl: "32px"      # H1 (desktop)
+    5xl: "36px"      # Large display
+    6xl: "48px"      # Hero display
+
+  # ---------------------------------------------------------------------------
+  # Font Weights
+  # ---------------------------------------------------------------------------
+  fontWeight:
+    light: 300       # Rarely used
+    regular: 400     # Body text default
+    medium: 500      # Emphasis, table headers
+    semibold: 600    # Strong emphasis, button text
+    bold: 700        # Headings
+
+  # ---------------------------------------------------------------------------
+  # Line Heights (Relative to font size)
+  # ---------------------------------------------------------------------------
+  lineHeight:
+    tight: 1.2       # Headings, data tables
+    snug: 1.4        # Compact layouts
+    normal: 1.5      # Body text default
+    relaxed: 1.75    # Long-form content (rarely used in dashboard)
+
+  # ---------------------------------------------------------------------------
+  # Letter Spacing
+  # ---------------------------------------------------------------------------
+  letterSpacing:
+    tight: "-0.02em"   # Large headings
+    normal: "0em"      # Default
+    wide: "0.05em"     # All-caps labels, buttons
+
+# =============================================================================
+# SPACING SYSTEM (8px Grid with 4px Fine Steps)
+# =============================================================================
+
+spacing:
+  0: "0px"         # No spacing
+  0.5: "4px"       # Fine step (micro spacing)
+  1: "8px"         # Base unit
+  1.5: "12px"      # Fine step
+  2: "16px"        # Small spacing (common)
+  3: "24px"        # Medium spacing
+  4: "32px"        # Large spacing
+  5: "40px"        # XL spacing
+  6: "48px"        # 2XL spacing
+  8: "64px"        # 3XL spacing
+  10: "80px"       # 4XL spacing
+  12: "96px"       # 5XL spacing
+  16: "128px"      # 6XL spacing (rarely used)
+
+# =============================================================================
+# BORDER RADIUS
+# =============================================================================
+
+radius:
+  none: "0px"      # Sharp corners (table cells)
+  sm: "4px"        # Subtle rounding
+  md: "8px"        # Buttons, inputs
+  lg: "12px"       # Cards, modal
+  xl: "16px"       # Large containers
+  2xl: "24px"      # Very rounded (rarely used)
+  full: "9999px"   # Perfect circles, badges
+
+# =============================================================================
+# SHADOWS & ELEVATION
+# =============================================================================
+
+shadows:
+  # Light mode shadows (subtle, minimal)
+  light:
+    none: "none"
+    sm: "0 1px 2px 0 rgba(29, 38, 51, 0.05)"                    # Subtle card
+    md: "0 2px 4px 0 rgba(29, 38, 51, 0.08)"                    # Card default
+    lg: "0 4px 8px 0 rgba(29, 38, 51, 0.12)"                    # Raised elements
+    xl: "0 8px 16px 0 rgba(29, 38, 51, 0.16)"                   # Modal
+    2xl: "0 16px 32px 0 rgba(29, 38, 51, 0.20)"                 # High elevation
+
+# Material elevation levels (for Flutter)
+elevation:
+  0: 0    # Flat, no shadow
+  1: 1    # Subtle card
+  2: 2    # Raised card
+  4: 4    # Dropdown
+  8: 8    # Modal backdrop
+  12: 12  # Modal/dialog
+
+# =============================================================================
+# BORDER WIDTHS
+# =============================================================================
+
+borderWidth:
+  none: "0px"
+  thin: "1px"      # Default borders (tables, inputs)
+  medium: "2px"    # Focus states, emphasis
+  thick: "3px"     # Rainbow outline for key sections
+
+# =============================================================================
+# OPACITY LEVELS
+# =============================================================================
+
+opacity:
+  0: 0.0           # Invisible
+  10: 0.1
+  20: 0.2
+  30: 0.3
+  40: 0.4
+  50: 0.5
+  60: 0.6
+  70: 0.7
+  80: 0.8
+  90: 0.9
+  100: 1.0         # Fully opaque
+
+# =============================================================================
+# ANIMATION & TIMING
+# =============================================================================
+
+animation:
+  # Duration
+  duration:
+    instant: "0ms"       # No animation
+    fast: "150ms"        # Quick feedback (hover)
+    normal: "300ms"      # Standard transitions
+    slow: "400ms"        # Modal slide-in
+    slower: "500ms"      # Complex animations
+
+  # Easing curves
+  easing:
+    linear: "linear"
+    easeIn: "cubic-bezier(0.4, 0, 1, 1)"
+    easeOut: "cubic-bezier(0, 0, 0.2, 1)"      # Most common
+    easeInOut: "cubic-bezier(0.4, 0, 0.2, 1)"
+
+# =============================================================================
+# RESPONSIVE BREAKPOINTS
+# =============================================================================
+
+breakpoints:
+  mobile: "0px"         # 0-639px
+  mobileLg: "480px"     # Large phones
+  tablet: "640px"       # Small tablets
+  tabletLg: "768px"     # Large tablets
+  desktop: "1024px"     # Laptops, desktops (modal becomes 50% width)
+  desktopLg: "1280px"   # Large desktops
+  wide: "1440px"        # Wide screens (max content width)
+  ultraWide: "1920px"   # Ultra-wide monitors
+
+# =============================================================================
+# Z-INDEX LAYERS
+# =============================================================================
+
+zIndex:
+  base: 0              # Normal flow
+  dropdown: 1000       # Dropdowns
+  sticky: 1100         # Sticky headers
+  fixed: 1200          # Fixed elements
+  modalBackdrop: 1300  # Modal backdrops
+  modal: 1400          # Modals, dialogs
+  popover: 1500        # Popovers
+  tooltip: 1600        # Tooltips
+
+# =============================================================================
+# ICON SIZES
+# =============================================================================
+
+iconSize:
+  xs: "16px"       # Small inline icons
+  sm: "20px"       # Button icons, nav icons
+  md: "24px"       # Default icon size
+  lg: "32px"       # Large icons
+  xl: "48px"       # Empty state icons
+  2xl: "64px"      # Hero icons
+
+# =============================================================================
+# COMPONENT-SPECIFIC TOKENS
+# =============================================================================
+
+components:
+  # ---------------------------------------------------------------------------
+  # Buttons
+  # ---------------------------------------------------------------------------
+  button:
+    paddingHorizontal: "24px"    # spacing-3
+    paddingVertical: "12px"      # spacing-1.5
+    borderRadius: "8px"          # radius-md
+    fontSize: "14px"             # fontSize-base
+    fontWeight: 600              # fontWeight-semibold
+    minHeight: "44px"            # Touch target minimum
+    minWidth: "64px"
+    
+  buttonSmall:
+    paddingHorizontal: "16px"    # spacing-2
+    paddingVertical: "8px"       # spacing-1
+    fontSize: "14px"             # fontSize-base
+    minHeight: "36px"
+
+  buttonLarge:
+    paddingHorizontal: "32px"    # spacing-4
+    paddingVertical: "16px"      # spacing-2
+    fontSize: "16px"             # fontSize-md
+    minHeight: "48px"
+
+  # ---------------------------------------------------------------------------
+  # Input Fields
+  # ---------------------------------------------------------------------------
+  input:
+    paddingHorizontal: "12px"    # spacing-1.5
+    paddingVertical: "8px"       # spacing-1
+    borderRadius: "8px"          # radius-md
+    borderWidth: "1px"           # borderWidth-thin
+    fontSize: "14px"             # fontSize-base
+    minHeight: "44px"            # Touch target
+
+  # ---------------------------------------------------------------------------
+  # Cards
+  # ---------------------------------------------------------------------------
+  card:
+    padding: "16px"              # spacing-2
+    borderRadius: "12px"         # radius-lg
+    elevation: 1                 # Subtle shadow
+    
+  cardLarge:
+    padding: "24px"              # spacing-3
+    borderRadius: "12px"
+
+  # ---------------------------------------------------------------------------
+  # Navigation (Dark Left Sidebar)
+  # ---------------------------------------------------------------------------
+  navigation:
+    width: "240px"               # Fixed width on desktop
+    widthCollapsed: "64px"       # Collapsed (icon-only)
+    itemHeight: "48px"           # Nav item height
+    iconSize: "20px"             # Nav icon size
+    fontSize: "14px"             # Nav text size
+    padding: "16px"              # Internal padding
+    
+  # ---------------------------------------------------------------------------
+  # App Bar
+  # ---------------------------------------------------------------------------
+  appBar:
+    height: "64px"               # Slightly taller for admin interface
+    elevation: 0                 # Flat design
+    titleFontSize: "18px"        # fontSize-lg
+    titleFontWeight: 600         # fontWeight-semibold
+
+  # ---------------------------------------------------------------------------
+  # Modal
+  # ---------------------------------------------------------------------------
+  modal:
+    widthDesktop: "50%"          # 50% of dashboard content area
+    minWidth: "560px"            # Minimum width
+    maxWidth: "720px"            # Maximum width
+    widthMobile: "100%"          # Full screen on mobile (<1024px)
+    padding: "24px"              # spacing-3
+    headerHeight: "64px"
+    footerHeight: "72px"
+    borderRadius: "12px"         # radius-lg (desktop only, mobile is full screen)
+    
+  # ---------------------------------------------------------------------------
+  # Table
+  # ---------------------------------------------------------------------------
+  table:
+    rowHeightCompact: "36px"     # Dense
+    rowHeightCozy: "44px"        # Comfortable
+    rowHeightComfortable: "52px" # Spacious
+    cellPaddingHorizontal: "12px"
+    cellPaddingVertical: "8px"
+    headerHeight: "48px"
+    fontSize: "14px"             # fontSize-base
+    
+  # ---------------------------------------------------------------------------
+  # Key Section (Rainbow Outline)
+  # ---------------------------------------------------------------------------
+  keySection:
+    borderWidth: "3px"           # borderWidth-thick
+    borderRadius: "12px"         # radius-lg
+    padding: "16px"              # spacing-2
+    # gradient: use colors.gradients.rainbowOutline
+    
+  # ---------------------------------------------------------------------------
+  # Focus Indicators
+  # ---------------------------------------------------------------------------
+  focus:
+    outlineWidth: "2px"          # borderWidth-medium
+    outlineOffset: "2px"
+    outlineColor: "#2563EB"      # colors.focus.ring
+
+# =============================================================================
+# TOUCH TARGETS
+# =============================================================================
+
+touchTarget:
+  minimum: "44px"      # WCAG minimum
+  recommended: "48px"  # Comfortable
+
+# =============================================================================
+# CONTAINER MAX WIDTHS
+# =============================================================================
+
+container:
+  mobile: "100%"       # Full width on mobile
+  tablet: "768px"      # Max width on tablet
+  desktop: "1440px"    # Max width for content area
+  content: "720px"     # Max width for forms, readable content
+
+# =============================================================================
+# NOTES
+# =============================================================================
+
+# Token Naming Convention:
+# - Use descriptive, semantic names
+# - Format: category.property or category.property.variant
+# - Examples: colors.brand.primary, spacing.2, fontSize.md
+#
+# Usage in Code:
+# - Always reference tokens, never hardcode
+# - Example (Dart): AppColors.brandPrimary, AppSpacing.spacing2
+# - Example (YAML): colors.brand.primary, spacing.2
+#
+# Color Usage Rules:
+# - Rainbow gradient ONLY for key sections (not buttons)
+# - Primary buttons use brand-blue gradient (brand.primary → brand.primaryLight)
+# - Secondary buttons use neutral colors
+# - Avoid green (use teal for success instead)
+# - Dark nav uses navigation.background (#0B1B2B)
+# - Content area uses surface.background (#FFFFFF) and surface.backgroundAlt (#F7F9FC)
+#
+# Modal Behavior:
+# - Desktop (≥1024px): 50% width, min 560px, max 720px, docked right
+# - Mobile (<1024px): Full screen
+#
+# Version Control:
+# - Document changes in version-history.md
+# - Major version for breaking changes
+# - Minor version for additions
+# - Patch version for corrections

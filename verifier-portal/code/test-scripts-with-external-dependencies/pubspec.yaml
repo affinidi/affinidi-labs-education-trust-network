@@ -1,0 +1,11 @@
+name: testscripts_with_external_dependencies
+description: A sample command-line application.
+version: 1.0.0
+# repository: https://github.com/my_org/my_repo
+
+environment:
+  sdk: ^3.9.2
+
+# Add regular dependencies here.
+dependencies:
+  ssi: ^3.4.0

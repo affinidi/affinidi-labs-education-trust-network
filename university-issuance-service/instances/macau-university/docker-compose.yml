@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  macau-university-issuer:
+    build:
+      context: ../../code
+      dockerfile: Dockerfile
+    container_name: macau-university-issuer
+    ports:
+      - "8081:8081"
+    env_file:
+      - .env
+    environment:
+      - PORT=8081
+      - UNIVERSITY_NAME=Macau University
+      - UNIVERSITY_DID=did:web:${MACAU_UNIVERSITY_DOMAIN}:macau-university
+      - TRUST_REGISTRY_URL=http://macau-trust-registry:3233
+    volumes:
+      - ./data:/app/data
+      - ./keys:/app/keys
+    networks:
+      - certizen-network
+    depends_on:
+      - macau-trust-registry
+    restart: unless-stopped
+
+networks:
+  certizen-network:
+    external: true

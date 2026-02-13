@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  hk-university-issuer:
+    build:
+      context: ../../university-issuance-service/code
+      dockerfile: Dockerfile
+    container_name: hk-university-issuer
+    ports:
+      - "3000:3000"
+    env_file:
+      - ../../university-issuance-service/instances/hk-university/.env.ngrok
+    volumes:
+      - ../../university-issuance-service/instances/hk-university/data:/app/data
+      - ../../university-issuance-service/instances/hk-university/keys:/app/keys
+    restart: unless-stopped
+    networks:
+      - certizen-network
+
+  macau-university-issuer:
+    build:
+      context: ../../university-issuance-service/code
+      dockerfile: Dockerfile
+    container_name: macau-university-issuer
+    ports:
+      - "3001:3001"
+    env_file:
+      - ../../university-issuance-service/instances/macau-university/.env.ngrok
+    volumes:
+      - ../../university-issuance-service/instances/macau-university/data:/app/data
+      - ../../university-issuance-service/instances/macau-university/keys:/app/keys
+    restart: unless-stopped
+    networks:
+      - certizen-network
+
+  education-ministries:
+    build:
+      context: ../../education-ministries-did-hosting/code
+      dockerfile: Dockerfile
+    container_name: education-ministries-did-hosting
+    ports:
+      - "3100:3100"
+    env_file:
+      - ../../education-ministries-did-hosting/instance/.env.ngrok
+    volumes:
+      - ../../education-ministries-did-hosting/instance/data:/app/data
+    restart: unless-stopped
+    networks:
+      - certizen-network
+
+networks:
+  certizen-network:
+    driver: bridge

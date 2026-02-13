@@ -1,0 +1,9 @@
+.dart_tool/
+.packages
+pubspec.lock
+build/
+*.log
+.env
+.env.*
+data/
+keys/

@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  sg-governance-portal:
+    build:
+      context: ../../code
+      dockerfile: Dockerfile
+    container_name: sg-governance-portal
+    ports:
+      - "3403:3403"
+    env_file:
+      - .env
+    environment:
+      - PORT=3403
+      - MINISTRY_NAME=Singapore Ministry of Education
+      - API_BASE_URL=http://sg-trust-registry:3234/api
+    networks:
+      - certizen-network
+    depends_on:
+      - sg-trust-registry
+    restart: unless-stopped
+
+networks:
+  certizen-network:
+    external: true

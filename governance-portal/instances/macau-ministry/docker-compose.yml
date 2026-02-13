@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  macau-governance-portal:
+    build:
+      context: ../../code
+      dockerfile: Dockerfile
+    container_name: macau-governance-portal
+    ports:
+      - "3402:3402"
+    env_file:
+      - .env
+    environment:
+      - PORT=3402
+      - MINISTRY_NAME=Macau Ministry of Education
+      - API_BASE_URL=http://macau-trust-registry:3233/api
+    networks:
+      - certizen-network
+    depends_on:
+      - macau-trust-registry
+    restart: unless-stopped
+
+networks:
+  certizen-network:
+    external: true

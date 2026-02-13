@@ -1,0 +1,235 @@
+services:
+  # Domain Setup - Creates ngrok tunnels (only needed for ngrok mode)
+  # domain-setup:
+  #   build:
+  #     context: ./domain-setup/code
+  #     dockerfile: Dockerfile
+  #   container_name: certizen-domain-setup
+  #   environment:
+  #     - NGROK_AUTH_TOKEN=${NGROK_AUTH_TOKEN}
+  #   volumes:
+  #     - ./domain-setup/code/domains.json:/app/domains.json
+  #   networks:
+  #     - certizen-network
+  #   restart: "no"
+
+  # Hong Kong University Issuance Service
+  hk-university-issuer:
+    build:
+      context: ./university-issuance-service/code
+      dockerfile: Dockerfile
+    container_name: certizen-hk-university-issuer
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./university-issuance-service/instances/hk-university/.env
+    volumes:
+      - ./domain-setup/code/domains.json:/app/domains.json:ro
+      - ./university-issuance-service/instances/hk-university/data:/app/data
+      - ./university-issuance-service/instances/hk-university/keys:/app/keys
+    networks:
+      - certizen-network
+    restart: unless-stopped
+
+  # Macau University Issuance Service
+  macau-university-issuer:
+    build:
+      context: ./university-issuance-service/code
+      dockerfile: Dockerfile
+    container_name: certizen-macau-university-issuer
+    ports:
+      - "3001:3001"
+    env_file:
+      - ./university-issuance-service/instances/macau-university/.env
+    volumes:
+      - ./domain-setup/code/domains.json:/app/domains.json:ro
+      - ./university-issuance-service/instances/macau-university/data:/app/data
+      - ./university-issuance-service/instances/macau-university/keys:/app/keys
+    networks:
+      - certizen-network
+    restart: unless-stopped
+
+  # Trust Registry services are deployed separately (cloud or local setup)
+  # See documentation for trust registry setup instructions
+
+  # Hong Kong Ministry Trust Registry Database (disabled - using cloud) (disabled - using cloud)
+  # hk-trust-registry-db:
+  #   image: postgres:15-alpine
+  #   container_name: certizen-hk-tr-db
+  #   environment:
+  #     - POSTGRES_DB=hk_trust_registry
+  #     - POSTGRES_USER=${HK_TR_DB_USER:-postgres}
+  #     - POSTGRES_PASSWORD=${HK_TR_DB_PASSWORD:-postgres}
+  #   volumes:
+  #     - hk-tr-db-data:/var/lib/postgresql/data
+  #   networks:
+  #     - certizen-network
+  #   restart: unless-stopped
+
+  # Hong Kong Ministry Trust Registry API (disabled - using cloud)
+  # hk-trust-registry:
+  #   build:
+  #     context: ./trust-registry-api
+  #     dockerfile: Dockerfile
+  #   container_name: certizen-hk-trust-registry
+  #   ports:
+  #     - "3232:3232"
+  #   environment:
+  #     - PORT=3232
+  #     - MINISTRY_NAME=hk-ministry
+  #     - DATABASE_URL=postgresql://${HK_TR_DB_USER:-postgres}:${HK_TR_DB_PASSWORD:-postgres}@hk-trust-registry-db:5432/hk_trust_registry
+  #   volumes:
+  #     - ./domain-setup/code/domains.json:/app/domains.json:ro
+  #   networks:
+  #     - certizen-network
+  #   depends_on:
+  #     - domain-setup
+  #     - hk-trust-registry-db
+  #   restart: unless-stopped
+
+  # Macau Ministry Trust Registry Database (disabled - using cloud)
+  # macau-trust-registry-db:
+  #   image: postgres:15-alpine
+  #   container_name: certizen-macau-tr-db
+  #   environment:
+  #     - POSTGRES_DB=macau_trust_registry
+  #     - POSTGRES_USER=${MACAU_TR_DB_USER:-postgres}
+  #     - POSTGRES_PASSWORD=${MACAU_TR_DB_PASSWORD:-postgres}
+  #   volumes:
+  #     - macau-tr-db-data:/var/lib/postgresql/data
+  #   networks:
+  #     - certizen-network
+  #   restart: unless-stopped
+
+  # Macau Ministry Trust Registry API (disabled - using cloud)
+  # macau-trust-registry:
+  #   build:
+  #     context: ./trust-registry-api
+  #     dockerfile: Dockerfile
+  #   container_name: certizen-macau-trust-registry
+  #   ports:
+  #     - "3233:3233"
+  #   environment:
+  #     - PORT=3233
+  #     - MINISTRY_NAME=macau-ministry
+  #     - DATABASE_URL=postgresql://${MACAU_TR_DB_USER:-postgres}:${MACAU_TR_DB_PASSWORD:-postgres}@macau-trust-registry-db:5432/macau_trust_registry
+  #   volumes:
+  #     - ./domain-setup/code/domains.json:/app/domains.json:ro
+  #   networks:
+  #     - certizen-network
+  #   depends_on:
+  #     - domain-setup
+  #     - macau-trust-registry-db
+  #   restart: unless-stopped
+
+  # Singapore Ministry Trust Registry Database (disabled - using cloud)
+  # sg-trust-registry-db:
+  #   image: postgres:15-alpine
+  #   container_name: certizen-sg-tr-db
+  #   environment:
+  #     - POSTGRES_DB=sg_trust_registry
+  #     - POSTGRES_USER=${SG_TR_DB_USER:-postgres}
+  #     - POSTGRES_PASSWORD=${SG_TR_DB_PASSWORD:-postgres}
+  #   volumes:
+  #     - sg-tr-db-data:/var/lib/postgresql/data
+  #   networks:
+  #     - certizen-network
+  #   restart: unless-stopped
+
+  # Singapore Ministry Trust Registry API (disabled - using cloud)
+  # sg-trust-registry:
+  #   build:
+  #     context: ./trust-registry-api
+  #     dockerfile: Dockerfile
+  #   container_name: certizen-sg-trust-registry
+  #   ports:
+  #     - "3234:3234"
+  #   environment:
+  #     - PORT=3234
+  #     - MINISTRY_NAME=sg-ministry
+  #     - DATABASE_URL=postgresql://${SG_TR_DB_USER:-postgres}:${SG_TR_DB_PASSWORD:-postgres}@sg-trust-registry-db:5432/sg_trust_registry
+  #   volumes:
+  #     - ./domain-setup/code/domains.json:/app/domains.json:ro
+  #   networks:
+  #     - certizen-network
+  #   depends_on:
+  #     - domain-setup
+  #     - sg-trust-registry-db
+  #   restart: unless-stopped
+
+  # Nova Corp Verifier Portal
+  nova-verifier:
+    build:
+      context: ./verifier-portal/code
+      dockerfile: Dockerfile
+    container_name: certizen-nova-verifier
+    ports:
+      - "4000:4000"
+    env_file:
+      - ./verifier-portal/instances/nova-corp/.env
+    volumes:
+      - ./domain-setup/code/domains.json:/app/domains.json:ro
+      - ./verifier-portal/instances/nova-corp/data:/app/data
+    networks:
+      - certizen-network
+    restart: unless-stopped
+
+  # Hong Kong Ministry Governance Portal
+  hk-governance-portal:
+    build:
+      context: ./governance-portal/code
+      dockerfile: Dockerfile
+    container_name: certizen-hk-tr-portal
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./governance-portal/instances/hk-ministry/.env
+    volumes:
+      - ./domain-setup/code/domains.json:/app/domains.json:ro
+    networks:
+      - certizen-network
+    restart: unless-stopped
+
+  # Macau Ministry Governance Portal
+  macau-governance-portal:
+    build:
+      context: ./governance-portal/code
+      dockerfile: Dockerfile
+    container_name: certizen-macau-tr-portal
+    ports:
+      - "5001:5001"
+    env_file:
+      - ./governance-portal/instances/macau-ministry/.env
+    volumes:
+      - ./domain-setup/code/domains.json:/app/domains.json:ro
+    networks:
+      - certizen-network
+    restart: unless-stopped
+
+  # Singapore Ministry Governance Portal
+  sg-governance-portal:
+    build:
+      context: ./governance-portal/code
+      dockerfile: Dockerfile
+    container_name: certizen-sg-tr-portal
+    ports:
+      - "5002:5002"
+    env_file:
+      - ./governance-portal/instances/sg-ministry/.env
+    volumes:
+      - ./domain-setup/code/domains.json:/app/domains.json:ro
+    networks:
+      - certizen-network
+    restart: unless-stopped
+
+networks:
+  certizen-network:
+    driver: bridge
+
+volumes:
+  hk-tr-db-data:
+    name: certizen-hk-tr-db-data
+  macau-tr-db-data:
+    name: certizen-macau-tr-db-data
+  sg-tr-db-data:
+    name: certizen-sg-tr-db-data

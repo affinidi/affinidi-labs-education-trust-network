@@ -1,0 +1,12 @@
+{
+  "name": "Trust Registry Admin",
+  "short_name": "TR Admin",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2196f3",
+  "description": "Trust Registry Admin Dashboard",
+  "orientation": "portrait-primary",
+  "prefer_related_applications": false,
+  "icons": []
+}

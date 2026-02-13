@@ -1,0 +1,88 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+dist
+tmp
+/out-tsc
+
+
+#deployment
+mediator/
+
+deployment/**/*.log
+deployment/**/*.pid
+
+student-vault-app/configs/organizations.json
+
+# dependencies
+node_modules
+vendor
+
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+
+# System Files
+.DS_Store
+Thumbs.db
+
+.nx
+.vscode
+
+# Java
+**/target
+# Created by `dart pub`
+.dart_tool/
+
+# Avoid committing pubspec.lock for library packages; see
+# https://dart.dev/guides/libraries/private-files#pubspeclock.
+pubspec.lock
+
+# env files
+.env*
+!.env.example
+
+# FVM Version Cache
+.fvm/
+
+governance-portal/data
+governance-portal/code/assets/user_config*
+university-issuance-service/instances/hk-university/data
+university-issuance-service/instances/hk-university/keys
+university-issuance-service/instances/macau-university/data
+university-issuance-service/instances/macau-university/keys
+verifier-portal/code/backend/keys
+verifier-portal/code/backend/data
+verifier-portal/code/frontend/build
+education-ministries-did-hosting/instance/data
+
+student-vault-app/configs/organizations.json
+
+deployment/ngrok.pid
+deployment/ngrok.log
+
+mediator/affinidi-tdk-rs
+quicktips.txt

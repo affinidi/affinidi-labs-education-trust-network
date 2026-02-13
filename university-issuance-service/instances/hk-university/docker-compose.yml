@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  hk-university-issuer:
+    build:
+      context: ../../code
+      dockerfile: Dockerfile
+    container_name: hk-university-issuer
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    environment:
+      - PORT=8080
+      - UNIVERSITY_NAME=Hong Kong University
+      - UNIVERSITY_DID=did:web:${HK_UNIVERSITY_DOMAIN}:hongkong-university
+      - TRUST_REGISTRY_URL=http://hk-trust-registry:3232
+    volumes:
+      - ./data:/app/data
+      - ./keys:/app/keys
+    networks:
+      - certizen-network
+    depends_on:
+      - hk-trust-registry
+    restart: unless-stopped
+
+networks:
+  certizen-network:
+    external: true
