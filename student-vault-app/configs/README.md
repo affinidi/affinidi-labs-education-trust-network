@@ -2,14 +2,16 @@
 
 ## Overview
 
-Organizations (universities) configuration is now managed via a JSON file located at `configs/organizations.json`. This allows dynamic configuration updates without requiring code changes.
+Organizations (universities) configuration is now managed via a JSON file located at `code/assets/organizations.json`. This allows dynamic configuration updates without requiring code changes.
 
 ## File Location
 
 ```
 student-vault-app/
+├── code/
+│   └── assets/
+│       └── organizations.json  # Runtime organizations config
 ├── configs/
-│   ├── organizations.json      # Runtime organizations config
 │   ├── google-services.json    # Firebase config (Android)
 │   └── GoogleService-Info.plist # Firebase config (iOS)
 ```
@@ -37,7 +39,11 @@ student-vault-app/
 
 The `organizations.json` file is automatically updated during setup:
 
-```bash\n# From project root, run the main setup\nmake dev-up\n# Updates configs/organizations.json with ngrok domains\n```
+```bash
+# From project root, run the main setup
+make dev-up
+# Updates code/assets/organizations.json with ngrok domains
+```
 
 ## Usage in Code
 
@@ -93,7 +99,7 @@ This required different Dart files for different environments and code changes t
 
 Now uses a single JSON file that's automatically updated by setup scripts:
 
-- Single source of truth: `configs/organizations.json`
+- Single source of truth: `code/assets/organizations.json`
 - No code changes needed for configuration updates
 - Environment-specific configs generated automatically
 - Loaded asynchronously via Riverpod provider

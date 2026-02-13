@@ -1,6 +1,7 @@
 import 'dart:convert';
-import 'package:flutter/services.dart';
+
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 
 class Organization {
   factory Organization.fromJson(Map<String, dynamic> json) {
@@ -40,7 +41,7 @@ class OrganizationsConfig {
   static Future<OrganizationsConfig> load() async {
     try {
       final jsonString = await rootBundle.loadString(
-        '../configs/organizations.json',
+        'assets/organizations.json',
       );
       final jsonData = json.decode(jsonString) as Map<String, dynamic>;
       return OrganizationsConfig.fromJson(jsonData);
