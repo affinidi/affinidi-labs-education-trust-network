@@ -7,7 +7,7 @@ tmp
 
 
 #deployment
-mediator/
+/mediator/
 
 deployment/**/*.log
 deployment/**/*.pid
