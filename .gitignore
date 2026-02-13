@@ -12,7 +12,7 @@ mediator/
 deployment/**/*.log
 deployment/**/*.pid
 
-student-vault-app/configs/organizations.json
+student-vault-app/code/assets/organizations.json
 
 # dependencies
 node_modules
@@ -79,7 +79,7 @@ verifier-portal/code/backend/data
 verifier-portal/code/frontend/build
 education-ministries-did-hosting/instance/data
 
-student-vault-app/configs/organizations.json
+student-vault-app/code/assets/organizations.json
 
 deployment/ngrok.pid
 deployment/ngrok.log

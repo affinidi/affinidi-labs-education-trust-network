@@ -1,7 +1,3 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:ssi/ssi.dart';
-
 // CustomDidResolver is commented out - using standard resolver from package:ssi
 // which already implements DID:web spec correctly
 
@@ -17,7 +13,7 @@ class CustomDidResolver {
   /// Resolves a did:web DID, using HTTP for localhost when USE_SSL=false
   static Future<DidDocument> resolveDidWeb(String did) async {
     print('[CustomDidResolver] Resolving DID: $did');
-    print('[CustomDidResolver] USE_SSL: $useSsl');
+    print('[CustomDidResolver] USE_SSL: $useSsl');̦
 
     // Parse the DID to extract domain and path
     final didParts = did.replaceFirst('did:web:', '');
@@ -25,7 +21,7 @@ class CustomDidResolver {
 
     // Convert DID format to URL
     var urlPath = didParts.replaceAll(':', '/');
-    urlPath = urlPath.replaceAll('%3A', ':');
+    urlPath = urlPath.replaceAll('%3A', ':');̦̦
     urlPath = urlPath.replaceAll('%2F', '/');
 
     print('[CustomDidResolver] URL path after conversion: $urlPath');

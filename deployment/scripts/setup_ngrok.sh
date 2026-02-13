@@ -664,7 +664,7 @@ EOF
 
 # Update organizations.json with ngrok domains
 log_verbose "Updating organizations.json with ngrok domains..."
-ORGS_JSON_FILE="${PROJECT_ROOT}/student-vault-app/configs/organizations.json"
+ORGS_JSON_FILE="${PROJECT_ROOT}/student-vault-app/code/assets/organizations.json"
 
 cat > "${ORGS_JSON_FILE}" << EOF
 {

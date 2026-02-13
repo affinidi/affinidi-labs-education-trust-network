@@ -120,7 +120,7 @@ flutter:
     - assets/icons/
     - assets/logos/
     - assets/videos/
-    - ../configs/organizations.json
+    - assets/organizations.json
 
   fonts:
     - family: Figtree
