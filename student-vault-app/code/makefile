@@ -33,7 +33,7 @@ android:
 	@echo "📱 Starting Student Vault App on Android Emulator..."
 	@if [ -f .env.ngrok ]; then \
 		echo "   Using ngrok configuration"; \
-		flutter run -d android --dart-define-from-file=.env.ngrok; \
+		flutter run --dart-define-from-file=.env.ngrok; \
 	elif [ -f .env.local-network ]; then \
 		echo "   Using local network configuration (10.0.2.2)"; \
 		flutter run -d android --dart-define-from-file=.env.local-network; \

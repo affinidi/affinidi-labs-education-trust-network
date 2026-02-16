@@ -33,16 +33,25 @@ certizen-demo/
 ### Prerequisites
 
 **System Requirements:**
+
 - 8GB RAM minimum (16GB recommended)
 - 4 CPU cores minimum
 - 10GB free disk space
 
 **Software:**
+
 - Docker Desktop 4.0+ installed and running
 - ngrok account (free tier works) - [Get it here](https://dashboard.ngrok.com/signup)
 - Flutter SDK 3.5.0+
 - Dart SDK 3.5.0+
 - Git
+
+**Configurations:**
+
+- ngrok auth token
+- Mediator DID
+- Mediator URL
+- Control plane DID (SERVICE_DID)
 
 ### Quick Start
 
@@ -52,6 +61,7 @@ make dev-up
 ```
 
 This will:
+
 1. Start ngrok tunnels for universities and education ministries
 2. Capture dynamic ngrok domains
 3. Generate all configurations and DIDs
@@ -93,17 +103,18 @@ Issuers     Verifiers
 
 ### Components
 
-| Component | Technology | Description |
-|-----------|------------|-------------|
-| **Student Vault App** | Flutter (Mobile) | Credential storage and management |
-| **University Issuance Services** | Dart (Docker) | Credential issuance backends (HK & Macau) |
-| **Verifier Portal** | Dart | Employer credential verification |
-| **Governance Portal** | Flutter (Web) | Trust registry administration |
-| **Trust Registry** | Rust (Docker) | Trust registry backend service |
+| Component                        | Technology       | Description                               |
+| -------------------------------- | ---------------- | ----------------------------------------- |
+| **Student Vault App**            | Flutter (Mobile) | Credential storage and management         |
+| **University Issuance Services** | Dart (Docker)    | Credential issuance backends (HK & Macau) |
+| **Verifier Portal**              | Dart             | Employer credential verification          |
+| **Governance Portal**            | Flutter (Web)    | Trust registry administration             |
+| **Trust Registry**               | Rust (Docker)    | Trust registry backend service            |
 
 ## 🐳 Docker Services
 
 The following services run on Docker:
+
 - **HK University Issuer** (port 3000)
 - **Macau University Issuer** (port 3001)
 - **Trust Registries** (ports 3232, 3233, 3234)
@@ -163,11 +174,13 @@ docker-compose -f deployment/docker/docker-compose.localhost.yml up -d --build
 ## 📚 Documentation
 
 ### Quick References
+
 - **[Quick Reference](docs/QUICK_REFERENCE.md)** - Common commands and operations
 - **[Environment Restructure](docs/ENVIRONMENT_RESTRUCTURE.md)** - Environment configuration guide
 - **[Restructure Complete](docs/RESTRUCTURE_COMPLETE.md)** - Project restructure summary
 
 ### Technical Documentation
+
 - **[Architecture](docs/architecture.md)** - System design and component interactions
 - **[Setup Guide](docs/setup.md)** - Detailed installation and configuration
 - **[DIDComm Protocol](docs/didcomm-protocol.md)** - Protocol implementation details
@@ -178,6 +191,7 @@ docker-compose -f deployment/docker/docker-compose.localhost.yml up -d --build
 - **[Git Workflow](docs/git-workflow.md)** - Version control guidelines
 
 ### Component Documentation
+
 - [Governance Portal](governance-portal/README.md)
 - [Student Vault App](student-vault-app/README.md)
 - [University Issuance Service](university-issuance-service/README.md)
@@ -185,16 +199,16 @@ docker-compose -f deployment/docker/docker-compose.localhost.yml up -d --build
 
 ## 🔌 Service Ports (Localhost)
 
-| Service | Port | Run On |
-|---------|------|--------|
-| HK University Issuer | 3000 | Docker |
-| Macau University Issuer | 3001 | Docker |
-| HK Trust Registry | 3232 | Docker |
-| Macau Trust Registry | 3233 | Docker |
-| Singapore Trust Registry | 3234 | Docker |
-| Nova Corp Verifier | 4000 | Terminal |
-| HK Governance Portal | 8050 | Terminal |
-| Macau Governance Portal | 8051 | Terminal |
+| Service                     | Port | Run On   |
+| --------------------------- | ---- | -------- |
+| HK University Issuer        | 3000 | Docker   |
+| Macau University Issuer     | 3001 | Docker   |
+| HK Trust Registry           | 3232 | Docker   |
+| Macau Trust Registry        | 3233 | Docker   |
+| Singapore Trust Registry    | 3234 | Docker   |
+| Nova Corp Verifier          | 4000 | Terminal |
+| HK Governance Portal        | 8050 | Terminal |
+| Macau Governance Portal     | 8051 | Terminal |
 | Singapore Governance Portal | 8052 | Terminal |
 
 ## 🧹 Cleanup
