@@ -1,5 +1,8 @@
 # Governance Portal
 
+> **⚠️ PROTOTYPE/REFERENCE IMPLEMENTATION**  
+> This is a prototype application developed for demonstration and educational purposes only. It is **not a production-ready product** from Affinidi. This reference implementation showcases technical concepts and should not be used in production environments without significant additional development, security hardening, and testing.
+
 Flutter Web application for managing Trust Registry records. Each ministry (HK, Macau, Singapore) operates their own instance to register and manage issuers and verifiers.
 
 ## 🚀 Quick Start
@@ -21,6 +24,7 @@ make sg-gov
 ```
 
 **Available Make Commands:**
+
 - `make hk` - Start HK Ministry Governance Portal
 - `make macau` - Start Macau Ministry Governance Portal
 - `make sg` - Start Singapore Ministry Governance Portal
@@ -32,12 +36,14 @@ make sg-gov
 ## 🏗️ Architecture
 
 **Clean Architecture Pattern:**
+
 - **Domain**: Business logic, entities, repository interfaces
 - **Data**: Repository implementations, API clients
 - **Presentation**: UI, widgets, Riverpod state management
 - **Core**: Shared utilities, constants, design system
 
 **Communication:**
+
 - REST API to Trust Registry backend
 - Manages registration/revocation of issuers and verifiers
 - Each instance manages its own trust registry
@@ -47,6 +53,7 @@ make sg-gov
 Each ministry instance requires environment configuration:
 
 **Example (.env.hk.localhost):**
+
 ```env
 PORT=8050
 MINISTRY_NAME=Hong Kong Ministry of Education
@@ -58,15 +65,16 @@ API_BASE_URL=https://.../api
 ```
 
 Required configuration:
+
 - `user_config.json` with DID and private keys (in `code/assets/`)
 
 ## 📍 Instances
 
-| Ministry | Port (Localhost) | Port (Ngrok) |
-|----------|------------------|-------------|
-| Hong Kong | 8050 | 3401 |
-| Macau | 8051 | 3402 |
-| Singapore | 8052 | 3403 |
+| Ministry  | Port (Localhost) | Port (Ngrok) |
+| --------- | ---------------- | ------------ |
+| Hong Kong | 8050             | 3401         |
+| Macau     | 8051             | 3402         |
+| Singapore | 8052             | 3403         |
 
 ## 📚 Documentation
 

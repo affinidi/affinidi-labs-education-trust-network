@@ -1,5 +1,8 @@
 # student_vault_app
 
+> **⚠️ PROTOTYPE/REFERENCE IMPLEMENTATION**  
+> This is prototype code developed for demonstration and educational purposes only. It is **not production-ready** and should not be used in production environments without significant additional development, security hardening, and testing.
+
 This reference application demonstrates how to use the MPX Flutter modules and example integrations (state management, services, infrastructure) in a real Flutter project.
 
 ## Requirements

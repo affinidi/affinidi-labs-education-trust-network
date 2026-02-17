@@ -1,8 +1,11 @@
 # Student Vault App Design System
 
+> **⚠️ PROTOTYPE/REFERENCE IMPLEMENTATION**  
+> This design system is part of a prototype/demo project developed for demonstration and educational purposes only. It is **not a production-ready product** from Affinidi.
+
 **Version**: 1.0.0  
 **Last Updated**: January 7, 2026  
-**Status**: Production
+**Status**: Reference Implementation
 
 ---
 
@@ -17,6 +20,7 @@ Certizen operates a trust registry system enabling collaboration with National E
 **Target Jurisdictions**: Hong Kong, Macau, Singapore
 
 **Key Stakeholders**:
+
 - **Students**: Credential holders receiving, storing, and sharing university credentials
 - **Universities**: Authorized credential issuers
 - **Employers**: Credential verifiers
@@ -24,8 +28,9 @@ Certizen operates a trust registry system enabling collaboration with National E
 ### Purpose
 
 This design system serves to:
+
 - **Ensure visual consistency** across Student Vault mobile app
-- **Accelerate development** by providing reusable components and patterns  
+- **Accelerate development** by providing reusable components and patterns
 - **Maintain accessibility** standards (WCAG 2.1 AA minimum)
 - **Enable scalability** through tokenized design values
 - **Guide consistent implementation** with clear design tokens and patterns
@@ -66,6 +71,7 @@ This design system serves to:
 ### Priority User Flows
 
 These flows should be pixel-perfect per the high-fi wireframes:
+
 - **"Claim Credential"** – Primary student action (warm orange #FF8E32 CTA)
 - **"Home"** – Dashboard showing stored credentials (warm cream #FFDC99 card backgrounds)
 
@@ -74,18 +80,23 @@ These flows should be pixel-perfect per the high-fi wireframes:
 ## Design System Principles
 
 ### 1. Token-First Development
+
 Every design value must reference a token from `03-design-tokens.yaml`. No hardcoded colors, spacing, or typography values in implementation.
 
 ### 2. Accessibility by Default
+
 All components must meet WCAG 2.1 Level AA standards. This is non-negotiable.
 
 ### 3. Component Reusability
+
 Build once, use everywhere. Components follow Flutter & Material Design 3 patterns.
 
 ### 4. HookWidget Pattern
+
 Always use `HookConsumerWidget` or `HookWidget` (never `StatefulWidget`). State via `useCTNotifier` from core hooks.
 
 ### 5. Material Design 3 Foundation
+
 Built on Material Design 3 with warm, approachable Certizen branding.
 
 ---
@@ -132,6 +143,7 @@ Following Headspace/Revolut inspiration: **Key features should stand out with vi
 ## Component Implementation Requirements
 
 Every interactive component must implement:
+
 - ✅ Default (resting state)
 - ✅ Hover (mouse over)
 - ✅ Active/Pressed (during interaction)
@@ -240,6 +252,7 @@ When updating this design system:
 ## Support
 
 For questions or issues:
+
 - Review the [Quick Reference](08-quick-reference.md) for common patterns
 - Check [Components](05-components.md) for implementation examples
 - Refer to [Accessibility](06-accessibility.md) for compliance guidance

@@ -1,5 +1,8 @@
 # VDIP - Sample Dart Server
 
+> **⚠️ PROTOTYPE/REFERENCE IMPLEMENTATION**  
+> This is prototype code developed for demonstration and educational purposes only. It is **not production-ready** and should not be used in production environments without significant additional development, security hardening, and testing.
+
 This is a sample server built using Dart with the [Shelf](https://pub.dev/packages/shelf) package.  
 It demonstrates how to create a DID-based issuer capable of handling **DIDComm messages** and issuing Verifiable Credentials (VCs) via dynamically generated `did:web` identifiers.
 
@@ -8,19 +11,16 @@ It demonstrates how to create a DID-based issuer capable of handling **DIDComm m
 ## Features
 
 1. **Login Route** - `/api/login`
-
    - Expects an **email** in the request body.
    - Validates the email and creates an **OOB (Out-Of-Band) URL**.
    - The holder can use this URL to connect with the issuer and send DIDComm requests to receive an **email VC**.
 
 2. **Generate DID Web Route** - `/api/generate-did-web`
-
    - Generates a `did:web` for the issuer on the fly for a given domain.
    - Hosts the **DID document** at the corresponding path so that verifiers can resolve it for verification purposes.
    - Provides a service endpoint for authentication using the login route.
 
 3. **Flexible Storage Backend**
-
    - Supports **File Storage** (default) or **Redis Storage**.
    - Configure via `.env` variable:
      ```env

@@ -1,10 +1,14 @@
 # Trust Registry
 
+> **⚠️ PROTOTYPE/REFERENCE IMPLEMENTATION**  
+> This is a prototype service developed for demonstration and educational purposes only. It is **not a production-ready product** from Affinidi. This reference implementation showcases technical concepts and should not be used in production environments without significant additional development, security hardening, and testing.
+
 Docker-based deployment of 3 Trust Registry instances for Hong Kong, Macau, and Singapore.
 
 ## Overview
 
 This directory contains Docker configurations for running 3 separate Trust Registry instances, each with:
+
 - CSV-based storage
 - DIDComm enabled (admin operations only)
 - Configured with country-specific Admin DIDs
@@ -60,6 +64,7 @@ Each Trust Registry instance needs its own unique DID for DIDComm communication:
 ```
 
 This script will:
+
 - Clone the `affinidi-trust-registry-rs` repository from GitHub (if not present)
 - Generate unique DIDs for HK, Macau, and Singapore trust registries
 - Configure mediator ACLs with the governance portal admin DIDs
@@ -76,6 +81,7 @@ make dev-up
 ```
 
 This will automatically:
+
 1. Copy user_config files from governance-portal
 2. Extract Admin DIDs
 3. Create .env file for Docker Compose
@@ -84,12 +90,15 @@ This will automatically:
 ## Configuration
 
 ### Storage Backend
+
 - Type: CSV
 - Location: `./[country]/data/data.csv`
 - Format: `entity_id,authority_id,action,resource,context`
 
 ### CORS
+
 All instances allow requests from:
+
 - http://localhost:3000 (HK University)
 - http://localhost:3001 (Macau University)
 - http://localhost:4000 (Verifier Portal)
@@ -98,6 +107,7 @@ All instances allow requests from:
 - http://localhost:8052 (SG Governance)
 
 ### DIDComm
+
 - Enabled: Yes
 - Mode: Admin operations only (`ONLY_ADMIN_OPERATIONS=true`)
 - Admin DIDs: Extracted from user_config files
@@ -105,17 +115,20 @@ All instances allow requests from:
 ## Usage
 
 ### Start Services
+
 ```bash
 cd trust-registry
 docker-compose up -d
 ```
 
 ### Check Status
+
 ```bash
 docker-compose ps
 ```
 
 ### View Logs
+
 ```bash
 # All services
 docker-compose logs -f
@@ -127,11 +140,13 @@ docker-compose logs -f trust-registry-sg
 ```
 
 ### Stop Services
+
 ```bash
 docker-compose down
 ```
 
 ### Restart Services
+
 ```bash
 docker-compose restart
 ```
@@ -149,6 +164,7 @@ curl http://localhost:3234/health  # SG
 ## API Endpoints
 
 ### Recognition Query
+
 ```bash
 curl --location 'http://localhost:3232/recognition' \
 --header 'Content-Type: application/json' \
@@ -161,6 +177,7 @@ curl --location 'http://localhost:3232/recognition' \
 ```
 
 ### Authorization Query
+
 ```bash
 curl --location 'http://localhost:3232/authorization' \
 --header 'Content-Type: application/json' \
@@ -192,6 +209,7 @@ did:example:verifier1,did:example:gov1,verify,diploma,eyJ0eXBlIjoiZGlwbG9tYSJ9
 ### Adding Records via DIDComm
 
 Use the Admin DID credentials from user_config files to send DIDComm messages for:
+
 - Creating records
 - Updating records
 - Deleting records
@@ -203,36 +221,40 @@ See [Trust Registry Administration](https://github.com/affinidi/affinidi-trust-r
 
 Each instance uses these environment variables:
 
-| Variable | Description | Example |
-|----------|-------------|---------|
-| TR_STORAGE_BACKEND | Storage type | csv |
-| FILE_STORAGE_PATH | CSV file path | /data/data.csv |
-| CORS_ALLOWED_ORIGINS | Allowed origins | http://localhost:3000,... |
-| AUDIT_LOG_FORMAT | Log format | json |
-| ENABLE_DIDCOMM | Enable DIDComm | true |
-| ONLY_ADMIN_OPERATIONS | Admin-only mode | true |
-| MEDIATOR_DID | Mediator DID | did:web:... |
-| ADMIN_DIDS | Admin DIDs | did:peer:2... |
-| PROFILE_CONFIG | Trust Registry profile | file:///config/user_config.json |
+| Variable              | Description            | Example                         |
+| --------------------- | ---------------------- | ------------------------------- |
+| TR_STORAGE_BACKEND    | Storage type           | csv                             |
+| FILE_STORAGE_PATH     | CSV file path          | /data/data.csv                  |
+| CORS_ALLOWED_ORIGINS  | Allowed origins        | http://localhost:3000,...       |
+| AUDIT_LOG_FORMAT      | Log format             | json                            |
+| ENABLE_DIDCOMM        | Enable DIDComm         | true                            |
+| ONLY_ADMIN_OPERATIONS | Admin-only mode        | true                            |
+| MEDIATOR_DID          | Mediator DID           | did:web:...                     |
+| ADMIN_DIDS            | Admin DIDs             | did:peer:2...                   |
+| PROFILE_CONFIG        | Trust Registry profile | file:///config/user_config.json |
 
 ## Troubleshooting
 
 ### Container won't start
+
 1. Check Docker is running: `docker info`
 2. Check logs: `docker-compose logs [service-name]`
 3. Verify user_config files exist
 4. Verify .env file contains correct values
 
 ### Health check failing
+
 1. Wait 40 seconds for startup (start_period)
 2. Check container logs for errors
 3. Verify port is not in use: `lsof -i :3232`
 
 ### CORS errors
+
 1. Verify CORS_ALLOWED_ORIGINS includes your service URL
 2. Restart container after changing CORS settings
 
 ### CSV file not updating
+
 1. Restart container after editing CSV: `docker-compose restart [service-name]`
 2. Check file permissions
 3. Verify CSV format is correct
@@ -240,6 +262,7 @@ Each instance uses these environment variables:
 ## Integration with Main Setup
 
 The main `make dev-up` command automatically:
+
 1. Generates user configs
 2. Sets up Trust Registry instances
 3. Configures services with Trust Registry URLs and DIDs
@@ -249,6 +272,7 @@ No manual intervention required - just run `make dev-up` from the project root.
 ## Security Notes
 
 ⚠️ **IMPORTANT**:
+
 - User config files contain private keys - never commit to git
 - .env file contains sensitive DIDs - keep secure
 - In production, use proper secrets management

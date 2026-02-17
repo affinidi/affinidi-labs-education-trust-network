@@ -4,6 +4,9 @@
 
 An end‑to‑end reference implementation demonstrating how educational certificates can be issued, held, and verified using **W3C Verifiable Credentials**, with a focus on cross‑border issuer authorization and trust recognition.
 
+> **⚠️ IMPORTANT: PROTOTYPE/REFERENCE IMPLEMENTATION**  
+> This repository contains prototype applications and services developed for **demonstration and educational purposes only**. These are **not production-ready products** from Affinidi. This reference implementation showcases technical concepts and architectural patterns for verifiable credentials and should not be deployed in production environments without significant additional development, security hardening, thorough testing, and professional review.
+
 ---
 
 ## 📑 Table of Contents
