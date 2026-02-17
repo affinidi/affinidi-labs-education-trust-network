@@ -1,10 +1,14 @@
 # Education Ministries DID Hosting Service
 
+> **⚠️ PROTOTYPE/REFERENCE IMPLEMENTATION**  
+> This is a prototype service developed for demonstration and educational purposes only. It is **not a production-ready product** from Affinidi. This reference implementation showcases technical concepts and should not be used in production environments without significant additional development, security hardening, and testing.
+
 A dedicated service for hosting DID:web documents for education ministries in the Certizen Demo.
 
 ## Overview
 
 This service hosts DID documents for education ministries from multiple regions:
+
 - Hong Kong Education Ministry
 - Macau Education Ministry
 - Singapore Education Ministry
@@ -23,6 +27,7 @@ make dev-up
 ```
 
 This will:
+
 - Start ngrok tunnels
 - Generate DID documents for all 3 ministries
 - Start the service via Docker on port 3100
@@ -134,6 +139,7 @@ DIDs are served at paths following the did:web specification:
 ## Endpoints
 
 ### Health Check
+
 ```bash
 GET /
 GET /health
@@ -142,6 +148,7 @@ GET /health
 Returns service status.
 
 ### DID Documents
+
 ```bash
 GET /{ministry-name}/did.json
 ```
@@ -149,6 +156,7 @@ GET /{ministry-name}/did.json
 Returns the DID document for the specified ministry.
 
 Example:
+
 ```bash
 curl https://your-domain.ngrok-free.app/hongkong-education-ministry/did.json
 ```
@@ -185,6 +193,7 @@ curl https://your-domain.ngrok-free.app/hongkong-education-ministry/did.json
 ## Generated Files
 
 The service generates and stores:
+
 - DID documents at `{ministry-name}/did.json`
 - Private keys (for future signing operations)
 - Metadata about generated DIDs
@@ -232,4 +241,3 @@ services:
 - **HTTPS**: The service expects to run behind ngrok or a reverse proxy with HTTPS.
 - **Backup**: Regularly backup the `instance/data/` directory.
 - **Monitoring**: Set up proper logging and monitoring for production deployments.
-

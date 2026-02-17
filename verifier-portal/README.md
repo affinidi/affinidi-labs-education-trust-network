@@ -1,5 +1,8 @@
 # Verifier Portal
 
+> **⚠️ PROTOTYPE/REFERENCE IMPLEMENTATION**  
+> This is a prototype application developed for demonstration and educational purposes only. It is **not a production-ready product** from Affinidi. This reference implementation showcases technical concepts and should not be used in production environments without significant additional development, security hardening, and testing.
+
 Flutter Web application for employers to verify student credentials. Simulates a company career portal where job applicants can present their educational credentials.
 
 ## 🚀 Quick Start
@@ -15,6 +18,7 @@ make verifier
 ```
 
 **Available Make Commands (from root):**
+
 - `make verifier` - Start Nova Corp Verifier Portal
 - `make help` - Show all available commands
 
@@ -36,12 +40,14 @@ http://localhost:4000
 ## 🏗️ Architecture
 
 **Clean Architecture Pattern:**
+
 - **Domain**: Verification logic, entities, repository interfaces
 - **Data**: Repository implementations, API clients
 - **Presentation**: UI, widgets, Riverpod state management
 - **Core**: Shared utilities, design system
 
 **Verification Flow:**
+
 1. Display QR code on career portal
 2. Student scans QR code with vault app
 3. Student selects credentials to share
@@ -52,6 +58,7 @@ http://localhost:4000
 ## 🔧 Configuration
 
 **Environment Configuration (.env.local-network):**
+
 ```env
 PORT=4000
 VERIFIER_NAME=Nova Corp
@@ -85,10 +92,10 @@ DATA_PATH=./data
 
 ## 📍 Service Details
 
-| Environment | Port | URL |
-|-------------|------|-----|
-| Localhost | 4000 | http://localhost:4000 |
-| Ngrok | 3500 | https://{ngrok-domain} |
+| Environment | Port | URL                    |
+| ----------- | ---- | ---------------------- |
+| Localhost   | 4000 | http://localhost:4000  |
+| Ngrok       | 3500 | https://{ngrok-domain} |
 
 ## 📚 Documentation
 

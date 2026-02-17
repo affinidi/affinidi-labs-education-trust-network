@@ -1,5 +1,8 @@
 # Governance Portal - Code
 
+> **⚠️ PROTOTYPE/REFERENCE IMPLEMENTATION**  
+> This is prototype code developed for demonstration and educational purposes only. It is **not production-ready** and should not be used in production environments without significant additional development, security hardening, and testing.
+
 Shared Flutter Web codebase for all Governance Portal instances.
 
 ## Setup
@@ -19,6 +22,7 @@ flutter run -d chrome --web-port=3401
 ## Configuration
 
 ### user_config.json
+
 ```json
 {
   "did:peer:2.Vz6Mk...": {
@@ -33,6 +37,7 @@ flutter run -d chrome --web-port=3401
 ```
 
 ### .env (per instance)
+
 ```env
 MINISTRY_NAME=Hong Kong Education Bureau
 TRUST_REGISTRY_DID=did:peer:2.Vz6Mk...
@@ -43,6 +48,7 @@ MEDIATOR_URL=https://apse1.mediator.affinidi.io/
 ## Architecture
 
 Clean Architecture with DIDComm client:
+
 - `lib/features/records/` - Trust record CRUD
 - `lib/core/infrastructure/didcomm/` - DIDComm client
 - `lib/core/infrastructure/config/` - User config & DID loading
@@ -50,10 +56,10 @@ Clean Architecture with DIDComm client:
 ## Documentation
 
 See [Project Documentation](../../docs/):
+
 - [Trust Registry Details](../../docs/trust-registry.md)
 - [DIDComm Protocol](../../docs/didcomm-protocol.md)
 - [Development Guide](../../docs/development.md)
-
 
 ## Architecture
 
@@ -125,6 +131,7 @@ The application requires a `user_config.json` file containing the DID and privat
 **Location**: `assets/user_config.json`
 
 **Format** (same as Rust trust-registry-admin-rest-api-rs):
+
 ```json
 {
   "did:peer:2.Vz6Mk...": {
@@ -146,12 +153,14 @@ The application requires a `user_config.json` file containing the DID and privat
 ```
 
 **Supported Key Types**:
+
 - Ed25519 (OKP with crv=Ed25519)
 - X25519 (OKP with crv=X25519)
 - secp256k1 (EC with crv=secp256k1)
 - P-256/P-384/P-521 (EC with crv=P-256/P-384/P-521)
 
 **Important**:
+
 - The app will **fail to start** if `user_config.json` is missing or invalid
 - Copy `assets/user_config.json.example` and customize with your DID/keys
 - Keep the actual `user_config.json` secure and **never commit to git**
@@ -182,10 +191,12 @@ RESPONSE_TIMEOUT_SECONDS=30
 ## Setup & Run
 
 ### Prerequisites
+
 - Flutter SDK 3.5.0+
 - Dart SDK 3.5.0+
 
 ### Installation
+
 ```bash
 cd code
 flutter pub get
@@ -194,6 +205,7 @@ flutter pub get
 ### Configuration Setup
 
 1. **Copy user_config.json.example**:
+
    ```bash
    cp assets/user_config.json.example assets/user_config.json
    ```
@@ -214,6 +226,7 @@ flutter pub get
    ```
 
 ### Run
+
 ```bash
 # Run on web (port 3401)
 flutter run -d chrome --web-port=3401
@@ -232,7 +245,7 @@ try {
   if (e is ValidationException) {
     // Show validation errors
   } else if (e is DIDCommException) {
-    // Show communication errors  
+    // Show communication errors
   }
 }
 ```

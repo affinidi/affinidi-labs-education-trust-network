@@ -1,5 +1,8 @@
 # Student Vault App
 
+> **⚠️ PROTOTYPE/REFERENCE IMPLEMENTATION**  
+> This is a prototype application developed for demonstration and educational purposes only. It is **not a production-ready product** from Affinidi. This reference implementation showcases technical concepts and should not be used in production environments without significant additional development, security hardening, and testing.
+
 Flutter mobile application for students to receive, store, and share verifiable educational credentials using DIDComm v2 protocol.
 
 ## 🚀 Quick Start
@@ -18,10 +21,12 @@ make student-android
 ```
 
 **Available Make Commands (from root):**
+
 - `make student-ios` - Run on iOS Simulator
 - `make student-android` - Run on Android Emulator
 
 **Note for Android:** Update the .env file to use `10.0.2.2` instead of `localhost`/`0.0.0.0` for emulator network access.
+
 - `make strings` - Generate localized string files
 - `make help` - Show all available commands
 - `make clean` - Clean generated files
@@ -38,12 +43,14 @@ make student-android
 ## 🏗️ Architecture
 
 **Clean Architecture Pattern:**
+
 - **Domain**: Entities, use cases, repository interfaces
 - **Data**: Repository implementations, data sources, API clients
 - **Presentation**: UI, widgets, screens, Riverpod state management
 - **Core**: Shared utilities, design system, constants
 
 **Key Technologies:**
+
 - Flutter/Dart
 - Riverpod (state management)
 - DIDComm v2 (secure messaging)
@@ -81,14 +88,17 @@ The setup script automatically copies `organizations.localhost.dart` to `organiz
 ## 📱 Platform-Specific Notes
 
 ### iOS Simulator
+
 - Use `localhost` URLs (default configuration)
 - No additional changes needed
 
 ### Android Emulator
+
 - Replace `localhost` with `10.0.2.2` in `.env.local-network`
 - Android emulators use `10.0.2.2` to access host machine
 
 ### Physical Devices
+
 - Use ngrok setup for physical device testing
 - See main project README for ngrok configuration
 

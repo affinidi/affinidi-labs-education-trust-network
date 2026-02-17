@@ -1,5 +1,8 @@
 # University Issuance Service
 
+> **⚠️ PROTOTYPE/REFERENCE IMPLEMENTATION**  
+> This is a prototype service developed for demonstration and educational purposes only. It is **not a production-ready product** from Affinidi. This reference implementation showcases technical concepts and should not be used in production environments without significant additional development, security hardening, and testing.
+
 Dart backend service for issuing educational credentials to students using DIDComm v2 and VDIP protocol.
 
 ## 🚀 Quick Start
@@ -22,6 +25,7 @@ make macau-university
 ```
 
 **Available Make Commands (from root):**
+
 - `make hk-university` - Start HK University Issuer (local Dart)
 - `make macau-university` - Start Macau University Issuer (local Dart)
 - `make docker-logs-hk` - View HK University logs
@@ -30,12 +34,14 @@ make macau-university
 ## 🏗️ Architecture
 
 **MVC Pattern:**
+
 - **Controllers**: HTTP request handlers, route definitions
 - **Services**: Business logic (credential issuance, DIDComm communication)
 - **Models**: Data structures, credential schemas
 - **Utilities**: Helper functions, configuration management
 
 **Communication Flow:**
+
 1. Student scans QR code from issuer portal
 2. Student app initiates DIDComm connection
 3. Service issues credential via VDIP protocol
@@ -46,6 +52,7 @@ make macau-university
 Each university instance requires environment configuration:
 
 **Example (.env.hk.localhost):**
+
 ```env
 PORT=3000
 UNIVERSITY_NAME=Hong Kong University
@@ -72,10 +79,10 @@ ISSUER_DIDWEB_DOMAIN=localhost:3000/hongkong-university
 
 ## 📍 Instances
 
-| University | Port (Localhost) | Port (Ngrok) | DID |
-|------------|------------------|--------------|-----|
-| Hong Kong | 3000 | 3301 | did:web:localhost%3A3000:hongkong-university |
-| Macau | 3001 | 3302 | did:web:localhost%3A3001:macau-university |
+| University | Port (Localhost) | Port (Ngrok) | DID                                          |
+| ---------- | ---------------- | ------------ | -------------------------------------------- |
+| Hong Kong  | 3000             | 3301         | did:web:localhost%3A3000:hongkong-university |
+| Macau      | 3001             | 3302         | did:web:localhost%3A3001:macau-university    |
 
 ## 🔑 Key Features
 
