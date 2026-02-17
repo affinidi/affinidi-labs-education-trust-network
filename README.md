@@ -1,42 +1,82 @@
 # Certizen - Cross‑Border Educational Credentials Verification
 
-Including Issuer Authorization & Trust Validation
+> Including Issuer Authorization & Trust Validation
 
-This repository contains an end‑to‑end reference implementation demonstrating how educational certificates can be issued, held, and verified using Verifiable Credentials (VCs), with an added focus on cross‑border issuer authorization and trust recognition.
-The goal is to showcase how trusted data ecosystems—especially in regulated markets like education—can evolve beyond traditional PKI-based infrastructures and interoperate with next‑generation decentralized trust technologies.
+An end‑to‑end reference implementation demonstrating how educational certificates can be issued, held, and verified using **W3C Verifiable Credentials**, with a focus on cross‑border issuer authorization and trust recognition.
 
-# Purpose of This Demo
+---
+
+## 📑 Table of Contents
+
+- [Overview](#-overview)
+- [Purpose](#-purpose)
+- [Key Features](#-key-features)
+- [Architecture](#️-architecture)
+- [Demo Flow](#-demo-flow)
+- [Quick Start](#-quick-start)
+- [Project Structure](#-project-structure)
+- [Components](#-components)
+- [Technologies](#️-technologies)
+- [Documentation](#-documentation)
+- [Service Ports](#-service-ports)
+- [Cleanup](#-cleanup)
+- [License](#-license)
+
+---
+
+## 🎯 Overview
+
+This repository showcases how trusted data ecosystems—especially in regulated markets like education—can evolve beyond traditional PKI-based infrastructures and interoperate with next‑generation decentralized trust technologies.
+
+The demo illustrates a complete credential lifecycle: from **issuance** by universities, through **secure storage** in student wallets, to **verification** by employers across different jurisdictions—all while maintaining privacy, security, and cross-border trust.
+
+---
+
+## 💡 Purpose
 
 Many trust service providers (such as Certizen in Hong Kong) have a strong foundation in PKI, digital certificates, and regulated identity issuance. They are also accredited to issue vLEI identities, which come with significant governance rigor and cross‑jurisdictional assurance.
-However, the education sector introduces new challenges:
 
-- Credentials are personal, not organizational.
-- Issuers vary across borders and regulatory systems.
-- Students need portable, interoperable proof, not siloed PDFs.
-- Verifiers need to know whether a foreign issuer is recognized and authorized.
+However, the education sector introduces unique challenges:
 
-This repository demonstrates how Affinidi’s technology can complement (not replace) existing high‑assurance stacks by enabling trusted, privacy‑preserving, interoperable educational credential flows.
+- ✅ Credentials are **personal**, not organizational
+- ✅ Issuers vary across **borders and regulatory systems**
+- ✅ Students need **portable, interoperable proof**, not siloed PDFs
+- ✅ Verifiers need to know whether a **foreign issuer is recognized and authorized**
 
-# What This Repository Demonstrates
-## ✔️ Issuance
-A trusted issuer (e.g., a university or an education bureau) issues a **W3C Verifiable Credential** representing an educational certificate.
-## ✔️ Wallet & Holder Flow
-A learner receives and securely stores the credential in a **digital wallet**.
-## ✔️ Verification
-A verifier validates multiple aspects of the credential:
-- **Authenticity** of the credential
-- **Cryptographic signature**
-- **Status** (e.g., revoked or valid)
-- **Issuer’s authorization** to issue that specific credential type
-## ✔️ Cross‑Border Issuer Recognition
+This repository demonstrates how Affinidi's technology can **complement** (not replace) existing high‑assurance stacks by enabling trusted, privacy‑preserving, interoperable educational credential flows.
 
-This demo includes logic to determine whether an issuer from another region or jurisdiction is:
+---
 
-- **Authorized** to issue the specific credential type
-- **Recognized** within a relevant **trust registry**
-- **Resolvable** through interoperable trust mechanisms
+## ✨ Key Features
 
-This is especially important because traditional PKI infrastructures typically **do not cover domain‑specific authorization** for education issuers, particularly across borders.
+### 🎓 Credential Issuance
+
+A trusted issuer (e.g., a university or education bureau) issues a **W3C Verifiable Credential** representing an educational certificate.
+
+### 📱 Digital Wallet & Holder Flow
+
+Students receive and securely store credentials in a **digital wallet** with full control over their data.
+
+### 🔍 Multi-Layer Verification
+
+Verifiers validate multiple aspects of the credential:
+
+- ✅ **Authenticity** of the credential
+- ✅ **Cryptographic signature** integrity
+- ✅ **Status** (revoked or valid)
+- ✅ **Issuer authorization** to issue that specific credential type
+
+### 🌍 Cross‑Border Issuer Recognition
+
+The system determines whether an issuer from another jurisdiction is:
+
+- ✅ **Authorized** to issue the specific credential type
+- ✅ **Recognized** within a relevant **trust registry**
+- ✅ **Resolvable** through interoperable trust mechanisms
+
+> **Why This Matters:** Traditional PKI infrastructures typically do not cover domain‑specific authorization for education issuers, particularly across borders.
+
+---
 
 ## 🏗️ Architecture
 
@@ -50,257 +90,344 @@ Issuers     Verifiers
          Vault
 ```
 
-![alt text](image.png)
+![Architecture Diagram](image.png)
 
-## Demo Flow
+The system consists of:
 
-## 🔗 Step 1: Trust Registry
-
-### Register Issuers and Verifiers
-
-- **University of Hong Kong (HKU)** is registered as an **authorized issuer** in Hong Kong’s Education Trust Registry operated by the Hong Kong Ministry of Education.  
-- **University of Macau (UM)** is registered as an **authorized issuer** in Macau’s Education Trust Registry operated by the Macau Ministry of Education.  
-- **Nova Corp (Employer)**, based in Singapore, is registered as an **authorized verifier** in Singapore’s Education Trust Registry operated by Singapore’s Ministry of Education.
-
-### Recognize Governance Frameworks
-
-- Singapore’s Education Trust Registry **recognizes Hong Kong’s Education Trust Registry** as a valid governance framework for Hong Kong–issued educational certificates.  
-- Singapore’s Education Trust Registry **recognizes Macau’s Education Trust Registry** as a valid governance framework for Macau–issued educational certificates.
+- **Trust Registries**: Maintain authorized issuer and verifier lists per jurisdiction
+- **Issuers**: Universities that issue educational credentials
+- **Student Vault**: Mobile app for credential storage and management
+- **Verifiers**: Employers or institutions that verify credentials
 
 ---
 
-## 🎓 Step 2: Issuance of Educational Credentials
+## 🔄 Demo Flow
 
-- **University of Hong Kong** issues an educational credential to the student using **DIDComm (VDIP) protocol**.  
-- **University of Macau** issues an educational credential to the student using **DIDComm (VDIP) protocol**.
+### Step 1: Trust Registry Setup
+
+#### Register Issuers and Verifiers
+
+- **University of Hong Kong (HKU)** → Registered as an authorized issuer in Hong Kong's Education Trust Registry
+- **University of Macau (UM)** → Registered as an authorized issuer in Macau's Education Trust Registry
+- **Nova Corp (Employer)** → Registered as an authorized verifier in Singapore's Education Trust Registry
+
+#### Establish Governance Framework Recognition
+
+- Singapore's Trust Registry **recognizes** Hong Kong's Education Trust Registry as a valid governance framework
+- Singapore's Trust Registry **recognizes** Macau's Education Trust Registry as a valid governance framework
 
 ---
 
-## 🔍 Step 3: Verification
+### Step 2: Credential Issuance
 
-### Presentation
+- **University of Hong Kong** issues an educational credential to the student via **DIDComm (VDIP) protocol**
+- **University of Macau** issues an educational credential to the student via **DIDComm (VDIP) protocol**
 
-- The student uses the **Certizen Student App**, powered by **Affinidi TDK**, to present the educational credential to **Nova Corp** via **DIDComm (VDSP) protocol**.
+---
 
-### Verifier Checks Governance Framework Recognition
+### Step 3: Credential Verification
 
-- Nova Corp verifies whether **Hong Kong’s governance framework** is recognized by Singapore’s Trust Registry  
-  → via **TRQP Recognition** call.  
-- Nova Corp verifies whether **Macau’s governance framework** is recognized by Singapore’s Trust Registry  
-  → via **TRQP Recognition** call.
+#### Presentation
 
-### Verifier Checks Issuer Authorization
+The student uses the **Certizen Student App** (powered by **Affinidi TDK**) to present credentials to **Nova Corp** via **DIDComm (VDSP) protocol**.
 
-- Nova Corp checks whether **University of Hong Kong** is authorized to issue educational certificates  
-  → via **TRQP Authorization** call.  
+#### Verification Process
 
+Nova Corp performs the following checks:
 
-## 📁 Project Structure
+1. **Governance Framework Recognition** (via TRQP Recognition calls)
+   - Verifies Hong Kong's governance framework is recognized by Singapore's Trust Registry
+   - Verifies Macau's governance framework is recognized by Singapore's Trust Registry
 
-```
-certizen-demo/
-├── Makefile                          # Quick commands for all operations
-├── README.md                         # This file
-├── deployment/                       # All deployment-related files
-│   ├── .env.ngrok                   # Environment configuration (created by make dev-up)
-│   ├── .env.example                 # Environment template
-│   ├── docker/                      # Docker compose files
-│   │   ├── docker-compose.localhost.yml
-│   │   └── docker-compose.yml
-│   └── scripts/                     # Setup and utility scripts
-│       ├── setup_ngrok.sh           # Main setup script
-│       └── cleanup.sh               # Cleanup script
-├── governance-portal/               # Flutter web app for trust registry admin
-├── university-issuance-service/     # Dart backend for credential issuance
-├── verifier-portal/                 # Dart app for credential verification
-├── student-vault-app/               # Flutter mobile app for students
-├── trust-registry/                  # Rust trust registry implementation
-└── docs/                            # Documentation
+2. **Issuer Authorization** (via TRQP Authorization calls)
+   - Confirms University of Hong Kong is authorized to issue educational certificates
+   - Confirms University of Macau is authorized to issue educational certificates
 
-```
+---
 
-**Pro Tip:** Use `make help` to see all available commands!
-
-## �🚀 Quick Start
+## 🚀 Quick Start
 
 ### Prerequisites
 
-**System Requirements:**
+#### System Requirements
 
-- 8GB RAM minimum (16GB recommended)
-- 4 CPU cores minimum
-- 10GB free disk space
+- **RAM**: 8GB minimum (16GB recommended)
+- **CPU**: 4 cores minimum
+- **Disk**: 10GB free space
 
-**Software:**
+#### Required Software
 
-- Docker Desktop 4.0+ installed and running
-- ngrok account (free tier works) - [Get it here](https://dashboard.ngrok.com/signup)
+- [Docker Desktop 4.0+](https://www.docker.com/products/docker-desktop) (installed and running)
+- [ngrok account](https://dashboard.ngrok.com/signup) (free tier works)
 - Flutter SDK 3.5.0+
 - Dart SDK 3.5.0+
 - Git
 
-**Configurations:**
+#### Configuration Requirements
 
 - ngrok auth token
 - Mediator DID
 - Mediator URL
 - Control plane DID (SERVICE_DID)
 
-### Quick Start
+---
+
+### Installation
+
+#### 1. Start the Complete Environment
 
 ```bash
-# Start the complete environment with ngrok tunnels
 make dev-up
 ```
 
-This will:
+This command will:
 
-1. Start ngrok tunnels for universities and education ministries
-2. Capture dynamic ngrok domains
-3. Generate all configurations and DIDs
-4. Launch Docker containers (Trust Registries, Universities, etc.)
+1. ✅ Start ngrok tunnels for universities and education ministries
+2. ✅ Capture dynamic ngrok domains
+3. ✅ Generate all configurations and DIDs
+4. ✅ Launch Docker containers (Trust Registries, Universities, etc.)
 
-After setup completes, start the remaining services:
+---
 
-```bash
-# Start governance portals (in separate terminals)
-make hk-gov
-make macau-gov
-make sg-gov
+#### 2. Start Additional Services
 
-# Start verifier portal
-make verifier
-
-# Start student app
-make student-ios    # or make student-android
-```
-
-### Stop Services
+After the environment setup completes, start the remaining services in separate terminals:
 
 ```bash
-# Stop ngrok tunnels and Docker services
-make dev-down
+# Governance Portals
+make hk-gov        # Hong Kong Governance Portal (port 8050)
+make macau-gov     # Macau Governance Portal (port 8051)
+make sg-gov        # Singapore Governance Portal (port 8052)
+
+# Verifier Portal
+make verifier      # Nova Corp Verifier (port 4000)
+
+# Student App
+make student-ios   # iOS simulator
+# or
+make student-android   # Android emulator
 ```
 
+---
 
+#### 3. Stop Services
 
-### Components
+```bash
+make dev-down      # Stop ngrok tunnels and Docker services
+make cleanup       # Complete cleanup (removes all data)
+```
 
-| Component                        | Technology       | Description                               |
-| -------------------------------- | ---------------- | ----------------------------------------- |
-| **Student Vault App**            | Flutter (Mobile) | Credential storage and management         |
-| **University Issuance Services** | Dart (Docker)    | Credential issuance backends (HK & Macau) |
-| **Verifier Portal**              | Dart             | Employer credential verification          |
-| **Governance Portal**            | Flutter (Web)    | Trust registry administration             |
-| **Trust Registry**               | Rust (Docker)    | Trust registry backend service            |
+---
+
+### 💡 Pro Tips
+
+```bash
+# View all available commands
+make help
+
+# Check Docker container status
+make docker-ps
+
+# View logs from all services
+make docker-logs
+
+# Rebuild and restart all Docker services
+make docker-rebuild
+```
+
+---
+
+## 📁 Project Structure
+
+```
+certizen-demo/
+├── Makefile                          # All operation commands
+├── README.md                         # This file
+│
+├── deployment/                       # Deployment configuration
+│   ├── .env.ngrok                   # Environment config (auto-generated)
+│   ├── .env.example                 # Environment template
+│   ├── docker/                      # Docker compose files
+│   │   ├── docker-compose.localhost.yml
+│   │   └── docker-compose.yml
+│   └── scripts/                     # Setup and utility scripts
+│       ├── setup_ngrok.sh
+│       └── cleanup.sh
+│
+├── governance-portal/               # Trust registry admin (Flutter Web)
+├── student-vault-app/               # Student credential wallet (Flutter Mobile)
+├── university-issuance-service/     # Credential issuance backend (Dart)
+├── verifier-portal/                 # Credential verification (Dart)
+├── trust-registry/                  # Trust registry service (Rust)
+│
+└── docs/                            # Documentation
+    ├── architecture.md
+    ├── setup.md
+    ├── development.md
+    └── ...
+```
+
+---
+
+## 🧩 Components
+
+| Component                        | Technology       | Description                               | Deployment |
+| -------------------------------- | ---------------- | ----------------------------------------- | ---------- |
+| **Student Vault App**            | Flutter (Mobile) | Credential storage and management         | Terminal   |
+| **University Issuance Services** | Dart             | Credential issuance backends (HK & Macau) | Docker     |
+| **Verifier Portal**              | Dart             | Employer credential verification          | Terminal   |
+| **Governance Portal**            | Flutter (Web)    | Trust registry administration             | Terminal   |
+| **Trust Registry**               | Rust             | Trust registry backend service            | Docker     |
+
+---
 
 ## 🐳 Docker Services
 
-The following services run on Docker:
+The following services run in Docker containers:
 
-- **HK University Issuer** (port 3000)
-- **Macau University Issuer** (port 3001)
-- **Trust Registries** (ports 3232, 3233, 3234)
+| Service                      | Port | Description                              |
+| ---------------------------- | ---- | ---------------------------------------- |
+| **HK University Issuer**     | 3000 | University of Hong Kong issuance service |
+| **Macau University Issuer**  | 3001 | University of Macau issuance service     |
+| **HK Trust Registry**        | 3232 | Hong Kong education trust registry       |
+| **Macau Trust Registry**     | 3233 | Macau education trust registry           |
+| **Singapore Trust Registry** | 3234 | Singapore education trust registry       |
 
-### Useful Docker Commands
+### Common Docker Commands
 
-For convenience, use the Makefile shortcuts:
+#### Using Makefile (Recommended)
 
 ```bash
-# Show all available commands
-make help
-
-# Docker management
 make docker-ps          # Check container status
 make docker-logs        # View all logs
 make docker-stop        # Stop all services
 make docker-rebuild     # Rebuild and restart
-
-# Environment
-make dev-up             # Start complete environment
-make dev-down           # Stop ngrok + Docker
-make cleanup            # Full cleanup
 ```
 
-Or use docker-compose directly:
+#### Using docker-compose Directly
 
 ```bash
+# Navigate to deployment directory
+cd deployment/docker
+
 # Check container status
-docker-compose -f deployment/docker/docker-compose.localhost.yml ps
+docker-compose -f docker-compose.localhost.yml ps
 
-# View all certizen container logs (single command)
-docker-compose -f deployment/docker/docker-compose.localhost.yml logs -f
+# View logs
+docker-compose -f docker-compose.localhost.yml logs -f
 
-# View logs from specific service
+# View specific service logs
 docker logs hk-university-issuer -f
 docker logs macau-university-issuer -f
 
-# Stop services
-docker-compose -f deployment/docker/docker-compose.localhost.yml down
-
 # Restart services
-docker-compose -f deployment/docker/docker-compose.localhost.yml restart
+docker-compose -f docker-compose.localhost.yml restart
 
-# Rebuild and restart
-docker-compose -f deployment/docker/docker-compose.localhost.yml up -d --build
+# Stop and remove all containers
+docker-compose -f docker-compose.localhost.yml down
 ```
+
+---
 
 ## 🛠️ Technologies
 
-- **Flutter** - Mobile & web UIs (Clean Architecture)
-- **Dart** - Backend services (MVC pattern)
-- **Rust** - Trust registry API
-- **Docker** - Container orchestration
-- **DIDComm v2** - Secure communication protocol
-- **Riverpod** - State management
+| Technology                     | Purpose                                    |
+| ------------------------------ | ------------------------------------------ |
+| **Flutter**                    | Mobile & web UIs (Clean Architecture)      |
+| **Dart**                       | Backend services (MVC pattern)             |
+| **Rust**                       | High-performance trust registry API        |
+| **Docker**                     | Container orchestration                    |
+| **DIDComm v2**                 | Secure peer-to-peer communication protocol |
+| **Riverpod**                   | State management for Flutter apps          |
+| **W3C Verifiable Credentials** | Credential format standard                 |
+
+---
 
 ## 📚 Documentation
 
-### Quick References
+### 🚀 Quick Guides
 
-- **[Quick Reference](docs/QUICK_REFERENCE.md)** - Common commands and operations
-- **[Environment Restructure](docs/ENVIRONMENT_RESTRUCTURE.md)** - Environment configuration guide
-- **[Restructure Complete](docs/RESTRUCTURE_COMPLETE.md)** - Project restructure summary
+| Document                                   | Description                             |
+| ------------------------------------------ | --------------------------------------- |
+| [Quick Reference](docs/QUICK_REFERENCE.md) | Common commands and operations          |
+| [Setup Guide](docs/setup.md)               | Detailed installation and configuration |
+| [Troubleshooting](docs/troubleshooting.md) | Common issues and solutions             |
 
-### Technical Documentation
+### 🏗️ Technical Documentation
 
-- **[Architecture](docs/architecture.md)** - System design and component interactions
-- **[Setup Guide](docs/setup.md)** - Detailed installation and configuration
-- **[DIDComm Protocol](docs/didcomm-protocol.md)** - Protocol implementation details
-- **[Trust Registry](docs/trust-registry.md)** - Trust registry configuration
-- **[Development Guide](docs/development.md)** - Best practices and coding patterns
-- **[Troubleshooting](docs/troubleshooting.md)** - Common issues and solutions
-- **[Product Requirements](docs/product-requirements.md)** - Project requirements and specifications
-- **[Git Workflow](docs/git-workflow.md)** - Version control guidelines
+| Document                                             | Description                              |
+| ---------------------------------------------------- | ---------------------------------------- |
+| [Architecture](docs/architecture.md)                 | System design and component interactions |
+| [DIDComm Protocol](docs/didcomm-protocol.md)         | Protocol implementation details          |
+| [Trust Registry](docs/trust-registry.md)             | Trust registry configuration             |
+| [Development Guide](docs/development.md)             | Best practices and coding patterns       |
+| [Git Workflow](docs/git-workflow.md)                 | Version control guidelines               |
+| [Product Requirements](docs/product-requirements.md) | Project requirements and specifications  |
 
-### Component Documentation
+### 📦 Component Documentation
 
-- [Governance Portal](governance-portal/README.md)
-- [Student Vault App](student-vault-app/README.md)
-- [University Issuance Service](university-issuance-service/README.md)
-- [Verifier Portal](verifier-portal/README.md)
+- [Governance Portal](governance-portal/README.md) - Trust registry administration
+- [Student Vault App](student-vault-app/README.md) - Mobile wallet application
+- [University Issuance Service](university-issuance-service/README.md) - Credential issuance
+- [Verifier Portal](verifier-portal/README.md) - Credential verification
 
-## 🔌 Service Ports (Localhost)
+---
 
-| Service                     | Port | Run On   |
-| --------------------------- | ---- | -------- |
-| HK University Issuer        | 3000 | Docker   |
-| Macau University Issuer     | 3001 | Docker   |
-| HK Trust Registry           | 3232 | Docker   |
-| Macau Trust Registry        | 3233 | Docker   |
-| Singapore Trust Registry    | 3234 | Docker   |
-| Nova Corp Verifier          | 4000 | Terminal |
-| HK Governance Portal        | 8050 | Terminal |
-| Macau Governance Portal     | 8051 | Terminal |
-| Singapore Governance Portal | 8052 | Terminal |
+## 🔌 Service Ports
+
+| Service                         | Port | Runtime  |
+| ------------------------------- | ---- | -------- |
+| **HK University Issuer**        | 3000 | Docker   |
+| **Macau University Issuer**     | 3001 | Docker   |
+| **HK Trust Registry**           | 3232 | Docker   |
+| **Macau Trust Registry**        | 3233 | Docker   |
+| **Singapore Trust Registry**    | 3234 | Docker   |
+| **Nova Corp Verifier**          | 4000 | Terminal |
+| **HK Governance Portal**        | 8050 | Terminal |
+| **Macau Governance Portal**     | 8051 | Terminal |
+| **Singapore Governance Portal** | 8052 | Terminal |
+
+---
 
 ## 🧹 Cleanup
 
+To completely remove all services and data:
+
 ```bash
-# Stop and remove all Docker services + ngrok
 make cleanup
 ```
 
+This will:
+
+- ✅ Stop all Docker containers
+- ✅ Remove all Docker volumes and images
+- ✅ Terminate ngrok tunnels
+- ✅ Clean up generated configuration files
+
+---
+
 ## 📄 License
 
-See [LICENSE](LICENSE) and [NOTICE.txt](NOTICE.txt)
+See [LICENSE](LICENSE) and [NOTICE.txt](NOTICE.txt) for details.
+
+---
+
+## 🤝 Contributing
+
+This is a reference implementation for demonstration purposes. For questions or suggestions, please open an issue.
+
+---
+
+## 🔗 Related Resources
+
+- [Affinidi Documentation](https://docs.affinidi.com)
+- [W3C Verifiable Credentials](https://www.w3.org/TR/vc-data-model/)
+- [DIDComm Messaging](https://identity.foundation/didcomm-messaging/spec/)
+
+---
+
+<div align="center">
+
+**Built with ❤️ by the Affinidi Team**
+
+</div>
