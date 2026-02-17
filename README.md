@@ -1,6 +1,99 @@
-# Certizen - Decentralized Educational Credentials
+# Certizen - Cross‑Border Educational Credentials Verification
 
-Platform for issuing, storing, and verifying educational credentials using DIDComm v2 protocol and trust registries.
+Including Issuer Authorization & Trust Validation
+
+This repository contains an end‑to‑end reference implementation demonstrating how educational certificates can be issued, held, and verified using Verifiable Credentials (VCs), with an added focus on cross‑border issuer authorization and trust recognition.
+The goal is to showcase how trusted data ecosystems—especially in regulated markets like education—can evolve beyond traditional PKI-based infrastructures and interoperate with next‑generation decentralized trust technologies.
+
+# Purpose of This Demo
+
+Many trust service providers (such as Certizen in Hong Kong) have a strong foundation in PKI, digital certificates, and regulated identity issuance. They are also accredited to issue vLEI identities, which come with significant governance rigor and cross‑jurisdictional assurance.
+However, the education sector introduces new challenges:
+
+- Credentials are personal, not organizational.
+- Issuers vary across borders and regulatory systems.
+- Students need portable, interoperable proof, not siloed PDFs.
+- Verifiers need to know whether a foreign issuer is recognized and authorized.
+
+This repository demonstrates how Affinidi’s technology can complement (not replace) existing high‑assurance stacks by enabling trusted, privacy‑preserving, interoperable educational credential flows.
+
+# What This Repository Demonstrates
+## ✔️ Issuance
+A trusted issuer (e.g., a university or an education bureau) issues a **W3C Verifiable Credential** representing an educational certificate.
+## ✔️ Wallet & Holder Flow
+A learner receives and securely stores the credential in a **digital wallet**.
+## ✔️ Verification
+A verifier validates multiple aspects of the credential:
+- **Authenticity** of the credential
+- **Cryptographic signature**
+- **Status** (e.g., revoked or valid)
+- **Issuer’s authorization** to issue that specific credential type
+## ✔️ Cross‑Border Issuer Recognition
+
+This demo includes logic to determine whether an issuer from another region or jurisdiction is:
+
+- **Authorized** to issue the specific credential type
+- **Recognized** within a relevant **trust registry**
+- **Resolvable** through interoperable trust mechanisms
+
+This is especially important because traditional PKI infrastructures typically **do not cover domain‑specific authorization** for education issuers, particularly across borders.
+
+## 🏗️ Architecture
+
+```
+Trust Registries (HK, Macau, SG)
+        │
+    ┌───┴───┐
+Issuers     Verifiers
+    │           │
+    └─── Student ───┘
+         Vault
+```
+
+![alt text](image.png)
+
+## Demo Flow
+
+## 🔗 Step 1: Trust Registry
+
+### Register Issuers and Verifiers
+
+- **University of Hong Kong (HKU)** is registered as an **authorized issuer** in Hong Kong’s Education Trust Registry operated by the Hong Kong Ministry of Education.  
+- **University of Macau (UM)** is registered as an **authorized issuer** in Macau’s Education Trust Registry operated by the Macau Ministry of Education.  
+- **Nova Corp (Employer)**, based in Singapore, is registered as an **authorized verifier** in Singapore’s Education Trust Registry operated by Singapore’s Ministry of Education.
+
+### Recognize Governance Frameworks
+
+- Singapore’s Education Trust Registry **recognizes Hong Kong’s Education Trust Registry** as a valid governance framework for Hong Kong–issued educational certificates.  
+- Singapore’s Education Trust Registry **recognizes Macau’s Education Trust Registry** as a valid governance framework for Macau–issued educational certificates.
+
+---
+
+## 🎓 Step 2: Issuance of Educational Credentials
+
+- **University of Hong Kong** issues an educational credential to the student using **DIDComm (VDIP) protocol**.  
+- **University of Macau** issues an educational credential to the student using **DIDComm (VDIP) protocol**.
+
+---
+
+## 🔍 Step 3: Verification
+
+### Presentation
+
+- The student uses the **Certizen Student App**, powered by **Affinidi TDK**, to present the educational credential to **Nova Corp** via **DIDComm (VDSP) protocol**.
+
+### Verifier Checks Governance Framework Recognition
+
+- Nova Corp verifies whether **Hong Kong’s governance framework** is recognized by Singapore’s Trust Registry  
+  → via **TRQP Recognition** call.  
+- Nova Corp verifies whether **Macau’s governance framework** is recognized by Singapore’s Trust Registry  
+  → via **TRQP Recognition** call.
+
+### Verifier Checks Issuer Authorization
+
+- Nova Corp checks whether **University of Hong Kong** is authorized to issue educational certificates  
+  → via **TRQP Authorization** call.  
+
 
 ## 📁 Project Structure
 
@@ -89,17 +182,7 @@ make student-ios    # or make student-android
 make dev-down
 ```
 
-## 🏗️ Architecture
 
-```
-Trust Registries (HK, Macau, SG)
-        │
-    ┌───┴───┐
-Issuers     Verifiers
-    │           │
-    └─── Student ───┘
-         Vault
-```
 
 ### Components
 
