@@ -20,6 +20,13 @@ class CheckRecognitionUseCase {
       return CheckResult(valid: false, message: message);
     }
 
+    print('CheckRecognitionUseCase: Calling Trust Registry API');
+    print('  URL: $trUrl/recognition');
+    print('  entity_id: $entityId');
+    print('  authority_id: $authorityId');
+    print('  action: $action');
+    print('  resource: $resource');
+
     final response = await TrustRegistryApiClient()(
       '$trUrl/recognition',
       body: {

@@ -26,7 +26,7 @@ Router createRouter() {
   final apiRouter = Router();
 
   apiRouter.post('/login', loginHandler);
-  apiRouter.post('/generate-did-web', didWebGeneraterHandler);
+  // apiRouter.post('/generate-did-web', didWebGeneraterHandler);
 
   // Mount apiRouter under /api prefix
   router.mount('/api/', apiRouter);

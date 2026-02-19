@@ -18,6 +18,12 @@ class CheckEcosystemAuthorizationUseCase {
       onProgress({'messageType': 'info', 'message': message});
       return CheckResult(valid: false, message: message);
     }
+    print('CheckEcosystemAuthorizationUseCase: Calling Trust Registry API');
+    print('  URL: $trUrl/authorization');
+    print('  entity_id: $entityId');
+    print('  authority_id: $authorityId');
+    print('  action: $action');
+    print('  resource: $resource');
 
     final response = await TrustRegistryApiClient()(
       '$trUrl/authorization',

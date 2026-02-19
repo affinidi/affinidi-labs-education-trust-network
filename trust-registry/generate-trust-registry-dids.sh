@@ -96,9 +96,7 @@ generate_tr_did() {
 
 # Set default repo URL if not in .env
 TRUST_REGISTRY_API_REPO_URL="${TRUST_REGISTRY_API_REPO_URL:-https://github.com/affinidi/affinidi-trust-registry-rs}"
-
-# Clone or update affinidi-trust-registry-rs repository
-TRUST_REGISTRY_REPO="https://github.com/affinidi/affinidi-trust-registry-rs.git"
+TRUST_REGISTRY_API_COMMIT="${TRUST_REGISTRY_API_COMMIT:-2c87c33}" # Pin to specific commit to avoid breaking changes
 
 
 # Clone the repository if it doesn't exist
@@ -126,20 +124,6 @@ else
     fi
 fi
 
-if [ ! -d "affinidi-trust-registry-rs" ]; then
-    echo "📥 Cloning Trust Registry repository from GitHub..."
-    git clone "$TRUST_REGISTRY_REPO" affinidi-trust-registry-rs
-    if [ $? -ne 0 ]; then
-        echo "❌ Error: Failed to clone trust registry repository"
-        echo "   Repository: $TRUST_REGISTRY_REPO"
-        exit 1
-    fi
-    echo "✅ Repository cloned successfully"
-    echo ""
-else
-    echo "✓ Trust Registry repository already exists"
-    echo ""
-fi
 
 # Generate DIDs for each region with corresponding admin DIDs
 generate_tr_did "hk" "$HK_ADMIN_DID"
