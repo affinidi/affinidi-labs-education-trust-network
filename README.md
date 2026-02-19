@@ -93,7 +93,7 @@ Issuers     Verifiers
          Vault
 ```
 
-![Architecture Diagram](image.png)
+![Architecture Diagram](docs/image.png)
 
 The system consists of:
 

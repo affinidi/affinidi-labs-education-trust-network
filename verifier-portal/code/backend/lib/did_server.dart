@@ -54,20 +54,20 @@ void main(List<String> args) async {
   router.get('/health', healthHandler);
 
   // CORS proxy endpoint for external DID resolution
-  router.get('/api/cors-proxy', corsProxyHandler);
-  router.options('/api/cors-proxy', corsProxyOptionsHandler);
+  // router.get('/api/cors-proxy', corsProxyHandler);
+  // router.options('/api/cors-proxy', corsProxyOptionsHandler);
 
   // Credential verification endpoint
   router.post('/api/verify', verifyHandler);
 
   // DCQL request
-  router.post('/api/dcql/request', dcqlRequestHandler);
+  // router.post('/api/dcql/request', dcqlRequestHandler);
 
   // OOB clients list
   router.get('/api/oob/client', getOobClientHandler);
 
   // Connection management
-  router.post('/api/connection-stop', connectionStopHandler);
+  // router.post('/api/connection-stop', connectionStopHandler);
 
   router.get(
     '/ws',
