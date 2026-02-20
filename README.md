@@ -93,7 +93,7 @@ Issuers     Verifiers
          Vault
 ```
 
-![Architecture Diagram](docs/image.png)
+![Architecture Diagram](docs/arch-image.png)
 
 The system consists of:
 
@@ -406,6 +406,78 @@ This will:
 - ✅ Remove all Docker volumes and images
 - ✅ Terminate ngrok tunnels
 - ✅ Clean up generated configuration files
+
+---
+
+## Uses guide
+
+Once setup is done and all services and application are running, follow these instructions to complete an end to end flow of issuance and verification of VC.
+
+### Issuers
+
+For this demo, Issuers are configured already who will use VDIP to issue credentials to student. Issuers should have entry in respective trust registries as authorized issuers.
+No extra configuration step is needed for this demo.
+
+### Configuring Trust registry
+
+If setup is successfull , there would be three trust registry and three governance portal running. Each belonging to different country, HK, Macau, SG.
+Let's configure one by one. You can get required data in below steps from dev-up command logs or /deployment/.env.ngrok file.
+
+- HK TrustRegistry
+  - Open the Hong kong governance portal at http://localhost:8050/
+  - Enter a name for Registry
+  - Ekip on next page for quick setup
+  - Add a record where entity id would be HK university's DID and Authority ID would be HK ministry's DID
+  - Add **issue** as action, **EducationCredential** as resource and **Authorized** as Trust Status and click create button
+  - Navigate to Records and you should have 1 active record
+
+- Macau Trust Registry
+  - open the Macau governance portal at http://localhost:8051/
+  - enter a name for Registry
+  - skip on next page for quick setup
+  - add a record where entity id would be Macau university's DID and Authority ID would be Macau ministry's DID
+  - add **issue** as action, **EducationCredential** as resource and **Authorized** as Trust Status and click create button
+  - Navigate to Records and you should have 1 active record
+
+- Singapore Trust Registry
+  - open the Singapore governance portal at http://localhost:8052/
+  - enter a name for Registry
+  - skip on next page for quick setup
+  - add a record where entity id would be HK ministry's DID and Authority ID would be SG ministry's DID
+  - add **recognize** as action, **listed-registry** as resource and **Recognized** as Trust Status and click crerate button
+  - add another record where entity id would be Macau ministry's DID and Authority ID would be SG ministry's DID
+  - add **recognize** as action, **listed-registry** as resource and **Recognized** as Trust Status and click crerate button
+  - Navigate to Records and you should have 2 active records
+
+Example for one Registry:
+
+![example video for hong kong](docs/HK-registry.mov.gif)
+
+### Student APP
+
+Start your emulator or use a phone and run make student\* command for ios or Android accordingly.
+
+- Once you have the app running, follow the registration/login process for student. Keep in mind the OTP auth is mocked only select email domains are allowed.
+- Complete the sudent profile, you can match the details of name and email you provided during the original setup of make dev-up
+- When presented with options to claim VC, claim both VCs
+
+Example for Student APP:
+
+![alt text](docs/Student-app.gif)
+
+### verifier
+
+- Open the verifier app at http://localhost:4000/ . It will navigate to job listing page
+- Click on any job posting, and click apply on detail page
+- You will seee pre configred name on apply page and a qr code.
+- scan the QR code using student app anf follow the porocess
+- After succesfull VC sharing, verifier performs the VC and Trust regsitry check and provide the status below the application.
+- you can repeate the sharing if needed by deleteing the shared vc or re start the step from one.
+
+| ![alt text](docs/image.png) | ![alt text](docs/image-1.png) | ![alt text](docs/image-2.png) |
+| --------------------------- | ----------------------------- | ----------------------------- |
+
+<video controls src="docs/final-sharing.mov" title="Title"></video>
 
 ---
 
