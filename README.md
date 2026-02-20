@@ -521,7 +521,7 @@ make student-android  # For Android
 | ![Job listings](docs/image.png) | ![Application form](docs/image-1.png) | ![Verification result](docs/image-2.png) |
 | ------------------------------- | ------------------------------------- | ---------------------------------------- |
 
-**Example**: [Watch the end-to-end credential sharing demo](docs/final-sharing.mov)
+**Example**: ![credential sharing](docs/final-sharing.gif)
 
 ---
 
