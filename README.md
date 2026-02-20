@@ -409,75 +409,119 @@ This will:
 
 ---
 
-## Uses guide
+## 📖 Usage Guide
 
-Once setup is done and all services and application are running, follow these instructions to complete an end to end flow of issuance and verification of VC.
+Once setup is complete and all services and applications are running, follow these instructions to execute an end-to-end issuance and verification flow.
 
-### Issuers
+### ✅ Issuers
 
-For this demo, Issuers are configured already who will use VDIP to issue credentials to student. Issuers should have entry in respective trust registries as authorized issuers.
-No extra configuration step is needed for this demo.
+Issuers are pre-configured for this demo and will use VDIP to issue credentials to students. All issuers have entries in their respective trust registries as authorized issuers.
 
-### Configuring Trust registry
+**No additional configuration is required.**
 
-If setup is successfull , there would be three trust registry and three governance portal running. Each belonging to different country, HK, Macau, SG.
-Let's configure one by one. You can get required data in below steps from dev-up command logs or /deployment/.env.ngrok file.
+---
 
-- HK TrustRegistry
-  - Open the Hong kong governance portal at http://localhost:8050/
-  - Enter a name for Registry
-  - Ekip on next page for quick setup
-  - Add a record where entity id would be HK university's DID and Authority ID would be HK ministry's DID
-  - Add **issue** as action, **EducationCredential** as resource and **Authorized** as Trust Status and click create button
-  - Navigate to Records and you should have 1 active record
+### 🏛️ Configuring Trust Registries
 
-- Macau Trust Registry
-  - open the Macau governance portal at http://localhost:8051/
-  - enter a name for Registry
-  - skip on next page for quick setup
-  - add a record where entity id would be Macau university's DID and Authority ID would be Macau ministry's DID
-  - add **issue** as action, **EducationCredential** as resource and **Authorized** as Trust Status and click create button
-  - Navigate to Records and you should have 1 active record
+If setup was successful, three trust registries and three governance portals are running—one for each jurisdiction (HK, Macau, SG).
 
-- Singapore Trust Registry
-  - open the Singapore governance portal at http://localhost:8052/
-  - enter a name for Registry
-  - skip on next page for quick setup
-  - add a record where entity id would be HK ministry's DID and Authority ID would be SG ministry's DID
-  - add **recognize** as action, **listed-registry** as resource and **Recognized** as Trust Status and click crerate button
-  - add another record where entity id would be Macau ministry's DID and Authority ID would be SG ministry's DID
-  - add **recognize** as action, **listed-registry** as resource and **Recognized** as Trust Status and click crerate button
-  - Navigate to Records and you should have 2 active records
+**Required DIDs and URLs** can be found in the `dev-up` command logs or in `/deployment/.env.ngrok`.
 
-Example for one Registry:
+#### Hong Kong Trust Registry
 
-![example video for hong kong](docs/HK-registry.mov.gif)
+1. Open the Hong Kong governance portal: `http://localhost:8050/`
+2. Enter a name for the registry
+3. Skip the quick setup page
+4. Add a record:
 
-### Student APP
+- **Entity ID**: HK University's DID
+- **Authority ID**: HK Ministry's DID
+- **Action**: `issue`
+- **Resource**: `EducationCredential`
+- **Trust Status**: `Authorized`
 
-Start your emulator or use a phone and run make student\* command for ios or Android accordingly.
+5. Click **Create Record** and verify the record appears in **Records**
 
-- Once you have the app running, follow the registration/login process for student. Keep in mind the OTP auth is mocked only select email domains are allowed.
-- Complete the sudent profile, you can match the details of name and email you provided during the original setup of make dev-up
-- When presented with options to claim VC, claim both VCs
+#### Macau Trust Registry
 
-Example for Student APP:
+1. Open the Macau governance portal: `http://localhost:8051/`
+2. Enter a name for the registry
+3. Skip the quick setup page
+4. Add a record:
 
-![alt text](docs/Student-app.gif)
+- **Entity ID**: Macau University's DID
+- **Authority ID**: Macau Ministry's DID
+- **Action**: `issue`
+- **Resource**: `EducationCredential`
+- **Trust Status**: `Authorized`
 
-### verifier
+5. Click **Create record** and verify the record appears in **Records**
 
-- Open the verifier app at http://localhost:4000/ . It will navigate to job listing page
-- Click on any job posting, and click apply on detail page
-- You will seee pre configred name on apply page and a qr code.
-- scan the QR code using student app anf follow the porocess
-- After succesfull VC sharing, verifier performs the VC and Trust regsitry check and provide the status below the application.
-- you can repeate the sharing if needed by deleteing the shared vc or re start the step from one.
+#### Singapore Trust Registry
 
-| ![alt text](docs/image.png) | ![alt text](docs/image-1.png) | ![alt text](docs/image-2.png) |
-| --------------------------- | ----------------------------- | ----------------------------- |
+1. Open the Singapore governance portal: `http://localhost:8052/`
+2. Enter a name for the registry
+3. Skip the quick setup page
+4. Add two records:
 
-<video controls src="docs/final-sharing.mov" title="Title"></video>
+   **Record 1** (HK Recognition):
+
+- **Entity ID**: HK Ministry's DID
+- **Authority ID**: SG Ministry's DID
+- **Action**: `recognize`
+- **Resource**: `listed-registry`
+- **Trust Status**: `Recognized`
+
+**Record 2** (Macau Recognition):
+
+- **Entity ID**: Macau Ministry's DID
+- **Authority ID**: SG Ministry's DID
+- **Action**: `recognize`
+- **Resource**: `listed-registry`
+- **Trust Status**: `Recognized`
+
+5. Click **Create Record** for each and verify both records appear in **Records**
+
+**Example**: ![Hong Kong registry setup](docs/HK-registry.mov.gif)
+
+---
+
+### 📱 Student App
+
+1. Start your emulator or physical device:
+
+```bash
+make student-ios      # For iOS
+# or
+make student-android  # For Android
+```
+
+2. Complete the registration/login process. Note: OTP authentication is mocked; only specific email domains are allowed.
+3. Complete your student profile (use matching details from the `make dev-up` setup)
+4. When prompted to claim VCs, claim both credentials
+
+**Example**:
+
+<img src="docs/Student-app.gif" alt="Student app flow" width="320" height="auto" />
+
+---
+
+### 🔍 Verifier App
+
+1. Open the verifier portal: `http://localhost:4000/`
+2. Browse the job listings
+3. Click a job posting, then click **Apply** on the detail page
+4. Note the pre-configured name and QR code
+5. Scan the QR code using the Student App and follow the credential-sharing process
+6. After successful credential sharing, the verifier validates the credential and trust registry status
+7. Results appear below the application
+
+**Repeat** as needed by deleting shared credentials or restarting from step 3.
+
+| ![Job listings](docs/image.png) | ![Application form](docs/image-1.png) | ![Verification result](docs/image-2.png) |
+| ------------------------------- | ------------------------------------- | ---------------------------------------- |
+
+**Example**: <video controls src="docs/final-sharing.mov" title="End-to-end credential sharing"></video>
 
 ---
 
