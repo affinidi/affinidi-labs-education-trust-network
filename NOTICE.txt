@@ -1,1 +1,6 @@
 This License does not grant permission to use the trade names, trademarks, service marks, or product names of the Licensor, except as required for reasonable and customary use in describing the origin of the Work and reproducing the content of the this notice when  they are further distributing this code.
+Affinidi and related marks are trademarks of their respective owners. 
+This repository’s license grants rights to the code, but does not grant rights to use any trademarks except as permitted by law.
+Any third‑party names or domains (if present in examples) are used solely for illustrative purposes.
+This repository is authored and maintained by Affinidi Pte. Ltd. and is not endorsed by, sponsored by, or affiliated with any third party.
+
