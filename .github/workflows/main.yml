@@ -25,12 +25,14 @@ jobs:
       config-path: .github/labeler.yml
     secrets: inherit
 
-  # Dart projects: issuer-portal, verifier-portal
+  # Dart projects: university-issuance-service, verifier-portal/backend
   dart-lint:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        project: [issuer-portal, verifier-portal]
+        project:
+          - university-issuance-service/code
+          - verifier-portal/code/backend
 
     steps:
       - uses: actions/checkout@v4
@@ -41,24 +43,30 @@ jobs:
           sdk: stable
 
       - name: Get dependencies
-        working-directory: ${{ matrix.project }}/code
+        working-directory: ${{ matrix.project }}
         run: dart pub get
 
       - name: Verify formatting
-        working-directory: ${{ matrix.project }}/code
+        working-directory: ${{ matrix.project }}
         run: dart format --output=none --set-exit-if-changed .
 
       - name: Analyze code
-        working-directory: ${{ matrix.project }}/code
+        working-directory: ${{ matrix.project }}
         run: dart analyze --fatal-infos
 
       - name: Run tests
-        working-directory: ${{ matrix.project }}/code
+        working-directory: ${{ matrix.project }}
         run: dart test || echo "No tests found"
 
-  # Flutter project: mobile-app
+  # Flutter projects: student-vault-app, governance-portal, verifier-portal/frontend
   flutter-lint:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project:
+          - student-vault-app/code
+          - governance-portal/code
+          - verifier-portal/code/frontend
 
     steps:
       - uses: actions/checkout@v4
@@ -70,53 +78,20 @@ jobs:
           channel: "stable"
 
       - name: Get dependencies
-        working-directory: mobile-app/code
+        working-directory: ${{ matrix.project }}
         run: flutter pub get
 
       - name: Verify formatting
-        working-directory: mobile-app/code
+        working-directory: ${{ matrix.project }}
         run: dart format --output=none --set-exit-if-changed .
 
       - name: Analyze code
-        working-directory: mobile-app/code
+        working-directory: ${{ matrix.project }}
         run: flutter analyze
 
       - name: Run tests
-        working-directory: mobile-app/code
+        working-directory: ${{ matrix.project }}
         run: flutter test || echo "No tests found"
-
-  # Node.js projects: trust-registry-ui, domain-setup
-  node-lint:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        project: [trust-registry-ui, domain-setup]
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "18"
-          cache: "npm"
-          cache-dependency-path: ${{ matrix.project }}/code/package-lock.json
-
-      - name: Install dependencies
-        working-directory: ${{ matrix.project }}/code
-        run: npm ci
-
-      - name: Lint code
-        working-directory: ${{ matrix.project }}/code
-        run: npm run lint || echo "No lint script found"
-
-      - name: Run tests
-        working-directory: ${{ matrix.project }}/code
-        run: npm test || echo "No tests found"
-
-      - name: Build project
-        working-directory: ${{ matrix.project }}/code
-        run: npm run build || echo "No build script found"
 
   # Shell script validation
   shellcheck:
