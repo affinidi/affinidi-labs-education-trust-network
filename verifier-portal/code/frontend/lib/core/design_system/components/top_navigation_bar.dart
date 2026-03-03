@@ -45,15 +45,9 @@ class TopNavigationBar extends StatelessWidget {
     final colorTokens = Theme.of(context).extension<ColorTokens>()!;
     final spacingTokens = Theme.of(context).extension<SpacingTokens>()!;
     final isMobile = MediaQuery.of(context).size.width < 640;
-    const double maxContentWidth = 1200;
 
     // Token: components.topNavigation.height (80px desktop, 64px mobile)
     final height = isMobile ? 64.0 : 80.0;
-
-    // Token: components.topNavigation.paddingHorizontal (32px desktop, 16px mobile)
-    final horizontalPadding = isMobile
-        ? spacingTokens.spacing2
-        : spacingTokens.spacing4;
 
     return Container(
       height: height,

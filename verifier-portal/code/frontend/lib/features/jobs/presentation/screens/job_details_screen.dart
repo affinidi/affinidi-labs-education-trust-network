@@ -20,9 +20,6 @@ class JobDetailsScreen extends ConsumerWidget {
     final jobAsync = ref.watch(selectedJobProvider(jobId));
     final colorTokens = Theme.of(context).extension<ColorTokens>()!;
     final spacingTokens = Theme.of(context).extension<SpacingTokens>()!;
-    final screenWidth = MediaQuery.of(context).size.width;
-    final isDesktopWidth = screenWidth >= 1024;
-    const double maxContentWidth = 1200;
 
     return Scaffold(
       body: jobAsync.when(
@@ -429,8 +426,6 @@ class JobDetailsScreen extends ConsumerWidget {
   Widget _buildBottomBar(BuildContext context, job) {
     final colorTokens = Theme.of(context).extension<ColorTokens>()!;
     final spacingTokens = Theme.of(context).extension<SpacingTokens>()!;
-    final radiiTokens = Theme.of(context).extension<RadiiTokens>()!;
-    final elevationTokens = Theme.of(context).extension<ElevationTokens>()!;
     final screenWidth = MediaQuery.of(context).size.width;
     final isDesktopWidth = screenWidth >= 1024;
     const double maxContentWidth = 1200;
