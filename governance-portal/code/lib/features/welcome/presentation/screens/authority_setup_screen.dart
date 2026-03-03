@@ -112,10 +112,11 @@ class _AuthoritySetupScreenState extends ConsumerState<AuthoritySetupScreen> {
                       // Title
                       Text(
                         'Create Your Trust Registry',
-                        style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                              color: AppColors.navText,
-                              fontSize: 32,
-                            ),
+                        style:
+                            Theme.of(context).textTheme.headlineLarge?.copyWith(
+                                  color: AppColors.navText,
+                                  fontSize: 32,
+                                ),
                       ),
                       const SizedBox(height: AppSpacing.spacing6),
 
@@ -130,7 +131,8 @@ class _AuthoritySetupScreenState extends ConsumerState<AuthoritySetupScreen> {
                       // Framework display
                       _buildInfoCard(
                         label: 'Trust Framework',
-                        value: widget.selectedFramework?.name ?? 'None selected',
+                        value:
+                            widget.selectedFramework?.name ?? 'None selected',
                         onEdit: () => context.pop(),
                       ),
                       const SizedBox(height: AppSpacing.spacing8),
@@ -150,7 +152,8 @@ class _AuthoritySetupScreenState extends ConsumerState<AuthoritySetupScreen> {
                         padding: const EdgeInsets.all(AppSpacing.spacing6),
                         decoration: BoxDecoration(
                           color: AppColors.navText,
-                          borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
+                          borderRadius:
+                              BorderRadius.circular(AppSpacing.radiusLg),
                         ),
                         child: _buildTabContent(
                           authorityComplete: authorityComplete,
@@ -171,7 +174,8 @@ class _AuthoritySetupScreenState extends ConsumerState<AuthoritySetupScreen> {
                                   AppColors.accentPurpleDark,
                                 ],
                               ),
-                              borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+                              borderRadius:
+                                  BorderRadius.circular(AppSpacing.radiusMd),
                             ),
                             child: ElevatedButton(
                               onPressed: () {
@@ -183,14 +187,15 @@ class _AuthoritySetupScreenState extends ConsumerState<AuthoritySetupScreen> {
                                 padding: const EdgeInsets.symmetric(
                                   vertical: AppSpacing.spacing4,
                                 ),
-                                textStyle: Theme.of(context).textTheme.titleLarge,
+                                textStyle:
+                                    Theme.of(context).textTheme.titleLarge,
                               ),
                               child: const Text('Complete Setup'),
                             ),
                           ),
                         ),
                       ],
-                      
+
                       // Skip for now - always visible
                       const SizedBox(height: AppSpacing.spacing3),
                       Center(
@@ -247,9 +252,10 @@ class _AuthoritySetupScreenState extends ConsumerState<AuthoritySetupScreen> {
                     const SizedBox(height: AppSpacing.spacing1),
                     Text(
                       value,
-                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                            color: AppColors.navText,
-                          ),
+                      style:
+                          Theme.of(context).textTheme.headlineMedium?.copyWith(
+                                color: AppColors.navText,
+                              ),
                     ),
                   ],
                 ),
@@ -333,58 +339,62 @@ class _AuthoritySetupScreenState extends ConsumerState<AuthoritySetupScreen> {
             margin: const EdgeInsets.symmetric(horizontal: AppSpacing.spacing1),
             padding: const EdgeInsets.all(AppSpacing.spacing2),
             decoration: BoxDecoration(
-              color: isSelected ? AppColors.navText.withOpacity(0.1) : Colors.transparent,
+              color: isSelected
+                  ? AppColors.navText.withOpacity(0.1)
+                  : Colors.transparent,
               borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
             ),
             child: Row(
               children: [
-              // Icon circle
-              Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  color: tab.color,
-                  shape: BoxShape.circle,
+                // Icon circle
+                Container(
+                  width: 48,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    color: tab.color,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    tab.icon,
+                    color: AppColors.navText,
+                    size: 24,
+                  ),
                 ),
-                child: Icon(
-                  tab.icon,
-                  color: AppColors.navText,
-                  size: 24,
-                ),
-              ),
-              const SizedBox(width: AppSpacing.spacing3),
+                const SizedBox(width: AppSpacing.spacing3),
 
-              // Text column
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Name
-                    Text(
-                      tab.name,
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            color: AppColors.navText,
-                            fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-                          ),
-                    ),
-                    const SizedBox(height: AppSpacing.spacing0),
+                // Text column
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Name
+                      Text(
+                        tab.name,
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              color: AppColors.navText,
+                              fontWeight: isSelected
+                                  ? FontWeight.w600
+                                  : FontWeight.normal,
+                            ),
+                      ),
+                      const SizedBox(height: AppSpacing.spacing0),
 
-                    // Status
-                    Text(
-                      tab.isComplete ? 'Completed' : 'Incomplete',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: tab.isComplete
-                                ? AppColors.semanticSuccess
-                                : AppColors.neutral400,
-                            fontSize: AppTypography.fontSizeMd,
-                          ),
-                    ),
-                  ],
+                      // Status
+                      Text(
+                        tab.isComplete ? 'Completed' : 'Incomplete',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: tab.isComplete
+                                  ? AppColors.semanticSuccess
+                                  : AppColors.neutral400,
+                              fontSize: AppTypography.fontSizeMd,
+                            ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
         ),
       ),
     );
@@ -454,7 +464,8 @@ class _AuthoritySetupScreenState extends ConsumerState<AuthoritySetupScreen> {
                         icon: const Icon(Icons.delete),
                         color: AppColors.semanticError,
                         onPressed: () async {
-                          final storage = await ref.read(authoritiesStorageProvider.future);
+                          final storage =
+                              await ref.read(authoritiesStorageProvider.future);
                           await storage.deleteAuthority(authority.id);
                           ref.invalidate(authoritiesListProvider);
                         },
@@ -516,9 +527,9 @@ class _AuthoritySetupScreenState extends ConsumerState<AuthoritySetupScreen> {
                   style: TextButton.styleFrom(
                     padding: EdgeInsets.zero,
                     textStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      decoration: TextDecoration.underline,
-                      decorationColor: Colors.white,
-                    ),
+                          decoration: TextDecoration.underline,
+                          decorationColor: Colors.white,
+                        ),
                   ),
                   child: const Text(
                     'Save and Continue →',
@@ -551,7 +562,6 @@ class _AuthoritySetupScreenState extends ConsumerState<AuthoritySetupScreen> {
               ),
         ),
         const SizedBox(height: AppSpacing.spacing6),
-
         RecordTypeSelector(
           selectedRecordType: _selectedRecordType,
           onRecordTypeSelected: (recordType) {
@@ -560,7 +570,6 @@ class _AuthoritySetupScreenState extends ConsumerState<AuthoritySetupScreen> {
             });
           },
         ),
-
         if (_selectedRecordType != null) ...[
           const SizedBox(height: AppSpacing.spacing6),
           Align(
@@ -583,9 +592,9 @@ class _AuthoritySetupScreenState extends ConsumerState<AuthoritySetupScreen> {
                   style: TextButton.styleFrom(
                     padding: EdgeInsets.zero,
                     textStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      decoration: TextDecoration.underline,
-                      decorationColor: Colors.white,
-                    ),
+                          decoration: TextDecoration.underline,
+                          decorationColor: Colors.white,
+                        ),
                   ),
                   child: const Text(
                     'Save and Continue →',
@@ -620,7 +629,6 @@ class _AuthoritySetupScreenState extends ConsumerState<AuthoritySetupScreen> {
               ),
         ),
         const SizedBox(height: AppSpacing.spacing6),
-
         if (!entityComplete) ...[
           EntityFormWidget(
             onSaved: () {
@@ -665,9 +673,9 @@ class _AuthoritySetupScreenState extends ConsumerState<AuthoritySetupScreen> {
                   style: TextButton.styleFrom(
                     padding: EdgeInsets.zero,
                     textStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      decoration: TextDecoration.underline,
-                      decorationColor: Colors.white,
-                    ),
+                          decoration: TextDecoration.underline,
+                          decorationColor: Colors.white,
+                        ),
                   ),
                   child: const Text(
                     'Save and Continue →',
@@ -723,7 +731,7 @@ class _AuthoritySetupScreenState extends ConsumerState<AuthoritySetupScreen> {
             },
           ),
         ],
-        
+
         // Save and Continue button (only if both action and resource are selected)
         if (_selectedAction != null && _selectedResource != null) ...[
           const SizedBox(height: AppSpacing.spacing6),
@@ -747,9 +755,9 @@ class _AuthoritySetupScreenState extends ConsumerState<AuthoritySetupScreen> {
                   style: TextButton.styleFrom(
                     padding: EdgeInsets.zero,
                     textStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      decoration: TextDecoration.underline,
-                      decorationColor: Colors.white,
-                    ),
+                          decoration: TextDecoration.underline,
+                          decorationColor: Colors.white,
+                        ),
                   ),
                   child: const Text(
                     'Save and Continue →',

@@ -22,8 +22,9 @@ class JobsListScreen extends ConsumerWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final isMobile = screenWidth < 640;
     const double maxContentWidth = 1200;
-    final contentHorizontalPadding =
-        isMobile ? spacingTokens.spacing2 : spacingTokens.spacing4;
+    final contentHorizontalPadding = isMobile
+        ? spacingTokens.spacing2
+        : spacingTokens.spacing4;
 
     return Scaffold(
       backgroundColor: colorTokens
@@ -76,25 +77,28 @@ class JobsListScreen extends ConsumerWidget {
                                   children: [
                                     Text(
                                       'Be part of our mission',
-                                      style: typographyTokens.h1Desktop.copyWith(
-                                        color: colorTokens.neutral900,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                      style: typographyTokens.h1Desktop
+                                          .copyWith(
+                                            color: colorTokens.neutral900,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                     ),
                                     SizedBox(height: spacingTokens.spacing2),
                                     Text(
                                       "We're looking for talented people who want to make a difference. Join us and help shape the future of digital trust and responsibility.",
-                                      style: typographyTokens.bodyLarge.copyWith(
-                                        color: colorTokens.neutral700,
-                                      ),
+                                      style: typographyTokens.bodyLarge
+                                          .copyWith(
+                                            color: colorTokens.neutral700,
+                                          ),
                                     ),
                                     SizedBox(height: spacingTokens.spacing2),
                                     jobsAsync.maybeWhen(
                                       data: (jobs) => Text(
                                         '${jobs.length} open ${jobs.length == 1 ? 'position' : 'positions'}',
-                                        style: typographyTokens.bodyMedium.copyWith(
-                                          color: colorTokens.neutral600,
-                                        ),
+                                        style: typographyTokens.bodyMedium
+                                            .copyWith(
+                                              color: colorTokens.neutral600,
+                                            ),
                                       ),
                                       orElse: () => const SizedBox.shrink(),
                                     ),
@@ -112,19 +116,20 @@ class JobsListScreen extends ConsumerWidget {
                                     child: Image.asset(
                                       'assets/images/nova-portal.jpg',
                                       fit: BoxFit.cover,
-                                      errorBuilder: (context, error, stackTrace) {
-                                        // Fallback if image not found
-                                        return Container(
-                                          color: colorTokens.neutral200,
-                                          child: Center(
-                                            child: Icon(
-                                              Icons.image_not_supported,
-                                              color: colorTokens.neutral400,
-                                              size: 64,
-                                            ),
-                                          ),
-                                        );
-                                      },
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                            // Fallback if image not found
+                                            return Container(
+                                              color: colorTokens.neutral200,
+                                              child: Center(
+                                                child: Icon(
+                                                  Icons.image_not_supported,
+                                                  color: colorTokens.neutral400,
+                                                  size: 64,
+                                                ),
+                                              ),
+                                            );
+                                          },
                                     ),
                                   ),
                                 ),
@@ -144,13 +149,15 @@ class JobsListScreen extends ConsumerWidget {
                 SliverToBoxAdapter(
                   child: Container(
                     width: double.infinity,
-                    color: colorTokens
-                        .neutral50, // Match page background (grey)
+                    color:
+                        colorTokens.neutral50, // Match page background (grey)
                     padding: EdgeInsets.only(bottom: spacingTokens.spacing3),
                     child: Align(
                       alignment: Alignment.center,
                       child: ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: maxContentWidth),
+                        constraints: const BoxConstraints(
+                          maxWidth: maxContentWidth,
+                        ),
                         child: Padding(
                           padding: EdgeInsets.symmetric(
                             horizontal: contentHorizontalPadding,

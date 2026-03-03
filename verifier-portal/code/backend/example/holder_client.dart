@@ -14,7 +14,6 @@ import 'package:vdsp_verifier_server/core/infrastructure/storage/file_storage.da
 import 'package:vdsp_verifier_server/core/infrastructure/storage/in_memory_storage.dart';
 import 'package:vdsp_verifier_server/core/infrastructure/storage/storage_factory.dart';
 import 'package:vdsp_verifier_server/features/mpx/data/channel_repository/channel_repository_impl.dart';
-import 'package:vdsp_verifier_server/features/vdsp/data/vdsp_verifier/vdsp_verifier.service.dart';
 import 'package:vdsp_verifier_server/features/vdsp/domain/constants/vdsp.dart';
 import 'package:vdsp_verifier_server/features/vdsp/domain/entities/vdsp_trigger_request.dart';
 import 'package:vdsp_verifier_server/features/vdsp/domain/entities/verifier_client.dart';
@@ -151,6 +150,13 @@ Future<void> subscribeForVDSPRequest(
     },
   );
   await ConnectionPool.instance.startConnections();
+}
+
+Future<DidDocument> getMediatorDidDocument() async {
+  final mediatorDid = AppConfig.mediatorDid;
+  final mediatorDidDocument = await UniversalDIDResolver.defaultResolver
+      .resolveDid(mediatorDid);
+  return mediatorDidDocument;
 }
 
 Future<Channel> acceptOobFlow(MeetingPlaceCoreSDK sdk, String oobUrl) async {

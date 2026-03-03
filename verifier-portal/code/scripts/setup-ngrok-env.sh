@@ -18,7 +18,7 @@ echo ""
 # Check if .env.ngrok already exists with valid configuration
 if [ -f "${PROJECT_DIR}/.env.ngrok" ]; then
     EXISTING_VERIFIER_DID=$(grep "^VERIFIER_DID=" "${PROJECT_DIR}/.env.ngrok" 2>/dev/null | cut -d '=' -f2)
-    if [ -n "$EXISTING_VERIFIER_DID" ] && [[ ! "$EXISTING_VERIFIER_DID" =~ "example.com" ]]; then
+    if [ -n "$EXISTING_VERIFIER_DID" ] && [[ ! "$EXISTING_VERIFIER_DID" =~ example\.com ]]; then
         echo "✓ Found existing .env.ngrok with valid configuration"
         echo "  VERIFIER_DID: $EXISTING_VERIFIER_DID"
         echo ""

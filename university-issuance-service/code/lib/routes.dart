@@ -1,7 +1,6 @@
 import 'package:university_issuance_service/route-handlers/did_web_document_handler.dart';
 import 'package:university_issuance_service/route-handlers/home_handler.dart';
 import 'package:university_issuance_service/route-handlers/login_handler.dart';
-import 'package:university_issuance_service/route-handlers/did_web_generater_handler.dart';
 // import 'package:university_issuance_service/route-handlers/redis_handler.dart';
 import 'package:shelf_router/shelf_router.dart';
 

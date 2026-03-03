@@ -444,7 +444,8 @@ class AppNavigation extends ConsumerWidget {
   Future<void> _showCreateRecordModal(BuildContext context) async {
     // Get repository from provider
     final container = ProviderScope.containerOf(context);
-    final repositoryAsync = await container.read(recordsRepositoryProvider.future);
+    final repositoryAsync =
+        await container.read(recordsRepositoryProvider.future);
 
     if (context.mounted) {
       await showAppModal(

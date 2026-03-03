@@ -77,6 +77,7 @@ if [ -z "$MAIN_ENV_FILE" ]; then
 fi
 
 echo "📝 Loading environment variables from: $MAIN_ENV_FILE"
+# shellcheck source=/dev/null
 source "$MAIN_ENV_FILE"
 
 # Create .env file from template

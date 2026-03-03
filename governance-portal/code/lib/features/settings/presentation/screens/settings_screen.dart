@@ -14,7 +14,6 @@ class SettingsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final appName = ref.watch(appNameProvider);
     final registryName = ref.watch(registryNameProvider);
     final mediatorDid = ref.watch(mediatorDidProvider);
     final storage = ref.watch(settingsStorageProvider).valueOrNull;
@@ -308,61 +307,6 @@ class SettingsScreen extends ConsumerWidget {
               ),
           ],
         ),
-      ),
-    );
-  }
-
-  void _showEditAppNameDialog(
-    BuildContext context,
-    WidgetRef ref,
-    dynamic storage,
-    String currentName,
-  ) {
-    final controller = TextEditingController(text: currentName);
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Edit App Name'),
-        content: TextField(
-          controller: controller,
-          decoration: InputDecoration(
-            labelText: 'App Name',
-            hintText: 'Enter app name',
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
-            ),
-          ),
-          autofocus: true,
-          onSubmitted: (value) async {
-            if (value.isNotEmpty && storage != null) {
-              await storage.setAppName(value);
-              ref.read(appNameProvider.notifier).state = value;
-              Navigator.of(context).pop();
-            }
-          },
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              final newName = controller.text.trim();
-              if (newName.isNotEmpty && storage != null) {
-                await storage.setAppName(newName);
-                ref.read(appNameProvider.notifier).state = newName;
-                Navigator.of(context).pop();
-              }
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.linkMain,
-              foregroundColor: AppColors.neutral0,
-            ),
-            child: Text('Save'),
-          ),
-        ],
       ),
     );
   }

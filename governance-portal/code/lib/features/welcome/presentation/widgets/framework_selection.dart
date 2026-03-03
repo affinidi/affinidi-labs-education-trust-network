@@ -52,17 +52,23 @@ class FrameworkSelection extends StatelessWidget {
                   return Expanded(
                     child: Padding(
                       padding: EdgeInsets.only(
-                        right: index < frameworks.length - 1 ? AppSpacing.spacing3 : 0,
+                        right: index < frameworks.length - 1
+                            ? AppSpacing.spacing3
+                            : 0,
                       ),
                       child: InkWell(
                         onTap: () => onFrameworkSelected(framework),
-                        borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+                        borderRadius:
+                            BorderRadius.circular(AppSpacing.radiusMd),
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 200),
                           height: 240,
                           decoration: BoxDecoration(
-                            color: isSelected ? null : Colors.white.withOpacity(0.05),
-                            borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+                            color: isSelected
+                                ? null
+                                : Colors.white.withOpacity(0.05),
+                            borderRadius:
+                                BorderRadius.circular(AppSpacing.radiusMd),
                             border: isSelected
                                 ? null
                                 : Border.all(
@@ -79,86 +85,104 @@ class FrameworkSelection extends StatelessWidget {
                                     end: Alignment.bottomRight,
                                   )
                                 : null,
-                        ),
-                        child: Container(
-                          margin: isSelected ? const EdgeInsets.all(6) : EdgeInsets.zero,
-                          decoration: BoxDecoration(
-                            color: isSelected 
-                                ? null
-                                : Colors.white.withOpacity(0.01),
-                            gradient: isSelected
-                                ? LinearGradient(
-                                    colors: AppColors.rainbowGradient.map((c) => c.withOpacity(0.1)).toList(),
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                  )
-                                : null,
-                            borderRadius: BorderRadius.circular(AppSpacing.radiusMd - 6),
                           ),
-                          padding: const EdgeInsets.all(AppSpacing.spacing4),
-                          child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          framework.icon,
-                          size: 40,
-                          color: isSelected ? Colors.white : Colors.white.withOpacity(0.8),
-                          shadows: isSelected
-                              ? [
-                                  Shadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    blurRadius: 4,
-                                    offset: Offset(0, 2),
-                                  ),
-                                ]
-                              : null,
+                          child: Container(
+                            margin: isSelected
+                                ? const EdgeInsets.all(6)
+                                : EdgeInsets.zero,
+                            decoration: BoxDecoration(
+                              color: isSelected
+                                  ? null
+                                  : Colors.white.withOpacity(0.01),
+                              gradient: isSelected
+                                  ? LinearGradient(
+                                      colors: AppColors.rainbowGradient
+                                          .map((c) => c.withOpacity(0.1))
+                                          .toList(),
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                    )
+                                  : null,
+                              borderRadius: BorderRadius.circular(
+                                  AppSpacing.radiusMd - 6),
+                            ),
+                            padding: const EdgeInsets.all(AppSpacing.spacing4),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  framework.icon,
+                                  size: 40,
+                                  color: isSelected
+                                      ? Colors.white
+                                      : Colors.white.withOpacity(0.8),
+                                  shadows: isSelected
+                                      ? [
+                                          Shadow(
+                                            color:
+                                                Colors.black.withOpacity(0.1),
+                                            blurRadius: 4,
+                                            offset: Offset(0, 2),
+                                          ),
+                                        ]
+                                      : null,
+                                ),
+                                const SizedBox(height: AppSpacing.spacing2),
+                                Text(
+                                  framework.name,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleLarge
+                                      ?.copyWith(
+                                        color: isSelected
+                                            ? Colors.white
+                                            : Colors.white.withOpacity(0.8),
+                                        fontWeight: FontWeight.w600,
+                                        shadows: isSelected
+                                            ? [
+                                                Shadow(
+                                                  color: Colors.black
+                                                      .withOpacity(0.3),
+                                                  blurRadius: 4,
+                                                  offset: Offset(0, 2),
+                                                ),
+                                              ]
+                                            : null,
+                                      ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                const SizedBox(height: AppSpacing.spacing1),
+                                Text(
+                                  framework.description,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(
+                                        color: isSelected
+                                            ? Colors.white.withOpacity(0.9)
+                                            : Colors.white.withOpacity(0.6),
+                                        shadows: isSelected
+                                            ? [
+                                                Shadow(
+                                                  color: Colors.black
+                                                      .withOpacity(0.3),
+                                                  blurRadius: 4,
+                                                  offset: Offset(0, 2),
+                                                ),
+                                              ]
+                                            : null,
+                                      ),
+                                  textAlign: TextAlign.center,
+                                  maxLines: 3,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                        const SizedBox(height: AppSpacing.spacing2),
-                        Text(
-                          framework.name,
-                          style:
-                              Theme.of(context).textTheme.titleLarge?.copyWith(
-                                    color: isSelected ? Colors.white : Colors.white.withOpacity(0.8),
-                                    fontWeight: FontWeight.w600,
-                                    shadows: isSelected
-                                        ? [
-                                            Shadow(
-                                              color: Colors.black.withOpacity(0.3),
-                                              blurRadius: 4,
-                                              offset: Offset(0, 2),
-                                            ),
-                                          ]
-                                        : null,
-                                  ),
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(height: AppSpacing.spacing1),
-                        Text(
-                          framework.description,
-                          style:
-                              Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    color: isSelected ? Colors.white.withOpacity(0.9) : Colors.white.withOpacity(0.6),
-                                    shadows: isSelected
-                                        ? [
-                                            Shadow(
-                                              color: Colors.black.withOpacity(0.3),
-                                              blurRadius: 4,
-                                              offset: Offset(0, 2),
-                                            ),
-                                          ]
-                                        : null,
-                                  ),
-                          textAlign: TextAlign.center,
-                          maxLines: 3,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
-                        ),
-                      ),
-                      ),
                   );
                 }).toList(),
               );

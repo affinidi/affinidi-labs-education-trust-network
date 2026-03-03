@@ -11,11 +11,8 @@ import 'features/wallet/key_repository/key_repository.service.dart';
 import 'features/mpx/data/channel_repository/channel_repository.service.dart';
 import 'features/mpx/data/mpx_sdk/mpx_sdk.service.dart';
 import 'routes/handlers/health_handler.dart';
-import 'routes/handlers/cors_proxy_handler.dart';
 import 'routes/handlers/verify_handler.dart';
-import 'routes/handlers/dcql_request_handler.dart';
 import 'routes/handlers/get_oob_client_handler.dart';
-import 'routes/handlers/connection_stop_handler.dart';
 import 'package:shelf_web_socket/shelf_web_socket.dart';
 
 /// Standalone HTTP server to serve the DID document and API endpoints

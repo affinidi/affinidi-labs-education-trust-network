@@ -7,4 +7,4 @@ source "https://rubygems.org"
 gem "cocoapods", "~> 1.16"
 gem "rexml", ">= 3.4.2"  # Fix for DoS vulnerability
 
-gem "fastlane"
+gem "fastlane", ">= 2.229.0"

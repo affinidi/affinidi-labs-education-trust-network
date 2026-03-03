@@ -1,4 +1,3 @@
-import 'package:affinidi_tdk_didcomm_mediator_client/affinidi_tdk_didcomm_mediator_client.dart';
 import 'package:affinidi_tdk_vdsp/affinidi_tdk_vdsp.dart';
 import 'package:meeting_place_core/meeting_place_core.dart';
 import 'package:vdsp_verifier_server/features/vdsp/domain/usecases/send_vdsp_request_use_case.dart';
