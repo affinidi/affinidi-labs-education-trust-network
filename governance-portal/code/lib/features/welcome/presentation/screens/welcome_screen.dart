@@ -439,43 +439,4 @@ class WelcomeScreen extends ConsumerWidget {
       ],
     );
   }
-
-  Widget _buildFeatureItem({
-    required BuildContext context,
-    required IconData icon,
-    required String title,
-    required String description,
-  }) {
-    return Row(
-      children: [
-        Icon(
-          icon,
-          color: AppColors.brandPrimary,
-          size: 24,
-        ),
-        const SizedBox(width: AppSpacing.spacing3),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      color: AppColors.neutral500,
-                      fontWeight: FontWeight.w600,
-                    ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                description,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.neutral400,
-                    ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
 }
