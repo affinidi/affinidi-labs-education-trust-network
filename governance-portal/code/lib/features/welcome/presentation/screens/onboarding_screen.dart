@@ -78,7 +78,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
   Widget build(BuildContext context) {
     // Listen for changes to registryNameProvider and update controller
     ref.listen<String?>(registryNameProvider, (previous, next) {
-      if (next != null && next.isNotEmpty && next != _registryNameController.text) {
+      if (next != null &&
+          next.isNotEmpty &&
+          next != _registryNameController.text) {
         _registryNameController.text = next;
       }
     });
@@ -138,121 +140,131 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
                 padding: const EdgeInsets.all(AppSpacing.spacing6),
                 child: SingleChildScrollView(
                   controller: _scrollController,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Main content card
-                  Padding(
-                    padding: const EdgeInsets.all(AppSpacing.spacing6),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Step 0: Registry Name
-                        RegistryNameSection(
-                          controller: _registryNameController,
-                          showContinueButton: _currentStep == 0,
-                          onContinue: () async {
-                            final name = _registryNameController.text.trim();
-                            if (name.isNotEmpty) {
-                              final storage =
-                                  ref.read(settingsStorageProvider).valueOrNull;
-                              if (storage != null) {
-                                await storage.setRegistryName(name);
-                                ref.read(registryNameProvider.notifier).state =
-                                    name;
-                                setState(() {
-                                  _currentStep = 1;
-                                });
-                                _frameworkCardController.forward();
-                              }
-                            }
-                          },
-                        ),
-
-                        // Step 1: Framework Selection
-                        if (_currentStep >= 1) ...[
-                          const SizedBox(height: AppSpacing.spacing12),
-                          FadeTransition(
-                            opacity: _frameworkCardAnimation,
-                            child: FrameworkSelection(
-                              selectedFramework: _selectedFramework,
-                              onFrameworkSelected: (framework) {
-                                setState(() {
-                                  _selectedFramework = framework;
-                                });
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Main content card
+                      Padding(
+                        padding: const EdgeInsets.all(AppSpacing.spacing6),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Step 0: Registry Name
+                            RegistryNameSection(
+                              controller: _registryNameController,
+                              showContinueButton: _currentStep == 0,
+                              onContinue: () async {
+                                final name =
+                                    _registryNameController.text.trim();
+                                if (name.isNotEmpty) {
+                                  final storage = ref
+                                      .read(settingsStorageProvider)
+                                      .valueOrNull;
+                                  if (storage != null) {
+                                    await storage.setRegistryName(name);
+                                    ref
+                                        .read(registryNameProvider.notifier)
+                                        .state = name;
+                                    setState(() {
+                                      _currentStep = 1;
+                                    });
+                                    _frameworkCardController.forward();
+                                  }
+                                }
                               },
                             ),
-                          ),
-                        ],
 
-                        // Continue button (shows after framework selection)
-                        if (_currentStep >= 1 && _selectedFramework != null) ...[
-                          const SizedBox(height: AppSpacing.spacing6),
-                          SizedBox(
-                            width: double.infinity,
-                            child: DecoratedBox(
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    AppColors.accentBlueDark,
-                                    AppColors.accentPurpleDark,
-                                  ],
+                            // Step 1: Framework Selection
+                            if (_currentStep >= 1) ...[
+                              const SizedBox(height: AppSpacing.spacing12),
+                              FadeTransition(
+                                opacity: _frameworkCardAnimation,
+                                child: FrameworkSelection(
+                                  selectedFramework: _selectedFramework,
+                                  onFrameworkSelected: (framework) {
+                                    setState(() {
+                                      _selectedFramework = framework;
+                                    });
+                                  },
                                 ),
-                                borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
                               ),
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) => AuthoritySetupScreen(
-                                        selectedFramework: _selectedFramework,
+                            ],
+
+                            // Continue button (shows after framework selection)
+                            if (_currentStep >= 1 &&
+                                _selectedFramework != null) ...[
+                              const SizedBox(height: AppSpacing.spacing6),
+                              SizedBox(
+                                width: double.infinity,
+                                child: DecoratedBox(
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        AppColors.accentBlueDark,
+                                        AppColors.accentPurpleDark,
+                                      ],
+                                    ),
+                                    borderRadius: BorderRadius.circular(
+                                        AppSpacing.radiusSm),
+                                  ),
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              AuthoritySetupScreen(
+                                            selectedFramework:
+                                                _selectedFramework,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.transparent,
+                                      shadowColor: Colors.transparent,
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: AppSpacing.spacing4,
                                       ),
                                     ),
-                                  );
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.transparent,
-                                  shadowColor: Colors.transparent,
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: AppSpacing.spacing4,
+                                    child: Text(
+                                      'Continue',
+                                      style: TextStyle(
+                                          fontSize: AppTypography.fontSizeLg),
+                                    ),
                                   ),
                                 ),
-                                child: Text(
-                                  'Continue',
-                                  style: TextStyle(fontSize: AppTypography.fontSizeLg),
+                              ),
+                            ],
+
+                            // Skip button
+                            if (_currentStep >= 1) ...[
+                              const SizedBox(height: AppSpacing.spacing3),
+                              Center(
+                                child: TextButton(
+                                  onPressed: () => context.go('/dashboard'),
+                                  style: TextButton.styleFrom(
+                                    foregroundColor: AppColors.neutral400,
+                                  ),
+                                  child: Text(
+                                    'Skip for now',
+                                    style: TextStyle(
+                                        fontSize: AppTypography.fontSizeMd),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                        ],
-
-                        // Skip button
-                        if (_currentStep >= 1) ...[
-                          const SizedBox(height: AppSpacing.spacing3),
-                          Center(
-                            child: TextButton(
-                              onPressed: () => context.go('/dashboard'),
-                              style: TextButton.styleFrom(
-                                foregroundColor: AppColors.neutral400,
-                              ),
-                              child: Text(
-                                'Skip for now',
-                                style: TextStyle(fontSize: AppTypography.fontSizeMd),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ],
-                    ),
+                            ],
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
-          ),
-            ),
-            
+
             // Toggle navigation button (bottom right)
-            if (_selectedFramework != null && _registryNameController.text.trim().isNotEmpty)
+            if (_selectedFramework != null &&
+                _registryNameController.text.trim().isNotEmpty)
               Positioned(
                 bottom: AppSpacing.spacing6,
                 right: AppSpacing.spacing6,
