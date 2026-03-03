@@ -11,7 +11,7 @@ void main() async {
   // Priority: .env.ngrok > .env.local-network > .env
   bool envLoaded = false;
 
-  for (final envFile in ['.env.ngrok']) {
+  for (final envFile in ['.env.ngrok', '.env.local-network', '.env']) {
     try {
       await dotenv.load(fileName: envFile);
       debugPrint('✅ Loaded configuration from $envFile');
@@ -25,6 +25,9 @@ void main() async {
 
   if (!envLoaded) {
     debugPrint('⚠️  No .env file found, using default configuration');
+    // Initialize dotenv with empty map to prevent NotInitializedError
+    // when screens access dotenv.env before a file has been loaded.
+    dotenv.testLoad(fileInput: '');
   }
 
   runApp(const ProviderScope(child: NovaCorpApp()));
