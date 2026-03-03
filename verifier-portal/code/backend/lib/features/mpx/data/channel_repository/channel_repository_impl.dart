@@ -62,7 +62,6 @@ class ChannelRepositoryImpl implements ChannelRepository {
     await _storage.remove('$channelPrefix${channel.id}');
   }
 
-  @override
   Future<Channel?> findChannelByOfferLink(String offerLink) async {
     final channels = await _storage.getCollection<String>(channelPrefix);
     for (final entry in channels) {

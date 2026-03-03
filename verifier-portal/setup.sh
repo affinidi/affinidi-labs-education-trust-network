@@ -17,6 +17,7 @@ echo "📦 Using code from included repository (verifier-portal/code/)"
 # Load main .env file
 MAIN_ENV_FILE="../deployment/.env"
 if [ -f "$MAIN_ENV_FILE" ]; then
+    # shellcheck source=/dev/null
     source "$MAIN_ENV_FILE"
 fi
 

@@ -112,7 +112,8 @@ generate_user_config() {
     echo "  🔑 Generating DID for $instance_name..."
     
     # Save current directory
-    local original_dir=$(pwd)
+    local original_dir
+    original_dir=$(pwd)
     
     # Use local Rust generate-secrets tool to create DID and secrets
     cd "$TRUST_REGISTRY_PATH"
@@ -123,8 +124,10 @@ generate_user_config() {
     cargo run --bin generate-secrets --features="dev-tools" --quiet 2>/dev/null
     
     # Extract CLIENT_DID and CLIENT_SECRETS from .env.test
-    local client_did=$(grep "^CLIENT_DID=" .env.test | cut -d'=' -f2-)
-    local client_secrets=$(grep "^CLIENT_SECRETS=" .env.test | cut -d'=' -f2- | sed 's/^"//' | sed 's/"$//' | sed 's/\\"/"/g')
+    local client_did
+    local client_secrets
+    client_did=$(grep "^CLIENT_DID=" .env.test | cut -d'=' -f2-)
+    client_secrets=$(grep "^CLIENT_SECRETS=" .env.test | cut -d'=' -f2- | sed 's/^"//' | sed 's/"$//' | sed 's/\\"/"/g')
     
     # Return to original directory
     cd "$original_dir"

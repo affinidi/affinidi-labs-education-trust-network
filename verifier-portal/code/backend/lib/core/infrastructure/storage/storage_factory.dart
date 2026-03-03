@@ -3,9 +3,7 @@ import 'package:ssi/ssi.dart';
 
 import 'storage_interface.dart';
 import 'file_storage.dart';
-import 'redis_storage.dart'; // You’ll create this
 import 'file_key_store.dart';
-import 'redis_key_store.dart';
 
 class StorageFactory {
   static String clientName = 'ver1';

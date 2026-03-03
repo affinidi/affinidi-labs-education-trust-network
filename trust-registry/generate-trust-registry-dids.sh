@@ -32,14 +32,14 @@ echo "   SG Admin:    ${SG_ADMIN_DID:0:60}..."
 echo ""
 
 # Mediator configuration
-MEDIATOR_URL="https://trip-battery.mediator.affinidi.io"
 MEDIATOR_DID="did:web:trip-battery.mediator.affinidi.io"
 
 # Function to generate a trust registry DID
 generate_tr_did() {
     local region=$1
     local admin_did=$2
-    local region_upper=$(echo "$region" | tr '[:lower:]' '[:upper:]')
+    local region_upper
+    region_upper=$(echo "$region" | tr '[:lower:]' '[:upper:]')
     local alias="$region_upper Trust Registry"
     local output_file="$SCRIPT_DIR/$region/config/user_config.$region.json"
     

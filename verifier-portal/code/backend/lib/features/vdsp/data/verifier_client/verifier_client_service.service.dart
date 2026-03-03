@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:convert';
 
 import 'package:vdsp_verifier_server/core/infrastructure/storage/storage_factory.dart';
@@ -17,7 +16,6 @@ class VerifierClientService {
   static VerifierClientService? _instance;
   static Future<VerifierClientService>? _initializationFuture;
   late VerifierClient _client;
-  Timer? _oobRefreshTimer;
 
   VerifierClientService._();
 

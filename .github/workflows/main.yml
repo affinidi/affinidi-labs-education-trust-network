@@ -15,15 +15,19 @@ permissions:
 
 jobs:
   security:
+    runs-on: ubuntu-latest
     permissions:
       contents: read
-      checks: read
-      statuses: read
       security-events: write
-    uses: affinidi/pipeline-security/.github/workflows/security-scanners.yml@main
-    with:
-      config-path: .github/labeler.yml
-    secrets: inherit
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   # Dart projects: university-issuance-service, verifier-portal/backend
   dart-lint:
@@ -74,7 +78,6 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.24.x"
           channel: "stable"
 
       - name: Get dependencies
