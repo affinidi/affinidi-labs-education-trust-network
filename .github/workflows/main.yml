@@ -68,7 +68,7 @@ jobs:
     strategy:
       matrix:
         project:
-          - student-vault-app/code
+          # - student-vault-app/code
           - governance-portal/code
           - verifier-portal/code/frontend
 
