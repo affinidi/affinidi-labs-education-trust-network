@@ -1,11 +1,10 @@
 name: nova_corp_verifier
 description: "Nova Corporation Verifier Portal - Job applications with credential verification"
-publish_to: 'none'
+publish_to: "none"
 version: 1.0.0
 
 environment:
   sdk: ^3.9.2
-
 
 dependencies:
   path: ^1.9.0
@@ -25,16 +24,15 @@ dependencies:
   web_socket_channel: ^3.0.3
   google_fonts: ^6.1.0
   shared_preferences: ^2.3.3
-  
+
   # Routing
   go_router: ^14.7.0
-  
+
   # HTTP Client
-  
+
   # Functional Programming
   freezed_annotation: ^2.4.4
-  
-  
+
   # QR Code
   qr_flutter: ^4.1.0
   intl: ^0.20.2
@@ -43,7 +41,6 @@ dependencies:
   flutter_hooks: ^0.21.3+1
   riverpod_annotation: ^2.6.1
   dio: ^5.9.0
-
 
 dev_dependencies:
   lints: ^6.0.0
@@ -60,11 +57,9 @@ dependency_overrides:
   didcomm: 2.2.0
   dcql: 1.2.0
 
-
 flutter:
   uses-material-design: true
-  
+
   assets:
-    - .env.ngrok
     - assets/images/
   #   - assets/icons/
