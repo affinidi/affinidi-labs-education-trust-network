@@ -1,4 +1,4 @@
-package com.experience.certizen
+package com.experience.nexigen
 
 import android.os.Build
 import android.os.Bundle
