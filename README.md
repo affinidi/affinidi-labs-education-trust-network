@@ -29,24 +29,38 @@ An end‑to‑end reference implementation demonstrating how educational certifi
 
 ## 🎯 Overview
 
-This repository showcases how trusted data ecosystems—especially in regulated markets like education—can evolve beyond traditional PKI-based infrastructures and interoperate with next‑generation decentralized trust technologies.
+This repository showcases how trusted data ecosystems—especially in regulated markets like education—can be built on open, interoperable standards using **W3C Verifiable Credentials** and **TRQP‑enabled trust registries**, delivering secure, policy‑governed, cross‑network credential verification across borders.
 
 The demo illustrates a complete credential lifecycle: from **issuance** by universities, through **secure storage** in student wallets, to **verification** by employers across different jurisdictions—all while maintaining privacy, security, and cross-border trust.
+
+### What This Demonstrates Functionally
+
+- 🛡️ **Prevent fake issuers and credentials** — verifiable authority chains ensure only authorized institutions can issue specific credential types, enforced at the trust registry level
+- 🌐 **Cross-network trust recognition** — TRQP‑enabled trust registries allow one jurisdiction's governance framework to formally recognize another's, without bilateral agreements for every pair of institutions
+- 📜 **Policy‑governed verification** — every verification call is backed by machine-readable trust policies, not manual lookups or out-of-band phone calls
+- 🔀 **Reusable across sectors and borders** — the architecture is credential-agnostic and not tied to any single identity scheme, making it applicable beyond education to any domain requiring cross-border issuer authorization
 
 ---
 
 ## 💡 Purpose
 
-Many trust service providers (such as Certizen in Hong Kong) have a strong foundation in PKI, digital certificates, and regulated identity issuance. They are also accredited to issue vLEI identities, which come with significant governance rigor and cross‑jurisdictional assurance.
+Many trust service providers have a strong foundation in PKI, digital certificates, and regulated identity issuance. Yet cryptographic signatures alone are not enough — verifiers also need to know **who is authorized to issue** a specific credential type, and whether that authority is **recognized across governance boundaries**.
 
-However, the education sector introduces unique challenges:
+The education sector makes this particularly clear:
 
 - ✅ Credentials are **personal**, not organizational
 - ✅ Issuers vary across **borders and regulatory systems**
 - ✅ Students need **portable, interoperable proof**, not siloed PDFs
 - ✅ Verifiers need to know whether a **foreign issuer is recognized and authorized**
 
-This repository demonstrates how Affinidi's technology can **complement** (not replace) existing high‑assurance stacks by enabling trusted, privacy‑preserving, interoperable educational credential flows.
+This repository demonstrates how the **W3C Verifiable Credentials** standard and **TRQP‑enabled trust registries** together solve this problem — enabling trusted, privacy‑preserving, policy‑governed credential flows that can be adopted by any trust service provider, regardless of the underlying identity infrastructure they already operate.
+
+Key functional goals this reference implementation addresses:
+
+- Prevent fraudulent credential issuance by anchoring issuer authorization in governance-controlled trust registries
+- Enable cross-border issuer recognition through TRQP Recognition and Authorization calls between independent trust registries
+- Deliver verifiable authority chains so that every credential carries proof not just of what was issued, but _by whom_ and _under what governance_
+- Provide a reusable, standards-based blueprint applicable to any domain requiring cross-network trust — not just education
 
 ---
 
