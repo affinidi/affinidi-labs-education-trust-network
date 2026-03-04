@@ -27,9 +27,6 @@ Future<void> main() async {
   final sdk = await initSdk();
 
   // Generating Invitation URL from Issuer
-  // final mpxClient = await MpxClient.init();
-  // final issuerOobUrl = await mpxClient.createOobInvite();
-  // final issuerDid = mpxClient.permanentDid;
 
   //Getting/Creating permanent DID for the holder
   final holderDidManager = await getPermanentDID(sdk);
@@ -60,36 +57,6 @@ Future<void> main() async {
 
   // Subscribe for VDIP Responses
   await subscribeforVDIPResponse(vdipHolderClient);
-
-  // final credentialsRequest = RequestCredentialsOptions(
-  //   proposalId: 'Email',
-  //   credentialMeta: CredentialMeta(
-  //     data: {'email': 'developer@example.com'},
-  //   ),
-  // );
-
-  // final credentialsRequest = RequestCredentialsOptions(
-  //   proposalId: 'Employment',
-  //   credentialMeta: CredentialMeta(
-  //     data: {
-  //       'recipient': {
-  //         'type': 'PersonName',
-  //         'givenName': 'Alex',
-  //         'familyName': 'Sample',
-  //       },
-  //       'role': 'Solutions Architect',
-  //       'description': 'Solutions Architect Lead',
-  //       'place': 'Bangalore',
-  //     },
-  //   ),
-  // );
-
-  // final credentialsRequest = RequestCredentialsOptions(
-  //   proposalId: 'VerifiedIdentityDocument',
-  //   credentialMeta: CredentialMeta(
-  //     data: {"email": "developer@example.com"},
-  //   ),
-  // );
 
   final credentialsRequest = RequestCredentialsOptions(
     proposalId: 'AyraBusinessCard',

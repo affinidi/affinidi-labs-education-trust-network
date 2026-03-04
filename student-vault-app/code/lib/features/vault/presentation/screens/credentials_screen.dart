@@ -423,22 +423,7 @@ class _CredentialsScreenState extends ConsumerState<CredentialsScreen> {
 
   Widget _buildCredentialCard(_CredentialEntry entry, bool isExpanded) {
     final credential = entry.credential;
-    // Check if this is an Ayra Business Card (should use AyraCard)
-    // if (credential.type.contains(CredentialHelper.certizenBusinessCard)) {
-    //   return CertizenCard.fromCredential(
-    //     credential: credential,
-    //     isVerified: true,
-    //     isClaimed: true,
-    //     // Allow flip only when not expanded (to avoid conflicts)
-    //     // The AyraCard will handle its own flip logic internally
-    //   );
-    // } else {
-    // For all other credential types, use GenericCredentialCard
-    return GenericCredentialCard(
-      credential: credential,
-      // Allow flip only when not expanded (to avoid conflicts)
-    );
-    // }
+    return GenericCredentialCard(credential: credential);
   }
 
   Future<void> _deleteCredential(String? credentialId) async {
@@ -577,25 +562,6 @@ class _CredentialsScreenState extends ConsumerState<CredentialsScreen> {
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        //     // Edit button only for Ayra Business Card
-                        //     if (credential.type.contains(
-                        //       CredentialHelper.certizenBusinessCard,
-                        //     ))
-                        //       IconButton(
-                        //         onPressed: _editAyraCard,
-                        //         icon: const Icon(
-                        //           Icons.edit_outlined,
-                        //           color: Colors.blue,
-                        //           size: 20,
-                        //         ),
-                        //         tooltip: 'Edit Credential',
-                        //         padding: EdgeInsets.zero,
-                        //         constraints: const BoxConstraints(),
-                        //       ),
-                        //     if (credential.type.contains(
-                        //       CredentialHelper.certizenBusinessCard,
-                        //     ))
-                        //       const SizedBox(width: 16),
                         IconButton(
                           onPressed: isDeleting
                               ? null
@@ -749,27 +715,15 @@ class _CredentialsScreenState extends ConsumerState<CredentialsScreen> {
         }
       }
 
-      // details.add({
-      //   'icon': Icons.check_circle,
-      //   'label': 'Status',
-      //   'value': 'Active',
-      // });
-
       details.add({
         'icon': Icons.fingerprint,
         'label': 'Subject ID',
         'value': credential.credentialSubject[0]['id'].toString(),
       });
 
-      // Delegate credential-specific details to the appropriate card component
-      // and add them all to the details list
-      // if (credential.type.contains(CredentialHelper.certizenBusinessCard)) {
-      //   details.addAll(AyraCard.extractCredentialDetails(credential));
-      // } else {
       details.addAll(
         GenericCredentialCard.extractCredentialDetails(credential),
       );
-      // }
     } catch (e) {
       _logger.error('Error extracting credential details: $e', name: _logKey);
     }
@@ -791,16 +745,6 @@ class _CredentialsScreenState extends ConsumerState<CredentialsScreen> {
       _expandedIndex = null;
     });
   }
-
-  // void _editAyraCard() {
-  //   // Collapse the expanded view
-  //   setState(() {
-  //     _expandedIndex = null;
-  //   });
-
-  //   // Navigate to business card screen for editing
-  //   const BusinessCardRoute().push<void>(context);
-  // }
 }
 
 class _CredentialEntry {

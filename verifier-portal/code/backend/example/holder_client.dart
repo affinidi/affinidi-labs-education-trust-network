@@ -307,78 +307,6 @@ Future<ParsedVerifiableCredential> getCredentail(
 ) async {
   final signer = await didManager.getSigner(didManager.assertionMethod.first);
 
-  // final holderVerifiableCredentials = await Future.wait(
-  //   [
-  //     VcDataModelV2(
-  //       context: [
-  //         dmV2ContextUrl,
-  //         'https://schema.affinidi.io/TEmailV1R0.jsonld',
-  //       ],
-  //       credentialSchema: [
-  //         CredentialSchema(
-  //           id: Uri.parse('https://schema.affinidi.io/TEmailV1R0.json'),
-  //           type: 'JsonSchemaValidator2018',
-  //         ),
-  //       ],
-  //       id: Uri.parse('claimId:${Uuid().v4()}'),
-  //       issuer: Issuer.uri(signer.did),
-  //       type: {'VerifiableCredential', 'Email'},
-  //       validFrom: DateTime.now().toUtc(),
-  //       credentialSubject: [
-  //         CredentialSubject.fromJson({
-  //           'id':
-  //               holderDid, //"did:key:zDnaeULMXhaknnWZDH8GiFPGqdwSh7kUFd6qPy6X68sQfRc3gh"
-  //           'email': 'user@test.com',
-  //         }),
-  //       ],
-  //     ),
-  //     VcDataModelV2(
-  //       context: [
-  //         dmV2ContextUrl,
-  //         'https://schema.affinidi.io/AyraBusinessCardV1R2.jsonld',
-  //       ],
-  //       credentialSchema: [
-  //         CredentialSchema(
-  //           id: Uri.parse(
-  //             'https://schema.affinidi.io/AyraBusinessCardV1R2.json',
-  //           ),
-  //           type: 'JsonSchemaValidator2018',
-  //         ),
-  //       ],
-  //       id: Uri.parse('claimId:${Uuid().v4()}'),
-  //       issuer: Issuer.uri(signer.did),
-  //       type: {'VerifiableCredential', 'AyraBusinessCard'},
-  //       validFrom: DateTime.now().toUtc(),
-  //       credentialSubject: [
-  //         CredentialSubject.fromJson({
-  //           'id':
-  //               holderDid, //"did:key:zDnaeULMXhaknnWZDH8GiFPGqdwSh7kUFd6qPy6X68sQfRc3gh"
-  //           "display_name": "Alex Sample",
-  //           "email": "developer@example.com",
-  //           "ecosystem_id": signer.did,
-  //           "issued_under_assertion_id": "issue:ayracard:businesscard",
-  //           "issuer_id": signer.did,
-  //           "egf_id": signer.did,
-  //           "ayra_assurance_level": 0,
-  //           "ayra_card_type": "AyraBusinessCard",
-  //           "payloads": [
-  //             {
-  //               "id": "phone",
-  //               "description": "Phone number of the employee",
-  //               "type": "text",
-  //               "data": "+10000000000",
-  //             },
-  //             {
-  //               "id": "social",
-  //               "description": "linikedIn profile of the employee",
-  //               "type": "url",
-  //               "data": "https://linkedin.com/example-user",
-  //             },
-  //           ],
-  //         }),
-  //       ],
-  //     ),
-  //   ].map((unsignedCredential) async {
   final suite = LdVcDm2Suite();
 
   final unsignedCredential = VcDataModelV2(
@@ -386,10 +314,6 @@ Future<ParsedVerifiableCredential> getCredentail(
       dmV2ContextUrl,
       'https://schema.affinidi.io/AnyTCertizenPOCEdCertV1R0V1R0.jsonld',
     ],
-    // context: JsonLdContext.fromJson([
-    //   dmV2ContextUrl,
-    //   requestBody.jsonLdContextUrl,
-    // ]),
     credentialSchema: [
       CredentialSchema(
         id: Uri.parse(
@@ -423,10 +347,6 @@ Future<ParsedVerifiableCredential> getCredentail(
   );
 
   return issuedCredential;
-  // }),
-  // );
-
-  // return holderVerifiableCredentials;
 }
 
 Future<void> sendTriggerRequest(

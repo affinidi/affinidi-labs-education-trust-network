@@ -11,11 +11,6 @@ class CredentialHelper {
   static String verifiedIdentityDocument = 'VerifiedIdentityDocument';
 
   static String getCredentialTypeName(Set<String> type, {String? issuerId}) {
-    // if (type.contains(ayraBusinessCard)) {
-    //   return issuerId == null || !issuerId.contains('did:key')
-    //       ? 'Certizen Business Card'
-    //       : 'Certizen Personal Business Card';
-    // } else
     if (type.contains(employment)) {
       return 'Employment Credential';
     } else if (type.contains(verifiedIdentityDocument)) {
@@ -26,14 +21,6 @@ class CredentialHelper {
   }
 
   static LinearGradient getGradientForCredentialType(Set<String> type) {
-    // if (type.contains(ayraBusinessCard)) {
-    //   // Sunset Bloom - Warm and vibrant
-    //   return const LinearGradient(
-    //     colors: [Color(0xFF4B32E6), Color(0xFF8712EA), Color(0xFFC50068)],
-    //     begin: Alignment.topLeft,
-    //     end: Alignment.bottomRight,
-    //   );
-    // } else
     if (type.contains(employment)) {
       // Solar Flare - High-energy yellow-orange with outline
       return const LinearGradient(
@@ -66,9 +53,6 @@ class CredentialHelper {
   }
 
   static Color credentialColor(List<String> types) {
-    // if (types.contains(CredentialHelper.certizenBusinessCard)) {
-    //   return const Color(0xFF6A1B9A);
-    // } else
     if (types.contains(CredentialHelper.verifiedIdentityDocument)) {
       return const Color(0xFF43A047);
     } else if (types.contains(CredentialHelper.employment)) {
@@ -79,9 +63,6 @@ class CredentialHelper {
   }
 
   static material.IconData credentialIcon(List<String> types) {
-    // if (types.contains(CredentialHelper.certizenBusinessCard)) {
-    //   return material.Icons.business_center;
-    // } else
     if (types.contains(CredentialHelper.verifiedIdentityDocument)) {
       return material.Icons.verified_user;
     } else if (types.contains(CredentialHelper.employment)) {
