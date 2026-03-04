@@ -7,7 +7,7 @@
 	"@messagingEngine": {
 		"type": "text"
 	},
-	"appName": "Certizen Group",
+	"appName": "Nexigen Group",
 	"@appName": {
 		"type": "text"
 	},

@@ -1,4 +1,4 @@
-# Nexigen - Cross‑Border Educational Credentials Verification
+# Cross‑Border Educational Credentials Verification
 
 > Including Issuer Authorization & Trust Validation
 
