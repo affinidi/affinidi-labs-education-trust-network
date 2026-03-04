@@ -1,24 +1,27 @@
 [package]
-name = "trust-registry"
-version = "0.1.0"
-edition = "2024"
-rust-version = "1.88.0"
 description = "Trust Registry - DID Generation Helper"
+edition = "2024"
 license = "Apache-2.0"
+name = "trust-registry"
 publish = false
+rust-version = "1.88.0"
+version = "0.1.0"
 
 [dependencies]
 # Core DID and key generation libraries
+affinidi-did-key = {version = "0.1.4", optional = true}
 affinidi-tdk = "=0.2.7"
-affinidi-did-key = { version = "0.1.4", optional = true }
-did-peer = { version = "0.7.5", optional = true }
+did-peer = {version = "0.7.5", optional = true}
 
 # Serialization
 serde = "1.0.136"
 serde_json = "1.0"
 
 # Async runtime (required by affinidi-tdk)
-tokio = { version = "1.47", features = ["full"] }
+tokio = {version = "1.47", features = ["full"]}
+
+# Security: pin aws-lc-sys to fix Dependabot alerts (CVEs)
+aws-lc-sys = "0.38.0"
 
 # Utilities
 anyhow = "1.0.71"
@@ -33,4 +36,3 @@ required-features = ["dev-tools"]
 [features]
 default = []
 dev-tools = ["did-peer", "affinidi-did-key"]
-
