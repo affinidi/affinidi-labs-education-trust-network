@@ -53,7 +53,7 @@ dart bin/server.dart
 curl --location 'https://marmot-suited-muskrat.ngrok-free.app/sweetlane-bank/api/login' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-   "email": "paramesh@affinidi.com"
+   "email": "developer@example.com"
 }'
 ```
 
@@ -62,7 +62,7 @@ curl --location 'https://marmot-suited-muskrat.ngrok-free.app/sweetlane-bank/api
 ```json
 {
   "ok": true,
-  "email": "paramesh@affinidi.com",
+  "email": "developer@example.com",
   "oobUrl": "https://1e6bd197-d47f-4170-b944-e0ad7bf659f2.mpx.dev.affinidi.io/v1/get-oob/b4ba91d6-107e-4b34-90e5-5eff6c30dc7c",
   "did": "did:key:zDnaeSqXgwLmWULRKpLYUpnm9jpi3XMBNskvTfwBCEmTaZbtP"
 }

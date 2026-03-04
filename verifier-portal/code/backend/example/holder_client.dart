@@ -224,20 +224,20 @@ getHardcodedCredentails() async {
     "validUntil": "2026-10-16T05:48:37.966892Z",
     "credentialSubject": {
       "id": "did:key:zDnaezLucPkqin26376hu2BUzoTxHuY4UHShjEhP4beUbTArA",
-      "display_name": "Paramesh Kamarthi",
-      "email": "paramesh.k@affinidi.com",
+      "display_name": "Alex Sample",
+      "email": "developer@example.com",
       "payloads": [
         {
           "id": "phone",
           "description": "Phone number of the employee",
           "type": "text",
-          "data": "+919980166067",
+          "data": "+10000000000",
         },
         {
           "id": "social",
           "description": "linikedIn profile of the employee",
           "type": "url",
-          "data": "https://linkedin.com/kamarthiparamesh",
+          "data": "https://linkedin.com/example-user",
         },
         {
           "id": "avatar",
@@ -353,8 +353,8 @@ Future<ParsedVerifiableCredential> getCredentail(
   //         CredentialSubject.fromJson({
   //           'id':
   //               holderDid, //"did:key:zDnaeULMXhaknnWZDH8GiFPGqdwSh7kUFd6qPy6X68sQfRc3gh"
-  //           "display_name": "Paramesh Kamarthi",
-  //           "email": "paramesh.k@affinidi.com",
+  //           "display_name": "Alex Sample",
+  //           "email": "developer@example.com",
   //           "ecosystem_id": signer.did,
   //           "issued_under_assertion_id": "issue:ayracard:businesscard",
   //           "issuer_id": signer.did,
@@ -366,13 +366,13 @@ Future<ParsedVerifiableCredential> getCredentail(
   //               "id": "phone",
   //               "description": "Phone number of the employee",
   //               "type": "text",
-  //               "data": "+919980166067",
+  //               "data": "+10000000000",
   //             },
   //             {
   //               "id": "social",
   //               "description": "linikedIn profile of the employee",
   //               "type": "url",
-  //               "data": "https://linkedin.com/kamarthiparamesh",
+  //               "data": "https://linkedin.com/example-user",
   //             },
   //           ],
   //         }),

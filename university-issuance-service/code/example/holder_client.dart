@@ -64,7 +64,7 @@ Future<void> main() async {
   // final credentialsRequest = RequestCredentialsOptions(
   //   proposalId: 'Email',
   //   credentialMeta: CredentialMeta(
-  //     data: {'email': 'paramesh.k@certizen.com'},
+  //     data: {'email': 'developer@example.com'},
   //   ),
   // );
 
@@ -74,8 +74,8 @@ Future<void> main() async {
   //     data: {
   //       'recipient': {
   //         'type': 'PersonName',
-  //         'givenName': 'Paramesh',
-  //         'familyName': 'Kamarthi',
+  //         'givenName': 'Alex',
+  //         'familyName': 'Sample',
   //       },
   //       'role': 'Solutions Architect',
   //       'description': 'Solutions Architect Lead',
@@ -87,7 +87,7 @@ Future<void> main() async {
   // final credentialsRequest = RequestCredentialsOptions(
   //   proposalId: 'VerifiedIdentityDocument',
   //   credentialMeta: CredentialMeta(
-  //     data: {"email": "paramesh.kamarthi@affinidi.com"},
+  //     data: {"email": "developer@example.com"},
   //   ),
   // );
 
@@ -95,20 +95,20 @@ Future<void> main() async {
     proposalId: 'AyraBusinessCard',
     credentialMeta: CredentialMeta(
       data: {
-        "display_name": "Paramesh Kamarthi",
-        "email": "paramesh.k@affinidi.com",
+        "display_name": "Alex Sample",
+        "email": "developer@example.com",
         "payloads": [
           {
             "id": "phone",
             "description": "Phone number of the employee",
             "type": "text",
-            "data": "+919980166067",
+            "data": "+10000000000",
           },
           {
             "id": "social",
             "description": "linikedIn profile of the employee",
             "type": "url",
-            "data": "https://linkedin.com/kamarthiparamesh",
+            "data": "https://linkedin.com/example-user",
           },
           {
             "id": "avatar",
@@ -201,7 +201,7 @@ Future<Channel> establishChannel(MeetingPlaceCoreSDK sdk) async {
   final response = await http.post(
     Uri.parse(authUrl),
     headers: {'Content-Type': 'application/json'},
-    body: jsonEncode({'email': 'paramesh@affinidi.com'}),
+    body: jsonEncode({'email': 'developer@example.com'}),
   );
   String? issuerOobUrl;
   String? issuerDid;
