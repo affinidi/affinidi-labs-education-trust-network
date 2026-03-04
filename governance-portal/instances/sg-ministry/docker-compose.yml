@@ -15,11 +15,11 @@ services:
       - MINISTRY_NAME=Singapore Ministry of Education
       - API_BASE_URL=http://sg-trust-registry:3234/api
     networks:
-      - certizen-network
+      - nexigen-network
     depends_on:
       - sg-trust-registry
     restart: unless-stopped
 
 networks:
-  certizen-network:
+  nexigen-network:
     external: true

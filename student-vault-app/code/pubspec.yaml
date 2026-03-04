@@ -1,5 +1,5 @@
 name: student_vault_app
-description: "Certizen Group Experience App - open-source reference implementation of a chat application based on DIDComm v2.1 messaging protocol"
+description: "Nexigen Group Experience App - open-source reference implementation of a chat application based on DIDComm v2.1 messaging protocol"
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.

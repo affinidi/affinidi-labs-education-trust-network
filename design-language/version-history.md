@@ -82,7 +82,7 @@ Refinement release aligning design system with Student Vault App focus and high-
 
 ## Overview
 
-This document tracks all changes to the Certizen Design System, including new components, token updates, breaking changes, and migration guides.
+This document tracks all changes to the Nexigen Design System, including new components, token updates, breaking changes, and migration guides.
 
 ---
 
@@ -93,11 +93,11 @@ This document tracks all changes to the Certizen Design System, including new co
 
 ### Summary
 
-Initial release of the Certizen Design System for the trust registry prototype demonstrating end-to-end verifiable credential flows across Hong Kong, Macau, and Singapore jurisdictions. Comprehensive design language covering all aspects of frontend development for Student Vault App, Employer Verification Portal, and Trust Registry Admin Portal.
+Initial release of the Nexigen Design System for the trust registry prototype demonstrating end-to-end verifiable credential flows across Hong Kong, Macau, and Singapore jurisdictions. Comprehensive design language covering all aspects of frontend development for Student Vault App, Employer Verification Portal, and Trust Registry Admin Portal.
 
 ### Platform Scope
 
-This design system supports the Certizen prototype showcasing:
+This design system supports the Nexigen prototype showcasing:
 - **Three Trust Registries**: Hong Kong, Macau, Singapore education authorities
 - **Multi-Stakeholder Flows**: National Education governors, universities (Horizon HK, Trident Macau), students, employers (Nova Corp SG)
 - **Protocol Implementation**: DIDComm, VDIP (credential issuance), VDSP (credential sharing), TRQP (trust registry queries)
@@ -167,7 +167,7 @@ This design system supports the Certizen prototype showcasing:
 #### Material Design 3 Foundation
 - **Decision**: Build on Material Design 3 principles
 - **Rationale**: Proven patterns, excellent accessibility, strong Flutter support, token-based customization
-- **Implementation**: Use MD3 as foundation, customize with Certizen brand colors
+- **Implementation**: Use MD3 as foundation, customize with Nexigen brand colors
 
 #### 8px Grid System
 - **Decision**: All spacing values are multiples of 8px
@@ -252,7 +252,7 @@ None
 
 ## Versioning Convention
 
-Certizen Design System follows **Semantic Versioning** (SemVer):
+Nexigen Design System follows **Semantic Versioning** (SemVer):
 
 ```
 MAJOR.MINOR.PATCH
@@ -448,7 +448,7 @@ Have an idea for improvement?
 
 ## Acknowledgments
 
-The Certizen Design System was created for the Certizen decentralized educational credential platform. It draws inspiration from:
+The Nexigen Design System was created for the Nexigen decentralized educational credential platform. It draws inspiration from:
 - Material Design 3 (Google)
 - Human Interface Guidelines (Apple)
 - Web Content Accessibility Guidelines (W3C)
@@ -456,14 +456,14 @@ The Certizen Design System was created for the Certizen decentralized educationa
 
 **Contributors**:
 - Design System Documentation: GitHub Copilot
-- Based on existing Certizen codebase patterns
+- Based on existing Nexigen codebase patterns
 - Aligned with Clean Architecture principles
 
 ---
 
 ## License
 
-This design system is part of the Certizen project. See LICENSE file in the project root for details.
+This design system is part of the Nexigen project. See LICENSE file in the project root for details.
 
 ---
 

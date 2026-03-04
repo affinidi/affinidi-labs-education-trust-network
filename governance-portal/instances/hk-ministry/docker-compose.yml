@@ -15,11 +15,11 @@ services:
       - MINISTRY_NAME=Hong Kong Ministry of Education
       - API_BASE_URL=http://hk-trust-registry:3232/api
     networks:
-      - certizen-network
+      - nexigen-network
     depends_on:
       - hk-trust-registry
     restart: unless-stopped
 
 networks:
-  certizen-network:
+  nexigen-network:
     external: true

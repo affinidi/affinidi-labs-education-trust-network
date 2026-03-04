@@ -1,8 +1,8 @@
-# Certizen Demo - Project Requirements Document (PRD)
+# Nexigen Demo - Project Requirements Document (PRD)
 
 ## 1. Executive Summary
 
-**Project Name:** Certizen Demo  
+**Project Name:** Nexigen Demo  
 **Purpose:** Demonstrate university credential issuance and employment verification using decentralized identity infrastructure  
 **Architecture:** Clean Architecture with separation of concerns across all Flutter applications. Single codebase with multiple instances pattern for scalability.
 
@@ -60,7 +60,7 @@
 ### 2.3 Directory Structure
 
 ```
-certizen-demo/
+nexigen-demo/
 ├── docker-compose.yml              # Main orchestration (all services)
 ├── .env.example                    # Shared environment configuration
 ├── setup.sh                        # Automated setup script
@@ -950,7 +950,7 @@ The setup script follows a standardized pattern for consistent configuration:
 ```bash
 # 1. Clone repository
 git clone <repo-url>
-cd certizen-demo
+cd nexigen-demo
 
 # 2. Run automated setup script
 ./setup.sh
@@ -1210,17 +1210,17 @@ Edit `governance-portal/data/ministries.json` to add the new ministry configurat
 **Trust Registry PostgreSQL:**
 ```bash
 # Connect to HK ministry database
-docker exec -it certizen-hk-tr-db psql -U postgres -d hk_trust_registry
+docker exec -it nexigen-hk-tr-db psql -U postgres -d hk_trust_registry
 
 # Backup database
-docker exec certizen-hk-tr-db pg_dump -U postgres hk_trust_registry > hk_tr_backup.sql
+docker exec nexigen-hk-tr-db pg_dump -U postgres hk_trust_registry > hk_tr_backup.sql
 
 # Restore database
-docker exec -i certizen-hk-tr-db psql -U postgres hk_trust_registry < hk_tr_backup.sql
+docker exec -i nexigen-hk-tr-db psql -U postgres hk_trust_registry < hk_tr_backup.sql
 ```
 
 **Student Vault Drift Database:**
-- Located on device: `/data/data/com.certizen.student_vault/databases/certizen_student_vault.sqlite`
+- Located on device: `/data/data/com.nexigen.student_vault/databases/nexigen_student_vault.sqlite`
 - Managed by Drift ORM
 - No manual intervention required
 

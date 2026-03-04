@@ -7,7 +7,7 @@
 
 ## Overview
 
-This document provides comprehensive specifications for all Certizen UI components. Each component includes anatomy, states, variants, usage guidelines, accessibility requirements, token references, and Flutter implementation examples.
+This document provides comprehensive specifications for all Nexigen UI components. Each component includes anatomy, states, variants, usage guidelines, accessibility requirements, token references, and Flutter implementation examples.
 
 ### Application-Specific Component Usage
 
@@ -283,7 +283,7 @@ PrimaryButton(
 ## Card
 
 ### Description
-Cards contain content and actions about a single subject. Used extensively in Certizen for credential displays, record lists, and content grouping. Light elevation (1) and warm cream backgrounds create hierarchy without heavy shadows (Headspace principle).
+Cards contain content and actions about a single subject. Used extensively in Nexigen for credential displays, record lists, and content grouping. Light elevation (1) and warm cream backgrounds create hierarchy without heavy shadows (Headspace principle).
 
 ### Anatomy
 ```
@@ -506,7 +506,7 @@ AppCard(
 ## Text Field
 
 ### Description
-Text fields allow users to input text and are used extensively in forms throughout Certizen. Warm cream backgrounds (#FFEEC8) and clear focus states ensure accessibility on light mode.
+Text fields allow users to input text and are used extensively in forms throughout Nexigen. Warm cream backgrounds (#FFEEC8) and clear focus states ensure accessibility on light mode.
 
 ### States
 
@@ -1100,7 +1100,7 @@ EmptyState(
 
 ## Component Summary
 
-This Components Library covers the essential UI elements for Certizen:
+This Components Library covers the essential UI elements for Nexigen:
 
 - **Action Components**: Buttons (primary, secondary, text, icon, FAB)
 - **Input Components**: Text fields, dropdowns, checkboxes, radio buttons, switches

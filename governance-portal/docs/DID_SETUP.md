@@ -8,7 +8,7 @@ The governance portal uses an automated DID generation system that creates uniqu
 
 ### Quick Start
 
-From the certizen-demo directory:
+From the nexigen-demo directory:
 
 ```bash
 # Start the complete environment (includes DID generation)

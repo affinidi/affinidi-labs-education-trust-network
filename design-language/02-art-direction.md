@@ -7,11 +7,11 @@
 
 ## Overview
 
-Certizen's art direction establishes the visual identity and emotional tone across all applications. This document defines the aesthetic principles, illustration style, mood, and tone of voice that make Certizen recognizable and trustworthy.
+Nexigen's art direction establishes the visual identity and emotional tone across all applications. This document defines the aesthetic principles, illustration style, mood, and tone of voice that make Nexigen recognizable and trustworthy.
 
 ### Design Context
 
-Certizen serves multiple stakeholder groups across three jurisdictions (Hong Kong, Macau, Singapore):
+Nexigen serves multiple stakeholder groups across three jurisdictions (Hong Kong, Macau, Singapore):
 
 **Trust Registry Admin Portal**: Government administrators managing educational governance frameworks, authorizing universities, and creating authority statements. Interface must convey authority, control, and precision.
 
@@ -29,7 +29,7 @@ Certizen serves multiple stakeholder groups across three jurisdictions (Hong Kon
 
 **Headspace Warmth, Revolut Efficiency**
 
-Certizen combines the calm, approachable palette of Headspace with the clear, organized information architecture of Revolut. Clean, modern, and emotionally warm—never cold or corporate.
+Nexigen combines the calm, approachable palette of Headspace with the clear, organized information architecture of Revolut. Clean, modern, and emotionally warm—never cold or corporate.
 
 **Key Characteristics**:
 - **Warm**: Cream and orange accents create calm yet energetic atmosphere
@@ -126,7 +126,7 @@ All elements align to an 8px grid:
 
 **Minimalist Iconography**
 
-Certizen uses Material Icons for UI elements and simple, geometric illustrations for empty states and onboarding.
+Nexigen uses Material Icons for UI elements and simple, geometric illustrations for empty states and onboarding.
 
 **Characteristics**:
 - **Geometric**: Simple shapes, clean lines (Revolut organization)
@@ -198,7 +198,7 @@ Certizen uses Material Icons for UI elements and simple, geometric illustrations
 
 **Warm Professionalism** (Headspace + Revolut)
 
-Certizen balances authoritative competence (educational credentials are serious) with warm approachability (users should feel comfortable and empowered).
+Nexigen balances authoritative competence (educational credentials are serious) with warm approachability (users should feel comfortable and empowered).
 
 **Primary Emotions**:
 1. **Trust**: Reliable, secure, authoritative
@@ -288,7 +288,7 @@ All interface text should be:
 
 **Principle**: Professional but not stiff, friendly but not casual.
 
-✅ **Good**: "Welcome to Certizen! Let's get started."  
+✅ **Good**: "Welcome to Nexigen! Let's get started."  
 ❌ **Too Casual**: "Hey there! 👋 Ready to rock?"  
 ❌ **Too Formal**: "Greetings. Please commence onboarding procedures."
 
@@ -514,7 +514,7 @@ From existing screens:
 
 ## Conclusion
 
-Certizen's art direction creates a cohesive visual and emotional experience:
+Nexigen's art direction creates a cohesive visual and emotional experience:
 - **Visually**: Warm, organized, modern (Headspace colors + Revolut organization)
 - **Emotionally**: Trustworthy, approachable, confident, calm
 - **Verbally**: Clear, helpful, empowering
@@ -527,4 +527,4 @@ When making design decisions, ask:
 4. Does this empower the user with clarity and confidence?
 5. Is this consistent with our established warm orange + cream palette and patterns?
 
-If the answer to all five is "yes," you're aligned with Certizen's art direction.
+If the answer to all five is "yes," you're aligned with Nexigen's art direction.

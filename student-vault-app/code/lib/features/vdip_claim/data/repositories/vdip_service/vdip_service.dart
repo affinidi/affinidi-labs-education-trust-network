@@ -317,7 +317,7 @@ class VdipService {
           ],
           id: Uri.parse('claimId:test-credential'),
           issuer: Issuer.uri(holderSigner.did),
-          type: {'VerifiableCredential', 'CertizenBusinessCard'},
+          type: {'VerifiableCredential', 'NexigenBusinessCard'},
           validFrom: DateTime.now().toUtc(),
           credentialSubject: [
             CredentialSubject.fromJson({
@@ -326,10 +326,10 @@ class VdipService {
               'email': email,
               'ecosystem_id': 'did:web:issuers.sa.affinidi.io:sweetlane-group',
               'issued_under_assertion_id': 'issue:ayracard:businesscard',
-              'issuer_id': 'did:web:issuers.sa.affinidi.io:certizen',
+              'issuer_id': 'did:web:issuers.sa.affinidi.io:nexigen',
               'egf_id': 'did:web:issuers.sa.affinidi.io:ayra-forum',
               'ayra_assurance_level': 0,
-              'ayra_card_type': 'CertizenBusinessCard',
+              'ayra_card_type': 'NexigenBusinessCard',
               'payloads': [
                 {
                   'id': 'phone',

@@ -15,11 +15,11 @@ services:
       - MINISTRY_NAME=Macau Ministry of Education
       - API_BASE_URL=http://macau-trust-registry:3233/api
     networks:
-      - certizen-network
+      - nexigen-network
     depends_on:
       - macau-trust-registry
     restart: unless-stopped
 
 networks:
-  certizen-network:
+  nexigen-network:
     external: true

@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import '../../services/notification_service/notification_counter_type.dart';
 
 enum Tabs {
-  // dashboard(serviceKey: NotificationCounterType.certizen),
-  credentials(serviceKey: NotificationCounterType.certizen),
+  // dashboard(serviceKey: NotificationCounterType.nexigen),
+  credentials(serviceKey: NotificationCounterType.nexigen),
   profile(serviceKey: NotificationCounterType.profile),
-  scanShare(serviceKey: NotificationCounterType.certizen);
+  scanShare(serviceKey: NotificationCounterType.nexigen);
 
   const Tabs({required this.serviceKey});
 

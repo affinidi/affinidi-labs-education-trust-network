@@ -7,7 +7,7 @@
 
 ## Overview
 
-This document defines the visual language of Certizen: colors, typography, spacing, layout, and motion. All values reference design tokens from `03-design-tokens.yaml`.
+This document defines the visual language of Nexigen: colors, typography, spacing, layout, and motion. All values reference design tokens from `03-design-tokens.yaml`.
 
 ---
 
@@ -1287,7 +1287,7 @@ Use consistent placeholder approach:
 
 ## Summary
 
-The Certizen UI Style Guide provides comprehensive visual standards:
+The Nexigen UI Style Guide provides comprehensive visual standards:
 
 - **Colors**: Token-based palette with WCAG AA compliance
 - **Typography**: IBM Plex Sans font family, 8px baseline grid, minimum 16px body text

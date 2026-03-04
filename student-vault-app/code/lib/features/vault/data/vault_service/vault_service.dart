@@ -19,7 +19,7 @@ part 'vault_service.g.dart';
 class VaultService extends _$VaultService {
   static const _logKey = 'VAULTSVC';
   static const _vaultId = 'ayra';
-  static const _defaultProfileName = 'Certizen Bank';
+  static const _defaultProfileName = 'Nexigen Bank';
   late final AppLogger _logger = ref.read(appLoggerProvider);
 
   Future<void>? _initializationFuture;

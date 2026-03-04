@@ -1,5 +1,5 @@
 #!/bin/bash
-# Certizen Demo - Ngrok Complete Environment Setup
+# Nexigen Demo - Ngrok Complete Environment Setup
 # This script starts ngrok tunnels FIRST, captures domains, writes .env.ngrok, then generates configs
 set -e  # Exit on error
 
@@ -14,7 +14,7 @@ log_error() { echo "❌ $1"; exit 1; }
 
 clear
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "🌐 Certizen Demo - Localhost + Ngrok Setup"
+echo "🌐 Nexigen Demo - Localhost + Ngrok Setup"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
 echo "This will:"
@@ -153,7 +153,7 @@ sleep 2
 
 # Create ngrok config file with 3 tunnels
 mkdir -p ~/.config/ngrok
-cat > ~/.config/ngrok/ngrok-certizen.yml << EOF
+cat > ~/.config/ngrok/ngrok-nexigen.yml << EOF
 version: "2"
 authtoken: ${NGROK_AUTH_TOKEN}
 tunnels:
@@ -169,7 +169,7 @@ tunnels:
 EOF
 
 log_verbose "Starting ngrok agent with 3 tunnels (2 universities + education ministries)..."
-nohup ngrok start --all --config ~/.config/ngrok/ngrok-certizen.yml > "${PROJECT_ROOT}/deployment/ngrok.log" 2>&1 &
+nohup ngrok start --all --config ~/.config/ngrok/ngrok-nexigen.yml > "${PROJECT_ROOT}/deployment/ngrok.log" 2>&1 &
 NGROK_PID=$!
 echo "$NGROK_PID" > "${PROJECT_ROOT}/deployment/ngrok.pid"
 
@@ -313,7 +313,7 @@ echo "━━━━━━━━━━━━━━━━━━━━━━━━�
 log_verbose "Writing localhost/ngrok hybrid configuration to .env.ngrok..."
 
 cat > "${PROJECT_ROOT}/deployment/.env.ngrok" << EOF
-# Certizen Demo - Localhost + Ngrok Configuration
+# Nexigen Demo - Localhost + Ngrok Configuration
 # Generated on $(date)
 
 # Mode Configuration

@@ -3,7 +3,7 @@
 ## TL;DR - Get Running Fast
 
 ```bash
-cd /Users/csamprajan/Affinidi/POCs/certizen-demo/verifier-portal/code
+cd /Users/csamprajan/Affinidi/POCs/nexigen-demo/verifier-portal/code
 
 # 1. Start server and ngrok
 make dev-up
@@ -67,7 +67,7 @@ make dev-up
 **Check you're in the right directory:**
 ```bash
 pwd
-# Should output: /Users/csamprajan/Affinidi/POCs/certizen-demo/verifier-portal/code
+# Should output: /Users/csamprajan/Affinidi/POCs/nexigen-demo/verifier-portal/code
 ```
 
 ## Full Workflow
@@ -89,7 +89,7 @@ pwd
 
 1. **Terminal 1 - Start Server:**
    ```bash
-   cd /Users/csamprajan/Affinidi/POCs/certizen-demo/verifier-portal/code
+   cd /Users/csamprajan/Affinidi/POCs/nexigen-demo/verifier-portal/code
    make dev-up
    ```
    

@@ -15,7 +15,7 @@ services:
       - ../../university-issuance-service/instances/hk-university/keys:/app/keys
     restart: unless-stopped
     networks:
-      - certizen-network
+      - nexigen-network
 
   macau-university-issuer:
     build:
@@ -31,7 +31,7 @@ services:
       - ../../university-issuance-service/instances/macau-university/keys:/app/keys
     restart: unless-stopped
     networks:
-      - certizen-network
+      - nexigen-network
 
   education-ministries:
     build:
@@ -46,8 +46,8 @@ services:
       - ../../education-ministries-did-hosting/instance/data:/app/data
     restart: unless-stopped
     networks:
-      - certizen-network
+      - nexigen-network
 
 networks:
-  certizen-network:
+  nexigen-network:
     driver: bridge

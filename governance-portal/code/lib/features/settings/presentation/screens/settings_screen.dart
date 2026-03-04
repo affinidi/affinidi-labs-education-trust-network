@@ -638,7 +638,7 @@ class SettingsScreen extends ConsumerWidget {
                 }
 
                 // Reset all providers
-                ref.read(appNameProvider.notifier).state = 'Certizen';
+                ref.read(appNameProvider.notifier).state = 'Nexigen';
                 ref.read(mediatorDidProvider.notifier).state =
                     SettingsConstants.defaultMediatorDid;
                 ref.read(registryNameProvider.notifier).state = null;

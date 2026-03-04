@@ -39,7 +39,7 @@ class CheckRecognitionUseCase {
 
     final recognized = response?['recognized'] as bool? ?? false;
     final message =
-        'Ecosystem ${entityId.split(':').last} is ${recognized ? '' : 'not '}recognized by Certizen.';
+        'Ecosystem ${entityId.split(':').last} is ${recognized ? '' : 'not '}recognized by Nexigen.';
 
     onProgress({
       'messageType': recognized ? 'success' : 'failure',

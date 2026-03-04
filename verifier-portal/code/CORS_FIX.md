@@ -15,7 +15,7 @@ No 'Access-Control-Allow-Origin' header is present on the requested resource.
 The easiest way to fix this for development is to run Chrome with CORS disabled:
 
 ```bash
-cd /Users/csamprajan/Affinidi/POCs/certizen-demo/verifier-portal/code
+cd /Users/csamprajan/Affinidi/POCs/nexigen-demo/verifier-portal/code
 
 # Launch Chrome with CORS disabled
 ./scripts/launch-chrome-no-cors.sh
@@ -30,7 +30,7 @@ cd /Users/csamprajan/Affinidi/POCs/certizen-demo/verifier-portal/code
 I've created an `ngrok.yml` configuration file that adds CORS headers to responses. To use it:
 
 ```bash
-cd /Users/csamprajan/Affinidi/POCs/certizen-demo/verifier-portal/code
+cd /Users/csamprajan/Affinidi/POCs/nexigen-demo/verifier-portal/code
 
 # Start your DID server
 dart run bin/did_server.dart --env-file=.env.ngrok
@@ -128,7 +128,7 @@ For production: **Use Solution 3** (Fix CORS on the server) or **Solution 5** (N
 
 1. Start your server:
    ```bash
-   cd /Users/csamprajan/Affinidi/POCs/certizen-demo/verifier-portal/code
+   cd /Users/csamprajan/Affinidi/POCs/nexigen-demo/verifier-portal/code
    dart run bin/did_server.dart --env-file=.env.ngrok
    ```
 
@@ -149,7 +149,7 @@ For production: **Use Solution 3** (Fix CORS on the server) or **Solution 5** (N
 
 2. Run:
    ```bash
-   cd /Users/csamprajan/Affinidi/POCs/certizen-demo/verifier-portal/code
+   cd /Users/csamprajan/Affinidi/POCs/nexigen-demo/verifier-portal/code
    flutter run -d ios  # or -d android
    ```
 

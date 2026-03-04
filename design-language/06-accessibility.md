@@ -8,7 +8,7 @@
 
 ## Overview
 
-Certizen is committed to creating inclusive digital experiences across all stakeholder groups and jurisdictions. **WCAG 2.1 Level AA compliance is mandatory, not optional.** These guidelines ensure all users—National Education administrators, university students, employers, and platform operators—can access and use Certizen applications regardless of ability.
+Nexigen is committed to creating inclusive digital experiences across all stakeholder groups and jurisdictions. **WCAG 2.1 Level AA compliance is mandatory, not optional.** These guidelines ensure all users—National Education administrators, university students, employers, and platform operators—can access and use Nexigen applications regardless of ability.
 
 ### Accessibility Context
 
@@ -104,7 +104,7 @@ Make it easier for users to see and hear content.
 - **Large text** (≥ 18pt or 14pt bold): **3:1** minimum
 - **Non-text elements** (icons, UI components): **3:1** minimum
 
-**Certizen Color Contrast Ratios** (Dark Mode):
+**Nexigen Color Contrast Ratios** (Dark Mode):
 
 | Combination | Ratio | Status |
 |-------------|-------|--------|
@@ -130,7 +130,7 @@ Make it easier for users to see and hear content.
 
 UI components and graphical objects must have 3:1 contrast ratio.
 
-**Certizen Compliance**:
+**Nexigen Compliance**:
 - ✅ Buttons: Primary 500 on Black (4.31:1)
 - ✅ Input borders: Neutral 700 on Black (5.24:1)
 - ✅ Focus indicators: Primary 500 on Black (4.31:1)
@@ -264,7 +264,7 @@ FocusTraversalGroup(
 - **Outline offset**: **2px** from element edge (prevents overlap)
 - **Never remove**: `outline: none` is WCAG violation ❌
 
-**Certizen Focus Indicators**:
+**Nexigen Focus Indicators**:
 - **Color**: Primary 500 (#0368C0)
 - **Width**: 2px
 - **Offset**: 2px
@@ -288,11 +288,11 @@ Theme(
 
 Make it easier for users to operate functionality through various inputs beyond keyboard.
 
-##### 2.5.5 Target Size - Level AAA (Certizen Target: Achieve)
+##### 2.5.5 Target Size - Level AAA (Nexigen Target: Achieve)
 
 **Minimum touch target size: 44x44px** (iOS) or **48x48px** (Android/Material)
 
-**Certizen Standard**: **44x44px minimum** for all touch targets.
+**Nexigen Standard**: **44x44px minimum** for all touch targets.
 
 **Components Meeting Standard**:
 - ✅ Buttons: Min height 44px
@@ -360,7 +360,7 @@ Make pages appear and operate in predictable ways.
 
 Navigation must be consistent across all screens.
 
-**Certizen Implementation**:
+**Nexigen Implementation**:
 - ✅ Bottom navigation (mobile) appears in same position on all screens
 - ✅ App bar (desktop) appears in same position
 - ✅ Same navigation items in same order
@@ -647,7 +647,7 @@ IconButton(
 
 ## Conclusion
 
-Accessibility is not optional in Certizen. Every component, every screen, every interaction must meet WCAG 2.1 Level AA standards.
+Accessibility is not optional in Nexigen. Every component, every screen, every interaction must meet WCAG 2.1 Level AA standards.
 
 **Remember**:
 - **Test with keyboard** (no mouse)

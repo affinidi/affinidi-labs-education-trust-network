@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class CertizenButton extends StatelessWidget {
-  const CertizenButton({
+class NexigenButton extends StatelessWidget {
+  const NexigenButton({
     super.key,
     required this.onPressed,
     required this.child,

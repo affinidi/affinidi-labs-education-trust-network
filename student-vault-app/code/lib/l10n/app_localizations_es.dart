@@ -24,7 +24,7 @@ class AppLocalizationsEs extends AppLocalizations {
       'contacts': 'Channels',
       'identities': 'Identities',
       'settings': 'Settings',
-      'certizen': 'Ayra',
+      'nexigen': 'Ayra',
       'other': 'Invalid',
     });
     return '$_temp0';

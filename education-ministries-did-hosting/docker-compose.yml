@@ -14,8 +14,8 @@ services:
     command: ["/app/bin/server", "--env-file=/app/.env.ngrok"]
     restart: unless-stopped
     networks:
-      - certizen-network
+      - nexigen-network
 
 networks:
-  certizen-network:
+  nexigen-network:
     external: true

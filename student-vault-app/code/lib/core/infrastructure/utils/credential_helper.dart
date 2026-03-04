@@ -6,7 +6,7 @@ class CredentialHelper {
 
   static double qrCodeSize = 120;
 
-  static String certizenBusinessCard = 'CertizenBusinessCard';
+  static String nexigenBusinessCard = 'NexigenBusinessCard';
   static String employment = 'Employment';
   static String verifiedIdentityDocument = 'VerifiedIdentityDocument';
 
@@ -35,7 +35,7 @@ class CredentialHelper {
         begin: Alignment.centerLeft,
         end: Alignment.centerRight,
       );
-    } else if (type.any((t) => t.contains('AnyTCertizenPOCEdCert'))) {
+    } else if (type.any((t) => t.contains('AnyTNexigenPOCEdCert'))) {
       // Education credentials - White card with dark grey-blue text
       return const LinearGradient(
         colors: [Color(0xFFFFFFFF), Color(0xFFFFFFFF)],

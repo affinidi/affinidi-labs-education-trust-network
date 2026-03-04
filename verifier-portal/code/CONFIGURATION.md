@@ -125,10 +125,10 @@ Copy the desired one to `.env.ngrok` before running.
 
 ### Integration with Full Demo
 
-The full Certizen demo setup handles all services:
+The full Nexigen demo setup handles all services:
 
 ```bash
-cd certizen-demo
+cd nexigen-demo
 make dev-up
 ```
 

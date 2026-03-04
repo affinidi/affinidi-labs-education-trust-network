@@ -41,7 +41,7 @@ class HandleNotificationMessageUseCase {
         clientId,
         message.from!,
         purpose,
-        dcqlCertizen,
+        dcqlNexigen,
       );
     } catch (e, stackTrace) {
       print('$clientId::Error processing message: $e');

@@ -11,7 +11,7 @@ class RoutePaths {
   static const debug = '/debug';
   static const login = '/login';
 
-  // Certizen
+  // Nexigen
   static const idvFlow = 'idv';
   static const employeeCredential = 'employee-credential';
   static const employeeCredentialSuccess = 'employee-credential-success';

@@ -7,7 +7,7 @@
 
 ## Overview
 
-This document provides the complete Flutter ThemeData configuration for Certizen, mapping all design tokens from `03-design-tokens.yaml` to Flutter's Material 3 system (`ColorScheme`, `TextTheme`, component themes). Focus on **light mode** with warm orange (#FF8E32) primary and warm cream (#FFEEC8) secondary, per Headspace + Revolut design principles.
+This document provides the complete Flutter ThemeData configuration for Nexigen, mapping all design tokens from `03-design-tokens.yaml` to Flutter's Material 3 system (`ColorScheme`, `TextTheme`, component themes). Focus on **light mode** with warm orange (#FF8E32) primary and warm cream (#FFEEC8) secondary, per Headspace + Revolut design principles.
 
 **Token-to-Flutter Mapping**:
 - `colors.primary.500` (#FF8E32) → `ColorScheme.primary` — Warm orange for key CTAs like "Claim Credential"
@@ -600,16 +600,16 @@ import 'package:flutter/material.dart';
 import 'core/design_system/themes/app_theme.dart';
 
 void main() {
-  runApp(const CertizenApp());
+  runApp(const NexigenApp());
 }
 
-class CertizenApp extends StatelessWidget {
-  const CertizenApp({super.key});
+class NexigenApp extends StatelessWidget {
+  const NexigenApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Certizen',
+      title: 'Nexigen',
       
       // Apply themes
       theme: AppTheme.lightTheme,

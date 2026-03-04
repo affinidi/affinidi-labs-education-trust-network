@@ -115,7 +115,7 @@ abstract class AppLocalizations {
   /// No description provided for @appName.
   ///
   /// In en, this message translates to:
-  /// **'Certizen Group'**
+  /// **'Nexigen Group'**
   String get appName;
 
   /// No description provided for @tabsTitle.

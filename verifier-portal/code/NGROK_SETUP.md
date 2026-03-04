@@ -19,7 +19,7 @@ Keep this terminal open. Note the ngrok URL (e.g., `https://abc123.ngrok-free.ap
 In a new terminal:
 
 ```bash
-cd /path/to/certizen-demo/verifier-portal/code
+cd /path/to/nexigen-demo/verifier-portal/code
 make dev-up
 ```
 
@@ -165,10 +165,10 @@ dart run bin/did_server.dart --env-file=.env.ngrok
 
 ## Integration with Full Demo
 
-To run the entire Certizen demo with ngrok (all universities + verifier):
+To run the entire Nexigen demo with ngrok (all universities + verifier):
 
 ```bash
-cd /path/to/certizen-demo
+cd /path/to/nexigen-demo
 make dev-up
 ```
 

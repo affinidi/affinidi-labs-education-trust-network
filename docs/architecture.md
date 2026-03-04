@@ -2,7 +2,7 @@
 
 ## System Overview
 
-Certizen uses DIDComm protocol and trust registries for credential issuance and verification.
+Nexigen uses DIDComm protocol and trust registries for credential issuance and verification.
 
 ```
 Trust Registries (HK, Macau, SG)

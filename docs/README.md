@@ -1,6 +1,6 @@
-# Certizen Documentation
+# Nexigen Documentation
 
-Comprehensive technical documentation for the Certizen decentralized educational credentials platform.
+Comprehensive technical documentation for the Nexigen decentralized educational credentials platform.
 
 ## 📖 Documentation Structure
 
@@ -28,7 +28,7 @@ Comprehensive technical documentation for the Certizen decentralized educational
 
 ## 🏗️ System Overview
 
-The Certizen platform consists of:
+The Nexigen platform consists of:
 
 1. **Student Vault App** (Flutter Mobile) - Credential storage and management
 2. **University Issuance Services** (Dart) - Credential issuance backends

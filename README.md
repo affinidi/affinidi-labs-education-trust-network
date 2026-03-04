@@ -1,4 +1,4 @@
-# Certizen - Cross‑Border Educational Credentials Verification
+# Nexigen - Cross‑Border Educational Credentials Verification
 
 > Including Issuer Authorization & Trust Validation
 
@@ -146,7 +146,7 @@ The system consists of:
 
 #### Presentation
 
-The student uses the **Certizen Student App** (powered by **Affinidi TDK**) to present credentials to **Nova Corp** via **DIDComm (VDSP) protocol**.
+The student uses the **Nexigen Student App** (powered by **Affinidi TDK**) to present credentials to **Nova Corp** via **DIDComm (VDSP) protocol**.
 
 #### Verification Process
 
@@ -257,7 +257,7 @@ make docker-rebuild
 ## 📁 Project Structure
 
 ```
-certizen-demo/
+nexigen-demo/
 ├── Makefile                          # All operation commands
 ├── README.md                         # This file
 │

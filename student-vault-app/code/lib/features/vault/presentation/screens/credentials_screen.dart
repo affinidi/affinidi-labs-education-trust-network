@@ -22,7 +22,7 @@ class CredentialsScreen extends ConsumerStatefulWidget {
   ConsumerState<CredentialsScreen> createState() => _CredentialsScreenState();
 }
 
-const _logKey = 'CERTIZEN_CREDENTIALS';
+const _logKey = 'NEXIGEN_CREDENTIALS';
 
 class _CredentialsScreenState extends ConsumerState<CredentialsScreen> {
   bool _hasRequestedCredentials = false;

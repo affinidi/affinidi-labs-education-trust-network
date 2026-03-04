@@ -26,7 +26,7 @@ class PerVCTrustRegistryResult {
 
 /// Performs trust registry checks on all VCs in a verifiable presentation
 class ValidateCredentialsTrustRegistryUseCase {
-  static const _allowedTypes = ['AnyTCertizenPOCEdCert', 'EducationCredential'];
+  static const _allowedTypes = ['AnyTNexigenPOCEdCert', 'EducationCredential'];
 
   Future<List<PerVCTrustRegistryResult>> call(
     VerifiablePresentation verifiablePresentation, {

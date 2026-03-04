@@ -1,6 +1,6 @@
 # Troubleshooting Guide
 
-This guide covers common issues and their solutions across the Certizen Demo project.
+This guide covers common issues and their solutions across the Nexigen Demo project.
 
 ## Table of Contents
 
@@ -342,7 +342,7 @@ make docker-rebuild
 
 ```bash
 # Fix permissions on data directories
-cd certizen-demo
+cd nexigen-demo
 chmod -R 755 university-issuance-service/instances/*/data
 chmod -R 755 trust-registry/*/data
 
@@ -390,7 +390,7 @@ sudo usermod -aG docker $USER
 wsl --install
 
 # Run project inside WSL2
-cd /mnt/c/path/to/certizen-demo
+cd /mnt/c/path/to/nexigen-demo
 ```
 
 **Docker Desktop for Windows**: Enable WSL2 backend in Docker Desktop settings.

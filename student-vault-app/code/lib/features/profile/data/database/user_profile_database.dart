@@ -33,7 +33,7 @@ class UserProfileDatabase extends _$UserProfileDatabase {
 LazyDatabase _openConnection() {
   return LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'certizen_student_vault.sqlite'));
+    final file = File(p.join(dbFolder.path, 'nexigen_student_vault.sqlite'));
     return NativeDatabase(file);
   });
 }

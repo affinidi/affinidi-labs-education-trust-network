@@ -3,7 +3,7 @@ class SettingsConstants {
   SettingsConstants._(); // Private constructor
 
   /// Default app name
-  static const String defaultAppName = 'Certizen';
+  static const String defaultAppName = 'Nexigen';
 
   /// Default mediator DID
   static const String defaultMediatorDid =

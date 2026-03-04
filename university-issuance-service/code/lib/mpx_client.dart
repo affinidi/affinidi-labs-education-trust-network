@@ -407,12 +407,12 @@ class MpxClient {
     final unsignedCredential = VcDataModelV2(
       context: [
         dmV2ContextUrl,
-        'https://schema.affinidi.io/AnyTCertizenPOCEdCertV1R0V1R0.jsonld',
+        'https://schema.affinidi.io/AnyTNexigenPOCEdCertV1R0V1R0.jsonld',
       ],
       credentialSchema: [
         CredentialSchema(
           id: Uri.parse(
-            'https://schema.affinidi.io/AnyTCertizenPOCEdCertV1R0V1R0.json',
+            'https://schema.affinidi.io/AnyTNexigenPOCEdCertV1R0V1R0.json',
           ),
           type: 'JsonSchemaValidator2018',
         ),
@@ -495,7 +495,7 @@ class MpxClient {
     final contactCard = ContactCard(
       did: permanentDid,
       type: 'individual',
-      contactInfo: {"firstName": "Certizen Bank", "lastName": "Issuer"},
+      contactInfo: {"firstName": "Nexigen Bank", "lastName": "Issuer"},
     );
 
     print('[createOobInvite] Calling mpxSDK.createOobFlow...');

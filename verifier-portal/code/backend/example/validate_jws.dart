@@ -6,13 +6,13 @@ Future<void> main() async {
   final vcWithoutProof = {
     "@context": [
       "https://www.w3.org/ns/credentials/v2",
-      "https://schema.affinidi.io/AnyTCertizenPOCEdCertV1R0V1R0.jsonld",
+      "https://schema.affinidi.io/AnyTNexigenPOCEdCertV1R0V1R0.jsonld",
     ],
     "issuer": {"id": "did:web:d1d3c0d01e8f.ngrok-free.app:hongkong-university"},
-    "type": ["VerifiableCredential", "AnyTCertizenPOCEdCert"],
+    "type": ["VerifiableCredential", "AnyTNexigenPOCEdCert"],
     "id": "claimid:d6800dea-7d9a-40e2-b2bb-aae5f1975777",
     "credentialSchema": {
-      "id": "https://schema.affinidi.io/AnyTCertizenPOCEdCertV1R0V1R0.json",
+      "id": "https://schema.affinidi.io/AnyTNexigenPOCEdCertV1R0V1R0.json",
       "type": "JsonSchemaValidator2018",
     },
     "validFrom": "2026-01-29T15:01:02.355368Z",

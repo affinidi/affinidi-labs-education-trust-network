@@ -27,7 +27,7 @@ Browsers block these cross-origin requests unless the target servers send CORS h
 Run the test script to check your setup:
 
 ```bash
-cd /Users/csamprajan/Affinidi/POCs/certizen-demo/verifier-portal/code
+cd /Users/csamprajan/Affinidi/POCs/nexigen-demo/verifier-portal/code
 ./scripts/test-didcomm-init.sh
 ```
 
@@ -45,7 +45,7 @@ This will check:
 This is the **quickest way** to test your application locally:
 
 ```bash
-cd /Users/csamprajan/Affinidi/POCs/certizen-demo/verifier-portal/code
+cd /Users/csamprajan/Affinidi/POCs/nexigen-demo/verifier-portal/code
 
 # Launch Chrome with CORS disabled
 ./scripts/launch-chrome-no-cors.sh
@@ -61,7 +61,7 @@ Native apps don't have CORS restrictions:
 
 ```bash
 # iOS
-cd /Users/csamprajan/Affinidi/POCs/certizen-demo/verifier-portal/code
+cd /Users/csamprajan/Affinidi/POCs/nexigen-demo/verifier-portal/code
 flutter run -d ios
 
 # Android
@@ -184,7 +184,7 @@ ngrok http 4000
 
 **Solution:** Clean and regenerate:
 ```bash
-cd /Users/csamprajan/Affinidi/POCs/certizen-demo/verifier-portal/code
+cd /Users/csamprajan/Affinidi/POCs/nexigen-demo/verifier-portal/code
 make clean
 make dev-up
 ```

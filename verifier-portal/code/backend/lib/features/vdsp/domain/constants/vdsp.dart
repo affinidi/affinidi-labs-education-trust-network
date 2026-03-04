@@ -10,7 +10,7 @@ final defaultVerifierClient = VerifierClient(
   purpose: 'Share your credentials to apply for job',
 );
 
-final dcqlCertizen = DcqlCredentialQuery(
+final dcqlNexigen = DcqlCredentialQuery(
   credentials: [
     DcqlCredential(
       id: const Uuid().v4(),

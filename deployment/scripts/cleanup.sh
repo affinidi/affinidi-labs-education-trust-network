@@ -1,8 +1,8 @@
 #!/bin/bash
-# Cleanup script for Certizen
+# Cleanup script for Nexigen
 set -e  # Exit on error
 
-echo "🧹 Cleaning up Certizen components..."
+echo "🧹 Cleaning up Nexigen components..."
 echo ""
 echo "📦 Note: Component code folders (governance-portal, university-issuance-service,"
 echo "   verifier-portal, trust-registry, student-vault-app) are part of the repository and will NOT be removed"
@@ -25,7 +25,7 @@ fi
 # Clean ngrok log files
 echo "  🗑️  Removing ngrok log files..."
 rm -f /tmp/ngrok-*.log
-rm -f ~/.config/ngrok/ngrok-certizen.yml
+rm -f ~/.config/ngrok/ngrok-nexigen.yml
 echo "  ✅ Ngrok log files removed"
 
 # Clean ngrok token from .env files
@@ -182,7 +182,7 @@ fi
 
 # Remove Docker images from this project
 echo "  🗑️  Removing Docker images..."
-docker images | grep -E 'certizen|university-issuer' | awk '{print $3}' | xargs -r docker rmi 2>/dev/null || echo "  ⚠️  Some images could not be removed (may be in use)"
+docker images | grep -E 'nexigen|university-issuer' | awk '{print $3}' | xargs -r docker rmi 2>/dev/null || echo "  ⚠️  Some images could not be removed (may be in use)"
 echo "  ✅ Docker images cleaned"
 
 echo ""

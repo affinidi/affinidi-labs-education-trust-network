@@ -23,5 +23,5 @@ services:
     restart: unless-stopped
 
 networks:
-  certizen-network:
+  nexigen-network:
     driver: bridge

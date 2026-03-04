@@ -76,7 +76,7 @@ curl --location 'https://marmot-suited-muskrat.ngrok-free.app/sweetlane-bank/api
 
 ```bash
 
-# Regenerate Certizen Group DID:web
+# Regenerate Nexigen Group DID:web
 curl --location 'https://marmot-suited-muskrat.ngrok-free.app/sweetlane-bank/api/generate-did-web' \
 --header 'Content-Type: application/json' \
 --data '{

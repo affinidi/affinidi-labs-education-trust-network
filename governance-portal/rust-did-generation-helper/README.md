@@ -197,7 +197,7 @@ If you need to sync with affinidi-trust-registry-rs:
 ```bash
 # From POCs directory
 cp affinidi-trust-registry-rs/trust-registry/bin/generate_secrets.rs \
-   certizen-demo/governance-portal/rust-did-generation-helper/bin/
+   nexigen-demo/governance-portal/rust-did-generation-helper/bin/
 
 # Don't copy Cargo.toml or src/ - we use minimal standalone versions
 ```

@@ -4,13 +4,13 @@ services:
   #   build:
   #     context: ./domain-setup/code
   #     dockerfile: Dockerfile
-  #   container_name: certizen-domain-setup
+  #   container_name: nexigen-domain-setup
   #   environment:
   #     - NGROK_AUTH_TOKEN=${NGROK_AUTH_TOKEN}
   #   volumes:
   #     - ./domain-setup/code/domains.json:/app/domains.json
   #   networks:
-  #     - certizen-network
+  #     - nexigen-network
   #   restart: "no"
 
   # Hong Kong University Issuance Service
@@ -18,7 +18,7 @@ services:
     build:
       context: ./university-issuance-service/code
       dockerfile: Dockerfile
-    container_name: certizen-hk-university-issuer
+    container_name: nexigen-hk-university-issuer
     ports:
       - "3000:3000"
     env_file:
@@ -28,7 +28,7 @@ services:
       - ./university-issuance-service/instances/hk-university/data:/app/data
       - ./university-issuance-service/instances/hk-university/keys:/app/keys
     networks:
-      - certizen-network
+      - nexigen-network
     restart: unless-stopped
 
   # Macau University Issuance Service
@@ -36,7 +36,7 @@ services:
     build:
       context: ./university-issuance-service/code
       dockerfile: Dockerfile
-    container_name: certizen-macau-university-issuer
+    container_name: nexigen-macau-university-issuer
     ports:
       - "3001:3001"
     env_file:
@@ -46,7 +46,7 @@ services:
       - ./university-issuance-service/instances/macau-university/data:/app/data
       - ./university-issuance-service/instances/macau-university/keys:/app/keys
     networks:
-      - certizen-network
+      - nexigen-network
     restart: unless-stopped
 
   # Trust Registry services are deployed separately (cloud or local setup)
@@ -55,7 +55,7 @@ services:
   # Hong Kong Ministry Trust Registry Database (disabled - using cloud) (disabled - using cloud)
   # hk-trust-registry-db:
   #   image: postgres:15-alpine
-  #   container_name: certizen-hk-tr-db
+  #   container_name: nexigen-hk-tr-db
   #   environment:
   #     - POSTGRES_DB=hk_trust_registry
   #     - POSTGRES_USER=${HK_TR_DB_USER:-postgres}
@@ -63,7 +63,7 @@ services:
   #   volumes:
   #     - hk-tr-db-data:/var/lib/postgresql/data
   #   networks:
-  #     - certizen-network
+  #     - nexigen-network
   #   restart: unless-stopped
 
   # Hong Kong Ministry Trust Registry API (disabled - using cloud)
@@ -71,7 +71,7 @@ services:
   #   build:
   #     context: ./trust-registry-api
   #     dockerfile: Dockerfile
-  #   container_name: certizen-hk-trust-registry
+  #   container_name: nexigen-hk-trust-registry
   #   ports:
   #     - "3232:3232"
   #   environment:
@@ -81,7 +81,7 @@ services:
   #   volumes:
   #     - ./domain-setup/code/domains.json:/app/domains.json:ro
   #   networks:
-  #     - certizen-network
+  #     - nexigen-network
   #   depends_on:
   #     - domain-setup
   #     - hk-trust-registry-db
@@ -90,7 +90,7 @@ services:
   # Macau Ministry Trust Registry Database (disabled - using cloud)
   # macau-trust-registry-db:
   #   image: postgres:15-alpine
-  #   container_name: certizen-macau-tr-db
+  #   container_name: nexigen-macau-tr-db
   #   environment:
   #     - POSTGRES_DB=macau_trust_registry
   #     - POSTGRES_USER=${MACAU_TR_DB_USER:-postgres}
@@ -98,7 +98,7 @@ services:
   #   volumes:
   #     - macau-tr-db-data:/var/lib/postgresql/data
   #   networks:
-  #     - certizen-network
+  #     - nexigen-network
   #   restart: unless-stopped
 
   # Macau Ministry Trust Registry API (disabled - using cloud)
@@ -106,7 +106,7 @@ services:
   #   build:
   #     context: ./trust-registry-api
   #     dockerfile: Dockerfile
-  #   container_name: certizen-macau-trust-registry
+  #   container_name: nexigen-macau-trust-registry
   #   ports:
   #     - "3233:3233"
   #   environment:
@@ -116,7 +116,7 @@ services:
   #   volumes:
   #     - ./domain-setup/code/domains.json:/app/domains.json:ro
   #   networks:
-  #     - certizen-network
+  #     - nexigen-network
   #   depends_on:
   #     - domain-setup
   #     - macau-trust-registry-db
@@ -125,7 +125,7 @@ services:
   # Singapore Ministry Trust Registry Database (disabled - using cloud)
   # sg-trust-registry-db:
   #   image: postgres:15-alpine
-  #   container_name: certizen-sg-tr-db
+  #   container_name: nexigen-sg-tr-db
   #   environment:
   #     - POSTGRES_DB=sg_trust_registry
   #     - POSTGRES_USER=${SG_TR_DB_USER:-postgres}
@@ -133,7 +133,7 @@ services:
   #   volumes:
   #     - sg-tr-db-data:/var/lib/postgresql/data
   #   networks:
-  #     - certizen-network
+  #     - nexigen-network
   #   restart: unless-stopped
 
   # Singapore Ministry Trust Registry API (disabled - using cloud)
@@ -141,7 +141,7 @@ services:
   #   build:
   #     context: ./trust-registry-api
   #     dockerfile: Dockerfile
-  #   container_name: certizen-sg-trust-registry
+  #   container_name: nexigen-sg-trust-registry
   #   ports:
   #     - "3234:3234"
   #   environment:
@@ -151,7 +151,7 @@ services:
   #   volumes:
   #     - ./domain-setup/code/domains.json:/app/domains.json:ro
   #   networks:
-  #     - certizen-network
+  #     - nexigen-network
   #   depends_on:
   #     - domain-setup
   #     - sg-trust-registry-db
@@ -162,7 +162,7 @@ services:
     build:
       context: ./verifier-portal/code
       dockerfile: Dockerfile
-    container_name: certizen-nova-verifier
+    container_name: nexigen-nova-verifier
     ports:
       - "4000:4000"
     env_file:
@@ -171,7 +171,7 @@ services:
       - ./domain-setup/code/domains.json:/app/domains.json:ro
       - ./verifier-portal/instances/nova-corp/data:/app/data
     networks:
-      - certizen-network
+      - nexigen-network
     restart: unless-stopped
 
   # Hong Kong Ministry Governance Portal
@@ -179,7 +179,7 @@ services:
     build:
       context: ./governance-portal/code
       dockerfile: Dockerfile
-    container_name: certizen-hk-tr-portal
+    container_name: nexigen-hk-tr-portal
     ports:
       - "5000:5000"
     env_file:
@@ -187,7 +187,7 @@ services:
     volumes:
       - ./domain-setup/code/domains.json:/app/domains.json:ro
     networks:
-      - certizen-network
+      - nexigen-network
     restart: unless-stopped
 
   # Macau Ministry Governance Portal
@@ -195,7 +195,7 @@ services:
     build:
       context: ./governance-portal/code
       dockerfile: Dockerfile
-    container_name: certizen-macau-tr-portal
+    container_name: nexigen-macau-tr-portal
     ports:
       - "5001:5001"
     env_file:
@@ -203,7 +203,7 @@ services:
     volumes:
       - ./domain-setup/code/domains.json:/app/domains.json:ro
     networks:
-      - certizen-network
+      - nexigen-network
     restart: unless-stopped
 
   # Singapore Ministry Governance Portal
@@ -211,7 +211,7 @@ services:
     build:
       context: ./governance-portal/code
       dockerfile: Dockerfile
-    container_name: certizen-sg-tr-portal
+    container_name: nexigen-sg-tr-portal
     ports:
       - "5002:5002"
     env_file:
@@ -219,17 +219,17 @@ services:
     volumes:
       - ./domain-setup/code/domains.json:/app/domains.json:ro
     networks:
-      - certizen-network
+      - nexigen-network
     restart: unless-stopped
 
 networks:
-  certizen-network:
+  nexigen-network:
     driver: bridge
 
 volumes:
   hk-tr-db-data:
-    name: certizen-hk-tr-db-data
+    name: nexigen-hk-tr-db-data
   macau-tr-db-data:
-    name: certizen-macau-tr-db-data
+    name: nexigen-macau-tr-db-data
   sg-tr-db-data:
-    name: certizen-sg-tr-db-data
+    name: nexigen-sg-tr-db-data

@@ -70,13 +70,13 @@ To test the fix:
 
 1. **Start fresh ngrok environment:**
    ```bash
-   cd /Users/csamprajan/Affinidi/POCs/certizen-demo
+   cd /Users/csamprajan/Affinidi/POCs/nexigen-demo
    make dev-up
    ```
 
 2. **Or just verifier:**
    ```bash
-   cd /Users/csamprajan/Affinidi/POCs/certizen-demo/verifier-portal/code
+   cd /Users/csamprajan/Affinidi/POCs/nexigen-demo/verifier-portal/code
    make dev-up
    ```
 
@@ -93,7 +93,7 @@ To test the fix:
 If you need to manually clean the keys:
 
 ```bash
-cd /Users/csamprajan/Affinidi/POCs/certizen-demo/verifier-portal/code
+cd /Users/csamprajan/Affinidi/POCs/nexigen-demo/verifier-portal/code
 make clean
 ```
 

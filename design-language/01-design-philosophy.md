@@ -7,18 +7,18 @@
 
 ## Overview
 
-The Certizen Design System is built on a foundation of clarity, trust, and accessibility. Our design philosophy guides every decision—from color choices to component behavior—ensuring a cohesive, professional experience across all platforms.
+The Nexigen Design System is built on a foundation of clarity, trust, and accessibility. Our design philosophy guides every decision—from color choices to component behavior—ensuring a cohesive, professional experience across all platforms.
 
 ### Platform Mission
 
-Certizen enables National Education Governors (Ministries) across Hong Kong, Macau, and Singapore to operate trust registries that authorize universities to issue verifiable degree certificates. The platform demonstrates complete end-to-end flows: from governance authority registration, credential issuance via VDIP, to employer verification via VDSP and TRQP protocols.
+Nexigen enables National Education Governors (Ministries) across Hong Kong, Macau, and Singapore to operate trust registries that authorize universities to issue verifiable degree certificates. The platform demonstrates complete end-to-end flows: from governance authority registration, credential issuance via VDIP, to employer verification via VDSP and TRQP protocols.
 
 **User Contexts**:
 - **National Education Administrators**: Managing trust registries, authorizing universities, defining governance frameworks
 - **University Staff**: Issuing verifiable credentials through backend services
 - **Students**: Collecting, storing, and sharing credentials via mobile vault
 - **Employers**: Verifying credential authenticity and issuer authorization
-- **Certizen Operators**: Platform administration and multi-jurisdiction coordination
+- **Nexigen Operators**: Platform administration and multi-jurisdiction coordination
 
 ---
 
@@ -131,7 +131,7 @@ Educational credential verification is fragmented, slow, and prone to fraud. Stu
 
 ### Solution
 
-Certizen provides a decentralized, trustworthy platform for credential issuance, storage, and verification using DIDComm protocol and trust registries.
+Nexigen provides a decentralized, trustworthy platform for credential issuance, storage, and verification using DIDComm protocol and trust registries.
 
 ### Design System's Role
 
@@ -282,7 +282,7 @@ The design system ensures:
 4. **Customisation**: Token-based system allows brand customisation
 5. **Future-Proof**: Active development and long-term support
 
-**Implementation**: Use MD3 as foundation, customise with Certizen tokens.
+**Implementation**: Use MD3 as foundation, customise with Nexigen tokens.
 
 ---
 
@@ -370,7 +370,7 @@ The design system ensures:
 
 ## Conclusion
 
-The Certizen Design System is built on principles that prioritise user needs, accessibility, and developer efficiency. Every design decision is intentional, documented, and aligned with our mission to provide trustworthy, accessible credential management.
+The Nexigen Design System is built on principles that prioritise user needs, accessibility, and developer efficiency. Every design decision is intentional, documented, and aligned with our mission to provide trustworthy, accessible credential management.
 
 When in doubt, return to these principles:
 1. **Clarity** over cleverness
@@ -379,4 +379,4 @@ When in doubt, return to these principles:
 4. **Progressive disclosure** reduces overwhelm
 5. **Mobile-first**, desktop-enhanced
 
-These principles guide every component, every colour choice, and every interaction pattern in the Certizen ecosystem.
+These principles guide every component, every colour choice, and every interaction pattern in the Nexigen ecosystem.

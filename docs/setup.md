@@ -21,7 +21,7 @@
 ```bash
 # Clone repository
 git clone <repository>
-cd certizen-demo
+cd nexigen-demo
 
 # Start complete environment (ngrok tunnels + Docker)
 make dev-up

@@ -3,7 +3,7 @@ enum NotificationCounterType {
   connections,
   identities,
   profile,
-  certizen;
+  nexigen;
 
   const NotificationCounterType();
 }

@@ -24,7 +24,7 @@ main (production)
 
 ```bash
 git clone <repository-url>
-cd certizen-demo
+cd nexigen-demo
 ```
 
 ### 2. Switch to Develop Branch

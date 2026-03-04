@@ -15,7 +15,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get messagingEngine => 'Affinidi';
 
   @override
-  String get appName => 'Certizen Group';
+  String get appName => 'Nexigen Group';
 
   @override
   String tabsTitle(String tabName) {

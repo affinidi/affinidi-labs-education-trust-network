@@ -19,11 +19,11 @@ services:
       - ./data:/app/data
       - ./keys:/app/keys
     networks:
-      - certizen-network
+      - nexigen-network
     depends_on:
       - macau-trust-registry
     restart: unless-stopped
 
 networks:
-  certizen-network:
+  nexigen-network:
     external: true
