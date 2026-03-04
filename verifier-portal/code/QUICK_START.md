@@ -3,7 +3,7 @@
 ## TL;DR - Get Running Fast
 
 ```bash
-cd /Users/csamprajan/Affinidi/POCs/nexigen-demo/verifier-portal/code
+cd /Users/csamprajan/Affinidi/POCs/affinidi-labs-education-trust-network/verifier-portal/code
 
 # 1. Start server and ngrok
 make dev-up
@@ -43,11 +43,13 @@ That's it! 🎉
 ### Issue: Still seeing CORS errors?
 
 **Diagnostic:**
+
 ```bash
 make test-init
 ```
 
 This will check:
+
 - Ngrok tunnel status
 - DID server health
 - DID document validity
@@ -57,6 +59,7 @@ This will check:
 ### Issue: DID document shows wrong domain?
 
 **Fix:**
+
 ```bash
 make clean
 make dev-up
@@ -65,9 +68,10 @@ make dev-up
 ### Issue: "Error: command not found"
 
 **Check you're in the right directory:**
+
 ```bash
 pwd
-# Should output: /Users/csamprajan/Affinidi/POCs/nexigen-demo/verifier-portal/code
+# Should output: /Users/csamprajan/Affinidi/POCs/affinidi-labs-education-trust-network/verifier-portal/code
 ```
 
 ## Full Workflow
@@ -75,6 +79,7 @@ pwd
 ### Initial Setup (First Time Only)
 
 1. **Install dependencies:**
+
    ```bash
    flutter pub get
    ```
@@ -88,18 +93,21 @@ pwd
 ### Daily Development Workflow
 
 1. **Terminal 1 - Start Server:**
+
    ```bash
-   cd /Users/csamprajan/Affinidi/POCs/nexigen-demo/verifier-portal/code
+   cd /Users/csamprajan/Affinidi/POCs/affinidi-labs-education-trust-network/verifier-portal/code
    make dev-up
    ```
-   
+
    Note the ngrok URL from the output:
+
    ```
    ✅ Ngrok tunnel started
       Public URL: https://abc123xyz.ngrok-free.app
    ```
 
 2. **Terminal 2 - Launch Chrome:**
+
    ```bash
    make chrome-no-cors
    ```
@@ -122,6 +130,7 @@ make dev-up
 ```
 
 The server will:
+
 - Reuse existing DID keys (no cleanup)
 - Rebuild Flutter web app
 - Restart server
@@ -149,6 +158,7 @@ make clean          # Clean all generated files
 ## Understanding the Setup
 
 ### Directory Structure
+
 ```
 verifier-portal/code/
 ├── .env.ngrok              # Generated - ngrok configuration
@@ -165,6 +175,7 @@ verifier-portal/code/
 ```
 
 ### Network Flow
+
 ```
 ┌─────────────┐
 │   Browser   │ ──https://abc.ngrok-free.app──▶ ┌──────────┐
@@ -190,10 +201,12 @@ verifier-portal/code/
 ### Why CORS Disabled?
 
 The MeetingPlace SDK needs to resolve external DIDs:
+
 - `did:web:cheese-parade.meetingplace.affinidi.io`
 - `did:web:apse1.mediator.affinidi.io:.well-known`
 
 These servers don't send CORS headers allowing your ngrok domain, so:
+
 - ✅ **Chrome with CORS disabled:** Works perfectly
 - ❌ **Normal Chrome:** Blocked by CORS policy
 - ✅ **Native mobile app:** No CORS restrictions
@@ -203,23 +216,29 @@ These servers don't send CORS headers allowing your ngrok domain, so:
 For production, you need proper CORS configuration or use native apps:
 
 ### Option 1: Request CORS Headers
+
 Contact MeetingPlace/Mediator service teams to add:
+
 ```
 Access-Control-Allow-Origin: https://your-production-domain.com
 ```
 
 ### Option 2: Use Native Apps
+
 Build and deploy mobile apps (no CORS issues):
+
 ```bash
 # iOS
 flutter build ios --release
 
-# Android  
+# Android
 flutter build apk --release
 ```
 
 ### Option 3: Use Different SERVICE_DID
+
 If available, use `did:key` instead of `did:web`:
+
 ```env
 SERVICE_DID=did:key:z6Mkfriq1MqLBoPWecGoDLjguo1sB9brj6wT3qZ5BxkKpuP6
 ```
@@ -234,6 +253,7 @@ SERVICE_DID=did:key:z6Mkfriq1MqLBoPWecGoDLjguo1sB9brj6wT3qZ5BxkKpuP6
 ## Getting Help
 
 1. **Run diagnostics:**
+
    ```bash
    make test-init
    ```
@@ -248,12 +268,15 @@ SERVICE_DID=did:key:z6Mkfriq1MqLBoPWecGoDLjguo1sB9brj6wT3qZ5BxkKpuP6
 ## Tips & Tricks
 
 ### View Ngrok Dashboard
+
 ```bash
 open http://localhost:4040
 ```
+
 Shows all HTTP requests, very useful for debugging!
 
 ### Stop Everything
+
 ```bash
 # Stop dev-up (Ctrl+C in Terminal 1)
 # Close Chrome CORS-disabled window
@@ -262,6 +285,7 @@ pkill -f ngrok
 ```
 
 ### Quick Restart
+
 ```bash
 # If server is running, Ctrl+C
 # Then:
@@ -270,12 +294,14 @@ make dev-up
 ```
 
 ### Check if CORS is Actually Disabled
+
 In Chrome DevTools Console:
+
 ```javascript
-fetch('https://cheese-parade.meetingplace.affinidi.io/.well-known/did.json')
-  .then(r => r.json())
-  .then(d => console.log('✅ CORS disabled:', d.id))
-  .catch(e => console.error('❌ CORS still active:', e));
+fetch("https://cheese-parade.meetingplace.affinidi.io/.well-known/did.json")
+  .then((r) => r.json())
+  .then((d) => console.log("✅ CORS disabled:", d.id))
+  .catch((e) => console.error("❌ CORS still active:", e));
 ```
 
 If you see the DID, CORS is disabled ✅  

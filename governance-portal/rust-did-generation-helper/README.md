@@ -60,6 +60,7 @@ cargo run --bin generate-secrets --features="dev-tools"
 ```
 
 This generates `.env.test` with:
+
 - `CLIENT_DID`: Generated did:peer:2 identifier
 - `CLIENT_SECRETS`: JWK private keys for authentication and encryption
 
@@ -67,13 +68,15 @@ This generates `.env.test` with:
 
 ### What Changed
 
-**Before**: 
+**Before**:
+
 - Required external affinidi-trust-registry-rs repository
 - Used workspace dependencies
 - Had 40+ dependencies (AWS SDK, axum web server, Redis, etc.)
 - Included full trust-registry library code
 
 **After**:
+
 - Self-contained in governance-portal/rust-did-generation-helper
 - Standalone Cargo.toml (no workspace)
 - Minimal 9 core dependencies
@@ -101,6 +104,7 @@ Unlike library crates, binary projects should commit `Cargo.lock` to ensure repr
 ### DID Format
 
 Generates `did:peer:2` identifiers with:
+
 - P-256 verification key (for signing)
 - secp256k1 encryption key (for encryption)
 - Mediator service endpoint
@@ -138,13 +142,15 @@ This is then transformed into `user_config.json`:
 
 If you get dependency resolution errors:
 
-1. **Ensure Cargo.lock exists**: 
+1. **Ensure Cargo.lock exists**:
+
    ```bash
    # Should be committed in git
    git status Cargo.lock
    ```
 
 2. **Clean and rebuild**:
+
    ```bash
    cargo clean
    cargo build --bin generate-secrets --features="dev-tools"
@@ -160,6 +166,7 @@ If you get dependency resolution errors:
 If the binary fails to run:
 
 1. **Check environment variables**:
+
    ```bash
    echo $MEDIATOR_URL
    echo $MEDIATOR_DID
@@ -177,6 +184,7 @@ If the binary fails to run:
 To update to newer versions:
 
 1. **Check for updates**:
+
    ```bash
    cargo outdated
    ```
@@ -184,6 +192,7 @@ To update to newer versions:
 2. **Update Cargo.toml** with new versions
 
 3. **Test build**:
+
    ```bash
    cargo build --bin generate-secrets --features="dev-tools"
    ```
@@ -197,7 +206,7 @@ If you need to sync with affinidi-trust-registry-rs:
 ```bash
 # From POCs directory
 cp affinidi-trust-registry-rs/trust-registry/bin/generate_secrets.rs \
-   nexigen-demo/governance-portal/rust-did-generation-helper/bin/
+   affinidi-labs-education-trust-network/governance-portal/rust-did-generation-helper/bin/
 
 # Don't copy Cargo.toml or src/ - we use minimal standalone versions
 ```
@@ -205,6 +214,7 @@ cp affinidi-trust-registry-rs/trust-registry/bin/generate_secrets.rs \
 ## Security Notes
 
 ⚠️ **IMPORTANT**:
+
 - Never commit generated `.env.test` files
 - Never commit `user_config.json` files with real keys
 - The generated secrets contain private keys - treat them as passwords
@@ -213,6 +223,7 @@ cp affinidi-trust-registry-rs/trust-registry/bin/generate_secrets.rs \
 ## Integration
 
 This tool integrates with:
+
 - **setup.sh**: Parent script that orchestrates DID generation
 - **Affinidi Mediator**: Cloud service for DIDComm message routing
 - **Flutter App**: Governance portal instances that use the generated configs
@@ -222,6 +233,7 @@ This tool integrates with:
 Originally copied from: `affinidi-trust-registry-rs/trust-registry`
 
 Simplified to remove:
+
 - Web server components (axum, tower-http)
 - Database adapters (AWS DynamoDB, Redis)
 - API layer
@@ -239,4 +251,3 @@ Apache-2.0 (inherited from affinidi-trust-registry-rs)
 - [../NEW_DID_INFO.md](../NEW_DID_INFO.md) - Overview of DID generation approach
 - [../SETUP_AUTOMATION.md](../SETUP_AUTOMATION.md) - Smart regeneration logic
 - [../setup.sh](../setup.sh) - Parent setup script
-

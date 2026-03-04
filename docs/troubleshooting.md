@@ -19,6 +19,7 @@ This guide covers common issues and their solutions across the Nexigen Demo proj
 **Error**: `Exception: No matching key agreement keys found for the mediator and the recipient.`
 
 **Symptoms**:
+
 - Governance portal fails to start
 - DIDComm message encryption fails
 - Connection to mediator fails
@@ -39,6 +40,7 @@ make dev-up
 ```
 
 Make sure the setup script:
+
 1. Generates did:peer:2 with X25519 + Ed25519 keys
 2. Saves X25519 private key in secrets
 3. Saves Ed25519 private key in secrets
@@ -58,7 +60,7 @@ void main() {
   Logger.root.onRecord.listen((record) {
     print('${record.level.name}: ${record.time}: ${record.message}');
   });
-  
+
   // Your app code
 }
 ```
@@ -95,6 +97,7 @@ curl https://apse1.mediator.affinidi.io/.well-known/did.json
 **Error**: `Access to fetch at 'https://example.com' from origin 'http://localhost' has been blocked by CORS policy`
 
 **Common Causes**:
+
 1. Backend not sending CORS headers
 2. Preflight requests not handled
 3. Credentials included in cross-origin requests
@@ -142,9 +145,9 @@ final handler = Pipeline()
 Future<Response> corsProxyHandler(Request request) async {
   final body = await request.readAsString();
   final targetUrl = jsonDecode(body)['url'];
-  
+
   final response = await http.get(Uri.parse(targetUrl));
-  
+
   return Response.ok(
     response.body,
     headers: {
@@ -202,6 +205,7 @@ make dev-up
 ### Docker Containers Not Starting
 
 **Symptoms**:
+
 - `docker-compose up` fails
 - Containers exit immediately
 - Port conflicts
@@ -242,6 +246,7 @@ make dev-up
 ### Localhost vs. Ngrok Confusion
 
 **Symptoms**:
+
 - Services can't connect to each other
 - DID resolution fails
 - "Connection refused" errors
@@ -282,6 +287,7 @@ HK_UNIVERSITY_SERVICE_URL=http://10.0.2.2:3000
 ### Ngrok Tunnel Disconnects
 
 **Symptoms**:
+
 - Ngrok tunnels stop working after a while
 - New domain assigned after restart
 - DID resolution fails
@@ -342,7 +348,7 @@ make docker-rebuild
 
 ```bash
 # Fix permissions on data directories
-cd nexigen-demo
+cd affinidi-labs-education-trust-network
 chmod -R 755 university-issuance-service/instances/*/data
 chmod -R 755 trust-registry/*/data
 
@@ -365,6 +371,7 @@ brew install ngrok   # Tunneling (optional)
 ```
 
 **Docker Desktop**: Make sure Docker Desktop is running and has enough resources:
+
 - Memory: 4GB minimum, 8GB recommended
 - Disk: 20GB minimum
 
@@ -390,7 +397,7 @@ sudo usermod -aG docker $USER
 wsl --install
 
 # Run project inside WSL2
-cd /mnt/c/path/to/nexigen-demo
+cd /mnt/c/path/to/affinidi-labs-education-trust-network
 ```
 
 **Docker Desktop for Windows**: Enable WSL2 backend in Docker Desktop settings.
@@ -432,6 +439,7 @@ flutter pub get
 ### Hot Reload Not Working
 
 **Symptoms**:
+
 - Changes not reflecting in app
 - Need to restart app manually
 
@@ -462,6 +470,7 @@ If you encounter an issue not covered here:
    - Flutter: Console output in IDE or `flutter run`
 
 3. **Verify Setup**:
+
    ```bash
    # Re-run setup scripts
    make cleanup

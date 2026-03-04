@@ -7,12 +7,14 @@
 **Architecture:** Clean Architecture with separation of concerns across all Flutter applications. Single codebase with multiple instances pattern for scalability.
 
 ### Key Participants
+
 - **Issuers:** Hong Kong University, Macau University (single codebase, 2 instances)
 - **Holders:** Students (via Student Vault App)
 - **Verifiers:** Nova Corp (employer)
 - **Governance:** Hong Kong Ministry, Macau Ministry, Singapore Ministry (single codebase, 3 instances)
 
 ### Architecture Highlights
+
 - **University Issuance Service**: Single codebase (`/university-issuance-service/code`) with multiple instances (`/instances/hk-university`, `/instances/macau-university`)
 - **Trust Registry API**: Single Rust codebase with 3 ministry instances, each with PostgreSQL backend, manual data entry via admin UI
 - **Domain Management**: 6 ngrok tunnels (HK issuer:8080, Macau issuer:8081, Nova verifier:8082, HK TR:3232, Macau TR:3233, SG TR:3234)
@@ -48,19 +50,19 @@
 
 ### 2.2 Component Overview
 
-| Component | Technology | Architecture | Port(s) | Instances | Purpose |
-|-----------|-----------|--------------|---------|-----------|---------|
-| **University Issuance Service** | Dart (Shelf) | MVC | 8080, 8081 | 2 (HK, Macau) | Single codebase for credential issuance |
-| **Verifier Portal** | Flutter Web | Clean Architecture | 8082 | 1 | Nova Corp job portal with verification |
-| **Student Vault App** | Flutter Mobile | Clean Architecture | - | 1 | Student wallet with Drift storage |
-| **Trust Registry API** | Rust | Layered | 3232, 3233, 3234 | 3 (HK, Macau, SG) | TRQP with PostgreSQL backend |
-| **Governance Portal** | Flutter Web | Clean Architecture | 3401, 3402, 3403 | 3 (HK, Macau, SG) | Admin portal for trust registry management |
-| **Domain Setup** | Node.js | Utility | - | 1 | Creates 6 ngrok tunnels |
+| Component                       | Technology     | Architecture       | Port(s)          | Instances         | Purpose                                    |
+| ------------------------------- | -------------- | ------------------ | ---------------- | ----------------- | ------------------------------------------ |
+| **University Issuance Service** | Dart (Shelf)   | MVC                | 8080, 8081       | 2 (HK, Macau)     | Single codebase for credential issuance    |
+| **Verifier Portal**             | Flutter Web    | Clean Architecture | 8082             | 1                 | Nova Corp job portal with verification     |
+| **Student Vault App**           | Flutter Mobile | Clean Architecture | -                | 1                 | Student wallet with Drift storage          |
+| **Trust Registry API**          | Rust           | Layered            | 3232, 3233, 3234 | 3 (HK, Macau, SG) | TRQP with PostgreSQL backend               |
+| **Governance Portal**           | Flutter Web    | Clean Architecture | 3401, 3402, 3403 | 3 (HK, Macau, SG) | Admin portal for trust registry management |
+| **Domain Setup**                | Node.js        | Utility            | -                | 1                 | Creates 6 ngrok tunnels                    |
 
 ### 2.3 Directory Structure
 
 ```
-nexigen-demo/
+affinidi-labs-education-trust-network/
 ├── docker-compose.yml              # Main orchestration (all services)
 ├── .env.example                    # Shared environment configuration
 ├── setup.sh                        # Automated setup script
@@ -165,6 +167,7 @@ nexigen-demo/
 ### 2.4 Data Management
 
 **Trust Registries:**
+
 - ❌ **No CSV files** - All data entered manually via Governance Portal
 - ✅ **PostgreSQL backend** - Each ministry has dedicated database
 - ✅ **Manual entry workflow**: Admin logs into Portal → Enters DID, name, schema → Saves to PostgreSQL
@@ -172,11 +175,13 @@ nexigen-demo/
 - 📋 **Future migration**: DIDComm to be implemented in Dart (see governance-portal/DIDCOMM_MIGRATION.md)
 
 **Student Vault Profile:**
+
 - ✅ **Drift SQLite** - Local database for user profile
 - ✅ **Fields**: firstName, lastName, profilePicPath, currentCompany, currentJobTitle, totalExperienceMonths
 - ❌ **No sync with issuance service** - Profile is local only, credentials store issuer data
 
 **Credential Storage:**
+
 - ✅ **Secure storage** - Encrypted credential storage in Student Vault
 - ✅ **One credential per university** - Check existence before allowing claim
 - ✅ **Credential claim flow**: Dashboard → Tap claim button → Check if exists → Navigate to issuance flow
@@ -220,6 +225,7 @@ lib/
 #### Layer Responsibilities
 
 **Domain Layer (Innermost):**
+
 - Pure business logic
 - No dependencies on outer layers
 - Defines repository interfaces
@@ -227,12 +233,14 @@ lib/
 - Framework-agnostic
 
 **Data Layer:**
+
 - Implements repository interfaces
 - Handles data sources (API, local storage)
 - Data transformation (DTO ↔ Entity)
 - Caching strategies
 
 **Presentation Layer:**
+
 - UI components and screens
 - State management
 - User input handling
@@ -240,6 +248,7 @@ lib/
 - Never directly accesses data sources
 
 **Core Layer:**
+
 - Shared across all features
 - Design system components
 - Global services
@@ -325,6 +334,7 @@ lib/
 **Overview**: Nova Corp career portal for job applications with educational credential verification via DIDComm.
 
 **User Flow**:
+
 1. Browse job listings (no authentication required)
 2. View job details with requirements
 3. Submit application with QR code for credential sharing
@@ -333,6 +343,7 @@ lib/
 6. Application status updated in real-time
 
 **Technology Stack**:
+
 - Flutter Web with Riverpod state management
 - GoRouter for navigation
 - DIDComm packages (affinidi_tdk_vdsp, ssi, dcql, didcomm)
@@ -340,6 +351,7 @@ lib/
 - Clean Architecture pattern
 
 **Architecture**:
+
 ```
 lib/
 ├── main.dart                       # App entry with ProviderScope
@@ -392,6 +404,7 @@ lib/
 ```
 
 **Key Features**:
+
 - **6 Mock Job Listings**: Senior Software Engineer, Product Manager, UX/UI Designer, DevOps Engineer, Business Development Manager, Data Scientist
 - **Real-time Verification**: StreamProvider for credential verification status updates
 - **QR Code Generation**: Client-side OOB invitation generation
@@ -402,6 +415,7 @@ lib/
 ### 3.5 Governance Portal Architecture (Flutter Web)
 
 **Current Architecture:**
+
 ```
 Governance Portal (Flutter/Dart)
         ↓ (REST API)
@@ -411,6 +425,7 @@ Affinidi Trust Registry
 ```
 
 **Instance Structure:**
+
 ```
 governance-portal/
 ├── code/                  # Shared Flutter Web codebase
@@ -658,17 +673,20 @@ lib/
 #### Key Features for Governance Portal
 
 **Dashboard:**
+
 - Overview of connected Trust Registry
 - Real-time statistics (record counts)
 - Recent activity feed
 - Quick actions (add/refresh records)
 
 **Registry Management:**
+
 - View registry configuration
 - Monitor registry health
 - Test DIDComm connectivity
 
 **Record Management:**
+
 - List all assertion records
 - Add new records (authority, entity, action, resource)
 - Update existing records
@@ -676,6 +694,7 @@ lib/
 - Bulk operations
 
 **Query Interface:**
+
 - Test Recognition queries
 - Test Authorization queries
 - View formatted JSON responses
@@ -683,12 +702,14 @@ lib/
 
 **Instance Configuration:**
 Each ministry instance has:
+
 - Unique port (HK: 3401, Macau: 3402, SG: 3403)
 - Ministry-specific branding (name, logo, colors)
 - Backend API endpoint configuration
 - Environment-based settings
 
 **Future Enhancement:**
+
 - Direct DIDComm connection (see DIDCOMM_MIGRATION.md)
 - Eliminates Rust backend dependency
 - Native Dart DIDComm implementation
@@ -696,6 +717,7 @@ Each ministry instance has:
 ---
 
 ## 4. UI/UX Standards
+
 - Export query history
 
 ### 3.6 Backend Services Architecture (MVC)
@@ -845,6 +867,7 @@ All Flutter apps (Student Vault, Verifier Portal, Governance Portal) must follow
 ## 5. Technical Stack
 
 ### Frontend (Flutter)
+
 - **Framework:** Flutter 3.x
 - **State Management:** Riverpod
 - **HTTP Client:** Dio
@@ -854,6 +877,7 @@ All Flutter apps (Student Vault, Verifier Portal, Governance Portal) must follow
 - **DIDComm:** Custom Dart implementation
 
 ### Backend (Dart)
+
 - **Framework:** Shelf (HTTP server)
 - **Database:** PostgreSQL / SQLite
 - **DID Management:** Custom implementation
@@ -861,6 +885,7 @@ All Flutter apps (Student Vault, Verifier Portal, Governance Portal) must follow
 - **Testing:** test package
 
 ### Infrastructure
+
 - **Container:** Docker
 - **Orchestration:** Docker Compose
 - **Tunneling:** ngrok (for local development)
@@ -871,6 +896,7 @@ All Flutter apps (Student Vault, Verifier Portal, Governance Portal) must follow
 ## 6. Refactoring Tasks
 
 ### Phase 1: Cleanup (Priority: High)
+
 - [x] Search and remove all Sweet Lane references
 - [x] Remove Ayra Forum logic
 - [x] Remove conglomerate/group entity logic
@@ -878,6 +904,7 @@ All Flutter apps (Student Vault, Verifier Portal, Governance Portal) must follow
 - [x] Clean up unused code and assets
 
 ### Phase 2: Rename & Restructure (Priority: High)
+
 - [x] Rename `hk-issuance-service` → `university-issuance-service` (single codebase)
 - [x] Create 2 instances: hk-university, macau-university
 - [x] Restructure verifier-portal to clean architecture
@@ -887,11 +914,13 @@ All Flutter apps (Student Vault, Verifier Portal, Governance Portal) must follow
 - [x] Update dashboard with credential claim buttons
 
 ### Phase 3: Trust Registry (Priority: High)
+
 - [x] Implement three separate trust registry instances (HK, Macau, SG)
 - [x] Create PostgreSQL backend for each instance
 - [x] Remove CSV data files (manual entry via admin UI)
 
 ### Phase 4: Verifier Portal (Priority: Medium)
+
 - [x] Implement job listings UI (clean architecture)
 - [x] Implement job details page
 - [x] Implement application page with QR code
@@ -900,6 +929,7 @@ All Flutter apps (Student Vault, Verifier Portal, Governance Portal) must follow
 - [x] Integrate with trust registry
 
 ### Phase 5: Governance Portal (Priority: Medium)
+
 - [x] Restructure to instance-based architecture (code/, data/, instances/)
 - [x] Create 3 ministry instances (HK, Macau, SG)
 - [x] Document DIDComm migration plan (DIDCOMM_MIGRATION.md)
@@ -907,6 +937,7 @@ All Flutter apps (Student Vault, Verifier Portal, Governance Portal) must follow
 - [ ] Test REST API integration with Trust Registry API (Rust)
 
 ### Phase 6: Issuance Services (Priority: Medium)
+
 - [x] Implement MVC structure for university issuance service
 - [x] Create 2 instances (HK, Macau) with single codebase
 - [x] Create credential templates (StudentID, Transcript, Degree)
@@ -914,6 +945,7 @@ All Flutter apps (Student Vault, Verifier Portal, Governance Portal) must follow
 - [x] Add admin APIs for student management
 
 ### Phase 7: Integration & Testing (Priority: High)
+
 - [ ] End-to-end testing: Issue credential → Store → Share → Verify
 - [ ] Test all three trust registries
 - [ ] Test both universities independently
@@ -926,6 +958,7 @@ All Flutter apps (Student Vault, Verifier Portal, Governance Portal) must follow
 ### 13.1 Prerequisites
 
 **Required Software:**
+
 - Docker Desktop (v20.10+) with Compose plugin
 - Node.js 18+ (for domain setup)
 - Rust 1.70+ (for trust registry API)
@@ -934,11 +967,13 @@ All Flutter apps (Student Vault, Verifier Portal, Governance Portal) must follow
 - Git (for cloning Trust Registry repository)
 
 **Required Accounts & Credentials:**
+
 - ngrok account with auth token ([Get token](https://dashboard.ngrok.com/get-started/your-authtoken))
 - Affinidi DIDComm Mediator configured ([Setup guide](https://docs.affinidi.com/products/affinidi-messaging/didcomm-mediator/))
 - Affinidi Meetingplace Control Plane configured ([Setup guide](https://docs.affinidi.com/products/affinidi-messaging/meeting-place/))
 
 **System Requirements:**
+
 - RAM: Minimum 8GB (16GB recommended)
 - Disk: At least 10GB free space
 - Network: Stable internet connection
@@ -950,13 +985,14 @@ The setup script follows a standardized pattern for consistent configuration:
 ```bash
 # 1. Clone repository
 git clone <repo-url>
-cd nexigen-demo
+cd affinidi-labs-education-trust-network
 
 # 2. Run automated setup script
 ./setup.sh
 ```
 
 **The setup script will:**
+
 1. ✅ Create `.env` from `.env.example` if not present
 2. ✅ Prompt for required credentials:
    - `SERVICE_DID` (Meetingplace Service DID)
@@ -1005,6 +1041,7 @@ flutter run --dart-define-from-file=configurations/.env
 All component setup scripts follow this pattern:
 
 1. **Environment Check**
+
    ```bash
    # Check .env exists, create from example
    if [ ! -f ".env" ]; then
@@ -1013,6 +1050,7 @@ All component setup scripts follow this pattern:
    ```
 
 2. **Validate Required Variables**
+
    ```bash
    # Prompt for missing critical variables
    SERVICE_DID=$(grep "^SERVICE_DID=" .env | cut -d '=' -f2)
@@ -1024,6 +1062,7 @@ All component setup scripts follow this pattern:
    ```
 
 3. **Auto-Derive Configuration**
+
    ```bash
    # Extract MEDIATOR_DOMAIN from MEDIATOR_DID
    MEDIATOR_DOMAIN=$(echo "$MEDIATOR_DID" | sed 's|^did:web:||')
@@ -1032,6 +1071,7 @@ All component setup scripts follow this pattern:
    ```
 
 4. **Docker Validation**
+
    ```bash
    # Ensure Docker is running
    if ! docker info > /dev/null 2>&1; then
@@ -1085,12 +1125,14 @@ docker-compose up -d domain-setup hk-trust-registry-db hk-trust-registry macau-t
 To add a new university (e.g., Singapore University):
 
 1. **Create instance directory:**
+
 ```bash
 cd university-issuance-service/instances
 mkdir sg-university
 ```
 
 2. **Copy configuration files:**
+
 ```bash
 cp hk-university/.env.example sg-university/.env.example
 cp hk-university/docker-compose.yml sg-university/docker-compose.yml
@@ -1098,7 +1140,8 @@ cp hk-university/README.md sg-university/README.md
 ```
 
 3. **Update configuration:**
-Edit `sg-university/.env.example`:
+   Edit `sg-university/.env.example`:
+
 ```env
 PORT=8083
 ENTITY_NAME=singapore-university
@@ -1108,19 +1151,21 @@ TRUST_REGISTRY_URL=http://sg-trust-registry:3234
 ```
 
 4. **Update domain setup:**
-Edit `domain-setup/code/server.js` to add the new service:
+   Edit `domain-setup/code/server.js` to add the new service:
+
 ```javascript
 const SERVICES = [
   // ... existing services
-  { name: 'SG University Issuer', localPort: 8083, subdomain: 'sg-uni' },
+  { name: "SG University Issuer", localPort: 8083, subdomain: "sg-uni" },
 ];
 ```
 
 5. **Update main docker-compose.yml:**
-Add the new service definition following the pattern of existing issuers.
+   Add the new service definition following the pattern of existing issuers.
 
 6. **Update student-vault-app:**
-Edit `configs/organizations.dart` to add the new university:
+   Edit `configs/organizations.dart` to add the new university:
+
 ```dart
 const universities = [
   // ... existing
@@ -1137,12 +1182,14 @@ const universities = [
 To add a new trust registry (e.g., Japan Ministry):
 
 1. **Create Trust Registry API instance:**
+
 ```bash
 cd governance-portal/instances
 mkdir japan-ministry
 ```
 
 2. **Copy configuration files:**
+
 ```bash
 cp hk-ministry/.env.example japan-ministry/.env.example
 cp hk-ministry/docker-compose.yml japan-ministry/docker-compose.yml
@@ -1150,7 +1197,8 @@ cp hk-ministry/README.md japan-ministry/README.md
 ```
 
 3. **Update Trust Registry API configuration:**
-Edit `japan-ministry/.env.example`:
+   Edit `japan-ministry/.env.example`:
+
 ```env
 PORT=3235
 REGISTRY_NAME=Japan Ministry of Education
@@ -1159,12 +1207,14 @@ DATABASE_URL=postgresql://postgres:postgres@japan-trust-registry-db:5432/trust_r
 ```
 
 4. **Create Governance Portal instance:**
+
 ```bash
 cd governance-portal/instances
 mkdir japan-ministry
 ```
 
 5. **Copy portal configuration:**
+
 ```bash
 cp hk-ministry/.env.example japan-ministry/.env.example
 cp hk-ministry/docker-compose.yml japan-ministry/docker-compose.yml
@@ -1172,7 +1222,8 @@ cp hk-ministry/README.md japan-ministry/README.md
 ```
 
 6. **Update portal configuration:**
-Edit `japan-ministry/.env.example`:
+   Edit `japan-ministry/.env.example`:
+
 ```env
 PORT=3404
 MINISTRY_NAME=Japan Ministry of Education
@@ -1185,19 +1236,21 @@ SECONDARY_COLOR=#FFFFFF
 ```
 
 7. **Update main docker-compose.yml:**
-Add both Trust Registry API and Portal service definitions.
+   Add both Trust Registry API and Portal service definitions.
 
 8. **Update ministries data:**
-Edit `governance-portal/data/ministries.json` to add the new ministry configuration.
+   Edit `governance-portal/data/ministries.json` to add the new ministry configuration.
 
 ### 13.6 Configuration Management
 
 **Main .env (Root):**
+
 - Shared across all services
 - Contains global settings (ngrok token, mediator config)
 - Used by main `docker-compose.yml`
 
 **Instance .env (Per Service):**
+
 - Instance-specific configuration
 - Port assignments
 - Entity names and DIDs
@@ -1208,6 +1261,7 @@ Edit `governance-portal/data/ministries.json` to add the new ministry configurat
 ### 13.7 Database Management
 
 **Trust Registry PostgreSQL:**
+
 ```bash
 # Connect to HK ministry database
 docker exec -it nexigen-hk-tr-db psql -U postgres -d hk_trust_registry
@@ -1220,6 +1274,7 @@ docker exec -i nexigen-hk-tr-db psql -U postgres hk_trust_registry < hk_tr_backu
 ```
 
 **Student Vault Drift Database:**
+
 - Located on device: `/data/data/com.nexigen.student_vault/databases/nexigen_student_vault.sqlite`
 - Managed by Drift ORM
 - No manual intervention required
@@ -1254,24 +1309,28 @@ docker-compose down -v
 ### 13.10 Production Considerations
 
 **Security:**
+
 - ❌ Do NOT use default PostgreSQL passwords in production
 - ✅ Use secrets management (Docker secrets, vault)
 - ✅ Enable TLS for all external communications
 - ✅ Implement rate limiting on APIs
 
 **Scalability:**
+
 - Single codebase architecture allows horizontal scaling
 - Run multiple instances behind load balancer
 - PostgreSQL read replicas for trust registries
 - CDN for static assets
 
 **Monitoring:**
+
 - Implement health check endpoints
 - Use Prometheus + Grafana for metrics
 - Centralized logging with ELK stack
 - Alert on database connection failures
 
 **Backup Strategy:**
+
 - Daily PostgreSQL backups
 - Store backups in S3 or equivalent
 - Test restoration procedures regularly
@@ -1280,6 +1339,7 @@ docker-compose down -v
 - [ ] Performance testing
 
 ### Phase 8: Documentation (Priority: Medium)
+
 - [ ] Update README files
 - [ ] Create architecture diagrams
 - [ ] Write API documentation
@@ -1292,6 +1352,7 @@ docker-compose down -v
 ## 7. Success Criteria
 
 ### Functional Success
+
 ✅ Students can receive credentials from HK and Macau universities independently  
 ✅ Students can store multiple credentials in wallet  
 ✅ Students can scan QR code and share degree credential with Nova Corp  
@@ -1299,22 +1360,24 @@ docker-compose down -v
 ✅ Trust registry validates all issuers correctly  
 ✅ Admin can manage trust registries through web interface  
 ✅ Admin can add/remove issuers and verifiers  
-✅ Admin can test TRQP queries interactively  
+✅ Admin can test TRQP queries interactively
 
 ### Technical Success
+
 ✅ All Flutter apps follow clean architecture  
 ✅ No Sweet Lane or Ayra Forum references  
 ✅ 80%+ code coverage for business logic  
 ✅ All services start via Docker Compose  
 ✅ Performance targets met  
-✅ Security requirements satisfied  
+✅ Security requirements satisfied
 
 ### User Experience Success
+
 ✅ Intuitive mobile app for students  
 ✅ Professional job portal for Nova Corp  
 ✅ User-friendly admin interface for registry management  
 ✅ Clear error messages and feedback  
-✅ Responsive UI on all devices  
+✅ Responsive UI on all devices
 
 ---
 
@@ -1323,6 +1386,7 @@ docker-compose down -v
 ### 8.1 Credential Types
 
 **StudentIDCredential:**
+
 - Student ID number
 - Full name
 - University name
@@ -1331,6 +1395,7 @@ docker-compose down -v
 - Status (active/graduated)
 
 **TranscriptCredential:**
+
 - Student ID
 - List of courses with grades
 - GPA
@@ -1338,6 +1403,7 @@ docker-compose down -v
 - Issued date
 
 **DegreeCredential:**
+
 - Student ID
 - Full name
 - Degree type (Bachelor, Master, PhD)
@@ -1349,32 +1415,38 @@ docker-compose down -v
 ### 8.2 Trust Registry Assertions
 
 **Issuers (Universities):**
+
 - `issue:student:id` - Can issue student ID credentials
 - `issue:student:transcript` - Can issue transcript credentials
 - `issue:student:degree` - Can issue degree credentials
 
 **Verifiers (Employers):**
+
 - `verify:employment:degree` - Can verify degree credentials
 - `verify:employment:transcript` - Can verify transcript credentials
 
 ### 8.3 DID Web Structure
 
 **Hong Kong University:**
+
 ```
 did:web:<ngrok-domain>:hongkong-university
 ```
 
 **Macau University:**
+
 ```
 did:web:<ngrok-domain>:macau-university
 ```
 
 **Nova Corp:**
+
 ```
 did:web:<ngrok-domain>:nova-corp
 ```
 
 **Ministry DIDs:**
+
 ```
 did:web:hk-ministry.example.com
 did:web:macau-ministry.example.com

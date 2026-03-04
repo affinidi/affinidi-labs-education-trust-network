@@ -24,7 +24,7 @@ main (production)
 
 ```bash
 git clone <repository-url>
-cd nexigen-demo
+cd affinidi-labs-education-trust-network
 ```
 
 ### 2. Switch to Develop Branch
@@ -64,6 +64,7 @@ git checkout -b feature/design-color-scheme
 ```
 
 **Naming Convention:**
+
 - Always start with `feature/design-`
 - Use lowercase
 - Use hyphens to separate words
@@ -104,6 +105,7 @@ git commit -m "Add new university logo images"
 ```
 
 **Good Commit Messages:**
+
 - Start with a verb (Add, Update, Fix, Remove)
 - Be specific about what you did
 - Keep it under 50 characters if possible
@@ -269,6 +271,7 @@ git stash pop
 ### 🚫 NEVER DO THESE:
 
 1. **NEVER commit or merge directly to `main` branch**
+
    ```bash
    # ❌ DON'T DO THIS
    git checkout main
@@ -276,6 +279,7 @@ git stash pop
    ```
 
 2. **NEVER force push to `develop` or `main`**
+
    ```bash
    # ❌ DON'T DO THIS
    git push -f origin develop
@@ -290,6 +294,7 @@ git stash pop
 ### ✅ ALWAYS DO THESE:
 
 1. **ALWAYS pull latest changes before starting work**
+
    ```bash
    git checkout develop
    git pull origin develop

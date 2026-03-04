@@ -43,20 +43,24 @@ For custom setups:
 ### Key Environment Variables
 
 **VERIFIER_DID**: This verifier's identity
+
 - Example: `did:web:abc123.ngrok-free.app:nova-corp`
 - Must be resolvable (DID document accessible)
 
 **SERVICE_DID**: Permanent DID for MeetingPlace SDK
+
 - Example: `did:web:cheese-parade.meetingplace.affinidi.io`
 - Should be a stable, hosted DID
 
 **MEDIATOR_DID**: DIDComm message routing service
+
 - Example: `did:web:apse1.mediator.affinidi.io:.well-known`
 - Usually Affinidi's cloud mediator
 
 ### Configuration Priority
 
 The app loads configuration in this order:
+
 1. `.env.ngrok` (if exists)
 2. `.env.local-network` (if exists)
 3. `.env` (fallback)
@@ -74,11 +78,13 @@ The app loads configuration in this order:
 **Cause**: SERVICE_DID cannot be resolved by the SDK
 
 **Common issues**:
+
 - Using placeholder DIDs (did:web:example.com)
 - Network issues reaching DID document URL
 - Invalid DID format
 
-**Solution**: 
+**Solution**:
+
 ```bash
 # Use ngrok mode with working defaults
 make dev-up
@@ -92,11 +98,13 @@ SERVICE_DID=did:web:cheese-parade.meetingplace.affinidi.io
 **Symptoms**: "Error generating QR code" message
 
 **Diagnosis**: Check browser console for:
+
 ```
 [DIDCommService] ❌ Initialize failed: ...
 ```
 
 **Solutions**:
+
 1. Verify .env file exists and has valid DIDs
 2. Check network connectivity to mediator
 3. Ensure SERVICE_DID is resolvable
@@ -118,7 +126,7 @@ MEDIATOR_URL=https://your-mediator.com
 Create environment-specific files:
 
 - `.env.dev` - Development
-- `.env.staging` - Staging  
+- `.env.staging` - Staging
 - `.env.prod` - Production
 
 Copy the desired one to `.env.ngrok` before running.
@@ -128,11 +136,12 @@ Copy the desired one to `.env.ngrok` before running.
 The full Nexigen demo setup handles all services:
 
 ```bash
-cd nexigen-demo
+cd affinidi-labs-education-trust-network
 make dev-up
 ```
 
 This automatically:
+
 - Creates ngrok tunnels for 3 services
 - Generates all DID configurations
 - Starts Docker containers
@@ -148,12 +157,14 @@ This automatically:
 ## Development Workflow
 
 ### Daily Development
+
 ```bash
 # Use local network for speed
 make run
 ```
 
 ### Testing with Mobile
+
 ```bash
 # Use ngrok for internet access
 ngrok http 4000  # Terminal 1
@@ -161,6 +172,7 @@ make dev-up    # Terminal 2
 ```
 
 ### Clean Slate
+
 ```bash
 # Remove all generated files
 make clean

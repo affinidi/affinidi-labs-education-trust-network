@@ -257,7 +257,7 @@ make docker-rebuild
 ## 📁 Project Structure
 
 ```
-nexigen-demo/
+affinidi-labs-education-trust-network/
 ├── Makefile                          # All operation commands
 ├── README.md                         # This file
 │

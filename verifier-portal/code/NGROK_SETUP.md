@@ -19,11 +19,12 @@ Keep this terminal open. Note the ngrok URL (e.g., `https://abc123.ngrok-free.ap
 In a new terminal:
 
 ```bash
-cd /path/to/nexigen-demo/verifier-portal/code
+cd /path/to/affinidi-labs-education-trust-network/verifier-portal/code
 make dev-up
 ```
 
 This will:
+
 1. Detect your active ngrok tunnel
 2. Generate `.env.ngrok` with the correct DID configuration
 3. Build the Flutter web app
@@ -111,7 +112,8 @@ This happens at runtime in `main.dart`, no rebuild needed when switching modes.
 
 **Error**: `❌ No ngrok tunnel found for port 4000`
 
-**Solution**: 
+**Solution**:
+
 ```bash
 # Start ngrok first
 ngrok http 4000
@@ -124,6 +126,7 @@ ngrok http 4000
 **Cause**: SERVICE_DID cannot be resolved
 
 **Solution**:
+
 1. Check SERVICE_DID in `.env.ngrok`
 2. Ensure it's a valid, resolvable `did:web` DID
 3. For testing, use: `did:web:cheese-parade.meetingplace.affinidi.io`
@@ -131,6 +134,7 @@ ngrok http 4000
 ### Configuration not updating
 
 **Solution**: Delete `.env.ngrok` and run `make ngrok-setup` again:
+
 ```bash
 rm .env.ngrok
 make ngrok-setup
@@ -141,6 +145,7 @@ make ngrok-setup
 ngrok free tier sessions expire after 8 hours.
 
 **Solution**:
+
 1. Restart ngrok: `ngrok http 4000`
 2. Regenerate config: `rm .env.ngrok && make dev-up`
 
@@ -168,11 +173,12 @@ dart run bin/did_server.dart --env-file=.env.ngrok
 To run the entire Nexigen demo with ngrok (all universities + verifier):
 
 ```bash
-cd /path/to/nexigen-demo
+cd /path/to/affinidi-labs-education-trust-network
 make dev-up
 ```
 
 This starts:
+
 - HK University (ngrok)
 - Macau University (ngrok)
 - Nova Corp Verifier (ngrok)
@@ -183,6 +189,7 @@ This starts:
 ### Quick iteration
 
 For development, use local network mode instead:
+
 ```bash
 make clean
 # Edit .env.local-network
@@ -192,6 +199,7 @@ make run
 ### Testing with mobile
 
 Ngrok URLs work great for testing with mobile devices:
+
 1. Run `make dev-up`
 2. Open ngrok URL on mobile
 3. QR code scanning works from anywhere
@@ -199,6 +207,7 @@ Ngrok URLs work great for testing with mobile devices:
 ### Inspecting ngrok traffic
 
 Ngrok provides a web UI at http://localhost:4040 showing:
+
 - All HTTP requests
 - Request/response details
 - Replay capability

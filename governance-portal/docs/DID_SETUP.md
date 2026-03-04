@@ -8,7 +8,7 @@ The governance portal uses an automated DID generation system that creates uniqu
 
 ### Quick Start
 
-From the nexigen-demo directory:
+From the affinidi-labs-education-trust-network directory:
 
 ```bash
 # Start the complete environment (includes DID generation)
@@ -16,6 +16,7 @@ make dev-up
 ```
 
 The setup process will:
+
 1. Check for Rust/Cargo installation
 2. Build the local Rust DID generation tool
 3. Check if regeneration is needed (mediator change or missing files)
@@ -29,31 +30,35 @@ The setup process will:
 The system automatically detects when DID regeneration is needed:
 
 ✅ **Regenerates when:**
+
 - Mediator URL or DID changes
 - Any user_config file is missing
 - Force regeneration is requested
 
 ⏭️ **Skips regeneration when:**
+
 - All files exist and mediator config unchanged (faster re-runs)
 
 ## Country-Specific Configuration
 
 Each ministry instance automatically loads its own DID configuration:
 
-| Ministry | Config File | Port | Command |
-|----------|-------------|------|---------|
-| 🇭🇰 Hong Kong | user_config.hk.json | 8050 | `make hk` |
-| 🇲🇴 Macau | user_config.macau.json | 8051 | `make macau` |
-| 🇸🇬 Singapore | user_config.sg.json | 8052 | `make sg` |
+| Ministry     | Config File            | Port | Command      |
+| ------------ | ---------------------- | ---- | ------------ |
+| 🇭🇰 Hong Kong | user_config.hk.json    | 8050 | `make hk`    |
+| 🇲🇴 Macau     | user_config.macau.json | 8051 | `make macau` |
+| 🇸🇬 Singapore | user_config.sg.json    | 8052 | `make sg`    |
 
 ## Key Material
 
 Each generated DID includes:
+
 - **Verification Key (key-1)**: P-256 elliptic curve
 - **Encryption Key (key-2)**: secp256k1 elliptic curve
 - **DID Format**: did:peer:2 with embedded keys
 
 The DID structure `did:peer:2.VzDnaeq...EzQ3sha...` encodes:
+
 - `VzDnaeq...` = X25519 key agreement key (multibase encoded)
 - `EzQ3sha...` = Ed25519 authentication key (multibase encoded)
 
@@ -115,6 +120,7 @@ assets/user_config.*.json
 ### Automatic Regeneration
 
 DIDs are regenerated automatically when:
+
 - Mediator configuration changes
 - Any user_config file is missing
 
@@ -151,6 +157,7 @@ make dev-up
 ```
 
 The script will automatically:
+
 1. Detect mediator configuration changed
 2. Remove old user_config files
 3. Generate new DIDs with the new mediator
@@ -176,6 +183,7 @@ make dev-up
 ```
 
 Make sure the setup script:
+
 1. Generates did:peer:2 with X25519 + Ed25519 keys
 2. Saves X25519 private key in secrets
 3. Saves Ed25519 private key in secrets
@@ -195,7 +203,7 @@ Then run setup again.
 
 ### Missing Config Files
 
-**Problem**: App fails to find user_config.*.json files.
+**Problem**: App fails to find user_config.\*.json files.
 
 **Solution**: Run the setup script:
 
@@ -226,6 +234,7 @@ cargo build --bin generate-secrets --features="dev-tools"
 ### Self-Contained Tool
 
 The `rust-did-generation-helper/` directory contains:
+
 - Local copy of Rust trust-registry code
 - Minimal code needed for `generate-secrets` binary
 - No external repository dependencies
@@ -246,7 +255,7 @@ Each ministry instance loads its specific config:
 // code/lib/core/infrastructure/config/user_config.dart
 static String getDefaultPath() {
   final ministryCode = AppConfig.ministryCode;
-  
+
   switch (ministryCode) {
     case 'hk-ministry':
       return 'assets/user_config.hk.json';

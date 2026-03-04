@@ -1,12 +1,14 @@
 # CORS Issue Fix
 
 ## Problem
+
 The Flutter web app is trying to fetch DID documents from `https://cheese-parade.meetingplace.affinidi.io/.well-known/did.json`, but this request is blocked by CORS policy because the server doesn't send `Access-Control-Allow-Origin` headers.
 
 **Error in console:**
+
 ```
-Access to fetch at 'https://cheese-parade.meetingplace.affinidi.io/.well-known/did.json' 
-from origin 'https://f4e2856a7a42.ngrok-free.app' has been blocked by CORS policy: 
+Access to fetch at 'https://cheese-parade.meetingplace.affinidi.io/.well-known/did.json'
+from origin 'https://f4e2856a7a42.ngrok-free.app' has been blocked by CORS policy:
 No 'Access-Control-Allow-Origin' header is present on the requested resource.
 ```
 
@@ -15,7 +17,7 @@ No 'Access-Control-Allow-Origin' header is present on the requested resource.
 The easiest way to fix this for development is to run Chrome with CORS disabled:
 
 ```bash
-cd /Users/csamprajan/Affinidi/POCs/nexigen-demo/verifier-portal/code
+cd /Users/csamprajan/Affinidi/POCs/affinidi-labs-education-trust-network/verifier-portal/code
 
 # Launch Chrome with CORS disabled
 ./scripts/launch-chrome-no-cors.sh
@@ -30,7 +32,7 @@ cd /Users/csamprajan/Affinidi/POCs/nexigen-demo/verifier-portal/code
 I've created an `ngrok.yml` configuration file that adds CORS headers to responses. To use it:
 
 ```bash
-cd /Users/csamprajan/Affinidi/POCs/nexigen-demo/verifier-portal/code
+cd /Users/csamprajan/Affinidi/POCs/affinidi-labs-education-trust-network/verifier-portal/code
 
 # Start your DID server
 dart run bin/did_server.dart --env-file=.env.ngrok
@@ -69,6 +71,7 @@ Access-Control-Allow-Headers: Content-Type
 ```
 
 Or specifically allow your ngrok domain:
+
 ```
 Access-Control-Allow-Origin: https://f4e2856a7a42.ngrok-free.app
 ```
@@ -84,6 +87,7 @@ Access-Control-Allow-Headers: Content-Type
 ```
 
 Or specifically allow your ngrok domain:
+
 ```
 Access-Control-Allow-Origin: https://f4e2856a7a42.ngrok-free.app
 ```
@@ -93,6 +97,7 @@ Access-Control-Allow-Origin: https://f4e2856a7a42.ngrok-free.app
 I've added a CORS proxy endpoint to your DID server at `/api/cors-proxy`. However, this requires modifying the SDK's HTTP client to route through this proxy, which is complex.
 
 The proxy endpoint usage would be:
+
 ```
 GET http://localhost:4000/api/cors-proxy?url=https://cheese-parade.meetingplace.affinidi.io/.well-known/did.json
 ```
@@ -100,16 +105,19 @@ GET http://localhost:4000/api/cors-proxy?url=https://cheese-parade.meetingplace.
 ### Solution 5: Use Native Mobile Instead of Web
 
 Native mobile apps (iOS/Android) don't have CORS restrictions. Consider using:
+
 - `flutter run -d ios` or `flutter run -d android` instead of web
 
 ### Solution 6: Change SERVICE_DID to use did:key instead of did:web
 
 If the MeetingPlace SDK supports it, change from:
+
 ```
 SERVICE_DID=did:web:cheese-parade.meetingplace.affinidi.io
 ```
 
 To:
+
 ```
 SERVICE_DID=did:key:z6Mkfriq...
 ```
@@ -127,12 +135,14 @@ For production: **Use Solution 3** (Fix CORS on the server) or **Solution 5** (N
 ### Option A: Chrome with CORS disabled
 
 1. Start your server:
+
    ```bash
-   cd /Users/csamprajan/Affinidi/POCs/nexigen-demo/verifier-portal/code
+   cd /Users/csamprajan/Affinidi/POCs/affinidi-labs-education-trust-network/verifier-portal/code
    dart run bin/did_server.dart --env-file=.env.ngrok
    ```
 
 2. Start ngrok:
+
    ```bash
    ngrok http 4000
    ```
@@ -149,7 +159,7 @@ For production: **Use Solution 3** (Fix CORS on the server) or **Solution 5** (N
 
 2. Run:
    ```bash
-   cd /Users/csamprajan/Affinidi/POCs/nexigen-demo/verifier-portal/code
+   cd /Users/csamprajan/Affinidi/POCs/affinidi-labs-education-trust-network/verifier-portal/code
    flutter run -d ios  # or -d android
    ```
 
@@ -159,13 +169,13 @@ The CORS proxy I added at `/api/cors-proxy` can be useful for other external API
 
 ## Why This Happens
 
-CORS (Cross-Origin Resource Sharing) is a browser security feature that blocks web pages from making requests to a different domain than the one that served the web page. 
+CORS (Cross-Origin Resource Sharing) is a browser security feature that blocks web pages from making requests to a different domain than the one that served the web page.
 
 In your case:
-- Your web page: `https://f4e2856a7a42.ngrok-free.app`  
+
+- Your web page: `https://f4e2856a7a42.ngrok-free.app`
 - Trying to fetch: `https://cheese-parade.meetingplace.affinidi.io/.well-known/did.json`
 
 The browser blocks this unless `cheese-parade.meetingplace.affinidi.io` explicitly allows it with CORS headers.
 
 Native mobile apps don't have this restriction, which is why Solution 5 works.
-

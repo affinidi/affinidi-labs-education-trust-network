@@ -1,6 +1,7 @@
 # DIDComm Service Initialization Troubleshooting
 
 ## Problem
+
 You're seeing this error in the browser console:
 
 ```
@@ -15,6 +16,7 @@ The app continues in "fallback mode" but full DIDComm functionality doesn't work
 **CORS (Cross-Origin Resource Sharing) Policy Violation**
 
 When the MeetingPlace SDK initializes, it tries to fetch DID documents from:
+
 - `SERVICE_DID`: `did:web:cheese-parade.meetingplace.affinidi.io`
 - `MEDIATOR_DID`: `did:web:apse1.mediator.affinidi.io:.well-known`
 
@@ -27,11 +29,12 @@ Browsers block these cross-origin requests unless the target servers send CORS h
 Run the test script to check your setup:
 
 ```bash
-cd /Users/csamprajan/Affinidi/POCs/nexigen-demo/verifier-portal/code
+cd /Users/csamprajan/Affinidi/POCs/affinidi-labs-education-trust-network/verifier-portal/code
 ./scripts/test-didcomm-init.sh
 ```
 
 This will check:
+
 - ✅ Ngrok tunnel status
 - ✅ Local DID server
 - ✅ Your verifier DID document
@@ -45,7 +48,7 @@ This will check:
 This is the **quickest way** to test your application locally:
 
 ```bash
-cd /Users/csamprajan/Affinidi/POCs/nexigen-demo/verifier-portal/code
+cd /Users/csamprajan/Affinidi/POCs/affinidi-labs-education-trust-network/verifier-portal/code
 
 # Launch Chrome with CORS disabled
 ./scripts/launch-chrome-no-cors.sh
@@ -61,7 +64,7 @@ Native apps don't have CORS restrictions:
 
 ```bash
 # iOS
-cd /Users/csamprajan/Affinidi/POCs/nexigen-demo/verifier-portal/code
+cd /Users/csamprajan/Affinidi/POCs/affinidi-labs-education-trust-network/verifier-portal/code
 flutter run -d ios
 
 # Android
@@ -73,12 +76,14 @@ flutter run -d android
 Contact the teams managing these services and ask them to add CORS headers:
 
 **For `cheese-parade.meetingplace.affinidi.io`:**
+
 ```
 Access-Control-Allow-Origin: *
 # Or specifically: https://503360ba93cf.ngrok-free.app
 ```
 
 **For `apse1.mediator.affinidi.io`:**
+
 ```
 Access-Control-Allow-Origin: *
 ```
@@ -120,11 +125,13 @@ This avoids HTTP resolution entirely.
 ### Why "Fallback Mode" Works Partially:
 
 The app can still:
+
 - ✅ Generate local DIDs (`did:key:...`)
 - ✅ Serve its own DID document
 - ✅ Build QR codes
 
 But cannot:
+
 - ❌ Establish DIDComm channels
 - ❌ Send/receive encrypted messages
 - ❌ Complete VDSP credential verification flow
@@ -136,12 +143,14 @@ But cannot:
 Open the Chrome instance (launched with `--disable-web-security`), open DevTools (F12), and check console:
 
 **Before (CORS enabled):**
+
 ```
 ❌ Access to fetch at 'https://cheese-parade.meetingplace.affinidi.io/.well-known/did.json'
    from origin 'https://503360ba93cf.ngrok-free.app' has been blocked by CORS policy
 ```
 
 **After (CORS disabled):**
+
 ```
 ✅ [DIDCommService] ✅ SDK initialized
 ✅ [DIDCommService] ✅ Permanent DID: did:key:...
@@ -164,6 +173,7 @@ curl https://503360ba93cf.ngrok-free.app/nova-corp/did.json
 ### 3. Monitor network requests:
 
 In Chrome DevTools (Network tab), look for:
+
 - ✅ `/nova-corp/did.json` - Should succeed (200 OK)
 - ❌ `cheese-parade.meetingplace.affinidi.io` - Fails with CORS (unless Chrome CORS disabled)
 
@@ -176,6 +186,7 @@ In Chrome DevTools (Network tab), look for:
 ### Issue: "Script says ngrok not running"
 
 **Solution:** Start ngrok first:
+
 ```bash
 ngrok http 4000
 ```
@@ -183,8 +194,9 @@ ngrok http 4000
 ### Issue: "DID document shows old domain"
 
 **Solution:** Clean and regenerate:
+
 ```bash
-cd /Users/csamprajan/Affinidi/POCs/nexigen-demo/verifier-portal/code
+cd /Users/csamprajan/Affinidi/POCs/affinidi-labs-education-trust-network/verifier-portal/code
 make clean
 make dev-up
 ```
@@ -192,6 +204,7 @@ make dev-up
 ### Issue: "Still getting initialization errors after disabling CORS"
 
 **Check:**
+
 1. Are you using the correct Chrome window?
 2. Is your ngrok tunnel still active? (check `http://localhost:4040`)
 3. Is the DID server running? (check `http://localhost:4000/health`)
@@ -214,6 +227,7 @@ make dev-up
 ## Getting Help
 
 Run the diagnostic script:
+
 ```bash
 ./scripts/test-didcomm-init.sh
 ```
