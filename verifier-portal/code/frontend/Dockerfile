@@ -1,6 +1,8 @@
 # Verifier Portal Frontend - Flutter Web
 FROM ghcr.io/cirruslabs/flutter:stable AS build
 
+ENV FLUTTER_ALLOW_SUPERUSER=true
+
 WORKDIR /app
 
 # Copy pubspec files first for better layer caching
@@ -16,7 +18,7 @@ COPY . .
 RUN rm -rf .dart_tool && flutter pub get
 
 # Build web app
-RUN flutter build web --release --web-renderer html
+RUN flutter build web --release
 
 # Production stage
 FROM nginx:alpine

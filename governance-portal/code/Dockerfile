@@ -1,5 +1,7 @@
 FROM ghcr.io/cirruslabs/flutter:stable AS build
 
+ENV FLUTTER_ALLOW_SUPERUSER=true
+
 ARG INSTANCE_ID=hk
 ARG INSTANCE_PORT=8050
 
@@ -22,9 +24,9 @@ RUN if [ -f "assets/user_config.${INSTANCE_ID}.json" ]; then \
 # Build web app with instance configuration
 # .env.docker.${INSTANCE_ID} is created by the setup script before docker build
 RUN if [ -f ".env.docker.${INSTANCE_ID}" ]; then \
-      flutter build web --release --web-renderer html --dart-define-from-file=.env.docker.${INSTANCE_ID}; \
+      flutter build web --release --dart-define-from-file=.env.docker.${INSTANCE_ID}; \
     else \
-      flutter build web --release --web-renderer html; \
+      flutter build web --release; \
     fi
 
 # Production stage
