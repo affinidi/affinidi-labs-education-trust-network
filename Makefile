@@ -1,72 +1,46 @@
-.PHONY: help hk-gov macau-gov sg-gov verifier student-ios student-android \
-        hk-university macau-university education-ministries \
+.PHONY: help student-ios student-android \
         docker-ps docker-logs docker-logs-hk docker-logs-macau docker-logs-tr-hk docker-logs-edu \
+        docker-logs-gov-hk docker-logs-gov-macau docker-logs-gov-sg docker-logs-verifier-backend docker-logs-verifier-frontend \
         docker-stop docker-restart docker-up docker-rebuild docker-rebuild-hk \
-        docker-restart-quick docker-restart-hk setup dev-up dev-down cleanup
+        docker-restart-quick docker-restart-hk dev-up dev-down cleanup
+
+COMPOSE_FILE=deployment/docker/docker-compose.localhost.yml
 
 # Default target - show help
 help:
 	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-	@echo "📚 Nexigen Demo - Makefile Commands"
+	@echo "Nexigen Demo - All-Docker + Ngrok"
 	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 	@echo ""
-	@echo "🚀 APPLICATION COMMANDS:"
-	@echo "  make hk-gov              - Start HK Governance Portal"
-	@echo "  make macau-gov           - Start Macau Governance Portal"
-	@echo "  make sg-gov              - Start Singapore Governance Portal"
-	@echo "  make verifier            - Start Nova Corp Verifier Portal"
-	@echo "  make student-ios         - Start Student Vault App (iOS)"
-	@echo "  make student-android     - Start Student Vault App (Android)"
+	@echo "ALL SERVICES RUN IN DOCKER (except ngrok + student mobile app)"
 	@echo ""
-	@echo "🎓 BACKEND SERVICES (Local Dev):"
-	@echo "  make hk-university       - Start HK University Issuer (local Dart)"
-	@echo "  make macau-university    - Start Macau University Issuer (local Dart)"
-	@echo "  make education-ministries - Start Education Ministries DID hosting (local Dart)"
+	@echo "SETUP & TEARDOWN (single commands):"
+	@echo "  make dev-up              - Full setup (ngrok + configs + Docker)"
+	@echo "  make dev-down            - Stop everything (ngrok + Docker)"
+	@echo "  make cleanup             - Full cleanup (stop + remove files)"
 	@echo ""
-	@echo "🐳 DOCKER MANAGEMENT:"
-	@echo "  make docker-ps           - Check container status"
-	@echo "  make docker-logs         - View logs (all services)"
-	@echo "  make docker-logs-hk      - View HK University Issuer logs"
-	@echo "  make docker-logs-macau   - View Macau University Issuer logs"
-	@echo "  make docker-logs-tr-hk   - View HK Trust Registry logs"
-	@echo "  make docker-logs-edu     - View Education Ministries logs"
+	@echo "WINDOWS/WSL: Call scripts directly instead of make:"
+	@echo "  bash deployment/scripts/dev-up.sh"
+	@echo "  bash deployment/scripts/dev-down.sh"
+	@echo "  bash deployment/scripts/cleanup.sh"
+	@echo ""
+	@echo "MOBILE APP:"
+	@echo "  make student-ios         - Student Vault App (iOS)"
+	@echo "  make student-android     - Student Vault App (Android)"
+	@echo ""
+	@echo "DOCKER MANAGEMENT:"
+	@echo "  make docker-ps           - Container status"
+	@echo "  make docker-logs         - All logs"
 	@echo "  make docker-stop         - Stop all services"
 	@echo "  make docker-restart      - Restart all services"
-	@echo ""
-	@echo "🔄 DOCKER BUILD & DEPLOY:"
 	@echo "  make docker-up           - Start all services"
 	@echo "  make docker-rebuild      - Rebuild and restart all services"
-	@echo "  make docker-rebuild-hk   - Rebuild HK University service"
-	@echo "  make docker-restart-quick - Quick restart without rebuild"
-	@echo "  make docker-restart-hk   - Restart HK University service"
-	@echo ""
-	@echo "⚙️  SETUP & CLEANUP:"
-	@echo "  make setup               - Run localhost setup script"
-	@echo "  make dev-up              - Start ngrok environment (tunnels + configs + Docker)"
-	@echo "  make dev-down            - Stop ngrok tunnels and Docker services"
-	@echo "  make cleanup             - Run cleanup script"
 	@echo ""
 	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# APPLICATION COMMANDS
+# MOBILE APP COMMANDS (still runs natively)
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-hk-gov:
-	@echo "🚀 Starting HK Governance Portal..."
-	cd governance-portal/code && make hk
-
-macau-gov:
-	@echo "🚀 Starting Macau Governance Portal..."
-	cd governance-portal/code && make macau
-
-sg-gov:
-	@echo "🚀 Starting Singapore Governance Portal..."
-	cd governance-portal/code && make sg
-
-verifier:
-	@echo "🚀 Starting Nova Corp Verifier Portal..."
-	cd verifier-portal/code && make dev-up
 
 student-ios:
 	@echo "🚀 Starting Student Vault App (iOS)..."
@@ -78,56 +52,52 @@ student-android:
 	cd student-vault-app/code && make android
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# BACKEND SERVICES (Local Development)
-# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-hk-university:
-	@echo "🚀 Starting HK University Issuer (local Dart)..."
-	cd university-issuance-service && make hk-university
-
-macau-university:
-	@echo "🚀 Starting Macau University Issuer (local Dart)..."
-	cd university-issuance-service && make macau-university
-
-education-ministries:
-	@echo "🚀 Starting Education Ministries DID Hosting (local Dart)..."
-	cd education-ministries-did-hosting && make dev-up
-
-# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # DOCKER MANAGEMENT
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 docker-ps:
-	@echo "📊 Checking container status..."
-	docker-compose -f deployment/docker/docker-compose.localhost.yml ps
+	@echo "📊 Container status..."
+	@docker-compose -f $(COMPOSE_FILE) ps
 
 docker-logs:
-	@echo "📋 Viewing logs (all services)..."
-	docker-compose -f deployment/docker/docker-compose.localhost.yml logs -f
+	@echo "📋 All service logs..."
+	docker-compose -f $(COMPOSE_FILE) logs -f
 
 docker-logs-hk:
-	@echo "📋 Viewing HK University Issuer logs..."
 	docker logs hk-university-issuer -f
 
 docker-logs-macau:
-	@echo "📋 Viewing Macau University Issuer logs..."
 	docker logs macau-university-issuer -f
 
-docker-logs-tr-hk:
-	@echo "📋 Viewing HK Trust Registry logs..."
-	docker logs hk-trust-registry -f
-
 docker-logs-edu:
-	@echo "📋 Viewing Education Ministries logs..."
 	docker logs education-ministries-did-hosting -f
 
+docker-logs-tr-hk:
+	docker logs trust-registry-hk -f
+
+docker-logs-gov-hk:
+	docker logs hk-governance-portal -f
+
+docker-logs-gov-macau:
+	docker logs macau-governance-portal -f
+
+docker-logs-gov-sg:
+	docker logs sg-governance-portal -f
+
+docker-logs-verifier-backend:
+	docker logs nova-verifier-backend -f
+
+docker-logs-verifier-frontend:
+	docker logs nova-verifier-frontend -f
+
 docker-stop:
-	@echo "🛑 Stopping all services..."
-	docker-compose -f deployment/docker/docker-compose.localhost.yml down
+	@echo "🛑 Stopping all Docker services..."
+	@docker-compose -f $(COMPOSE_FILE) down
+	@echo "✅ All services stopped"
 
 docker-restart:
-	@echo "🔄 Restarting all services..."
-	docker-compose -f deployment/docker/docker-compose.localhost.yml restart
+	@echo "🔄 Restarting all Docker services..."
+	docker-compose -f $(COMPOSE_FILE) restart
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # DOCKER BUILD & DEPLOY
@@ -135,53 +105,43 @@ docker-restart:
 
 docker-up:
 	@echo "🚀 Starting all services..."
-	docker-compose -f deployment/docker/docker-compose.localhost.yml up -d
+	docker-compose -f $(COMPOSE_FILE) up -d
 
 docker-rebuild:
 	@echo "🔨 Rebuilding and restarting all services..."
-	docker-compose -f deployment/docker/docker-compose.localhost.yml up -d --build
+	docker-compose -f $(COMPOSE_FILE) up -d --build
 
 docker-rebuild-hk:
 	@echo "🔨 Rebuilding HK University service..."
-	docker-compose -f deployment/docker/docker-compose.localhost.yml up -d --build hk-university-issuer
+	docker-compose -f $(COMPOSE_FILE) up -d --build hk-university-issuer
+
+docker-rebuild-gov:
+	@echo "🔨 Rebuilding all Governance Portals..."
+	docker-compose -f $(COMPOSE_FILE) up -d --build hk-governance-portal macau-governance-portal sg-governance-portal
+
+docker-rebuild-verifier:
+	@echo "🔨 Rebuilding Verifier Portal..."
+	docker-compose -f $(COMPOSE_FILE) up -d --build nova-verifier-backend nova-verifier-frontend
 
 docker-restart-quick:
 	@echo "⚡ Quick restart without rebuild..."
-	docker-compose -f deployment/docker/docker-compose.localhost.yml restart
+	docker-compose -f $(COMPOSE_FILE) restart
 
 docker-restart-hk:
 	@echo "⚡ Restarting HK University service..."
-	docker-compose -f deployment/docker/docker-compose.localhost.yml restart hk-university-issuer
-
-docker-tr-rebuild:
-	@echo "🔨 Rebuilding Trust Registry..."
-	cd trust-registry && docker-compose up -d --build
+	docker-compose -f $(COMPOSE_FILE) restart hk-university-issuer
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # SETUP & CLEANUP
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-setup:
-	@echo "🔧 Running localhost setup..."
-	bash deployment/scripts/setup.sh
-
 dev-up:
-	@echo "🌐 Starting complete localhost + ngrok environment..."
-	@echo "This will:"
-	@echo "  • Start 3 ngrok tunnels (2 Universities + Education Ministries)"
-	@echo "  • Use localhost for governance portals, verifier, and local TRs"
-	@echo "  • Capture dynamic domains"
-	@echo "  • Regenerate all configs & DIDs"
-	@echo "  • Launch Docker containers"
-	@echo ""
-	bash deployment/scripts/setup_ngrok.sh
+	@echo "Starting All-Docker + Ngrok environment..."
+	bash deployment/scripts/dev-up.sh
 
 dev-down:
-	@echo "🛑 Stopping ngrok tunnels and Docker services..."
-	@pkill -f ngrok || true
-	@docker-compose -f deployment/docker/docker-compose.localhost.yml down || true
-	@cd trust-registry && docker-compose down || true
-	@echo "✅ Services stopped"
+	@echo "Stopping all services..."
+	bash deployment/scripts/dev-down.sh
 
 cleanup:
 	@echo "🧹 Running cleanup script..."
