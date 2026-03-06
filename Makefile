@@ -1,4 +1,4 @@
-.PHONY: help student-ios student-android \
+.PHONY: help student-ios student-android student-web \
         docker-ps docker-logs docker-logs-hk docker-logs-macau docker-logs-tr-hk docker-logs-edu \
         docker-logs-gov-hk docker-logs-gov-macau docker-logs-gov-sg docker-logs-verifier-backend docker-logs-verifier-frontend \
         docker-stop docker-restart docker-up docker-rebuild docker-rebuild-hk \
@@ -23,10 +23,14 @@ help:
 	@echo "  bash deployment/scripts/dev-up.sh"
 	@echo "  bash deployment/scripts/dev-down.sh"
 	@echo "  bash deployment/scripts/cleanup.sh"
+	@echo "  bash deployment/scripts/student-app.sh android"
+	@echo "  bash deployment/scripts/student-app.sh ios"
+	@echo "  bash deployment/scripts/student-app.sh web"
 	@echo ""
 	@echo "MOBILE APP:"
 	@echo "  make student-ios         - Student Vault App (iOS)"
 	@echo "  make student-android     - Student Vault App (Android)"
+	@echo "  make student-web         - Student Vault App (Web)"
 	@echo ""
 	@echo "DOCKER MANAGEMENT:"
 	@echo "  make docker-ps           - Container status"
@@ -44,12 +48,15 @@ help:
 
 student-ios:
 	@echo "🚀 Starting Student Vault App (iOS)..."
-	cd student-vault-app/code && make ios
+	bash deployment/scripts/student-app.sh ios
 
 student-android:
 	@echo "📱 Starting Student Vault App (Android)..."
-	@echo "⚠️  Note: Make sure to edit .env.local-network and replace '0.0.0.0' with '10.0.2.2' for Android emulator"
-	cd student-vault-app/code && make android
+	bash deployment/scripts/student-app.sh android
+
+student-web:
+	@echo "🌐 Starting Student Vault App (Web)..."
+	bash deployment/scripts/student-app.sh web
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # DOCKER MANAGEMENT

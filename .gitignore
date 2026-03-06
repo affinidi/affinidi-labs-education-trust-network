@@ -86,3 +86,6 @@ deployment/ngrok.log
 
 mediator/affinidi-tdk-rs
 quicktips.txt
+trust-registry/hk/docker.env
+trust-registry/macau/docker.env
+trust-registry/sg/docker.env
