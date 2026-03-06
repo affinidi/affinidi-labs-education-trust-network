@@ -16,7 +16,7 @@ COPY . .
 RUN rm -rf .dart_tool && dart pub get
 
 # Compile the backend server
-RUN dart compile exe lib/did_server.dart -o bin/did_server
+RUN mkdir -p bin && dart compile exe lib/did_server.dart -o bin/did_server
 
 # Runtime stage
 FROM debian:stable-slim
