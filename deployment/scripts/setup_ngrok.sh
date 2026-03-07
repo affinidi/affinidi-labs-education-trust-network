@@ -1,5 +1,5 @@
 #!/bin/bash
-# Nexigen Demo - All-Docker + Ngrok Setup
+# Education Trust Network - All-Docker + Ngrok Setup
 # Cross-platform: works on macOS, Linux, and Windows (Git Bash / WSL)
 #
 # Host requirements: ngrok, docker, docker-compose, jq, curl, git, bash
@@ -26,7 +26,7 @@ sed_inplace() {
 
 clear
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "🌐 Nexigen Demo - All-Docker + Ngrok Setup"
+echo "🌐 Education Trust Network - All-Docker + Ngrok Setup"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
 echo "This will:"
@@ -179,7 +179,7 @@ sleep 2
 
 # Create ngrok config file with 3 tunnels
 mkdir -p ~/.config/ngrok
-cat > ~/.config/ngrok/ngrok-nexigen.yml << EOF
+cat > ~/.config/ngrok/ngrok-etn.yml << EOF
 version: "2"
 authtoken: ${NGROK_AUTH_TOKEN}
 tunnels:
@@ -195,7 +195,7 @@ tunnels:
 EOF
 
 log_verbose "Starting ngrok agent with 3 tunnels (2 universities + education ministries)..."
-ngrok start --all --config ~/.config/ngrok/ngrok-nexigen.yml > "${PROJECT_ROOT}/deployment/ngrok.log" 2>&1 &
+ngrok start --all --config ~/.config/ngrok/ngrok-etn.yml > "${PROJECT_ROOT}/deployment/ngrok.log" 2>&1 &
 NGROK_PID=$!
 echo "$NGROK_PID" > "${PROJECT_ROOT}/deployment/ngrok.pid"
 
@@ -339,7 +339,7 @@ echo "━━━━━━━━━━━━━━━━━━━━━━━━�
 log_verbose "Writing localhost/ngrok hybrid configuration to .env.ngrok..."
 
 cat > "${PROJECT_ROOT}/deployment/.env.ngrok" << EOF
-# Nexigen Demo - All-Docker + Ngrok Configuration
+# Education Trust Network - All-Docker + Ngrok Configuration
 # Generated on $(date)
 
 # Mode Configuration
@@ -424,7 +424,7 @@ echo "━━━━━━━━━━━━━━━━━━━━━━━━�
 echo "Building generate-secrets Docker image (first run compiles Rust - may take a few minutes)..."
 
 DID_GEN_DIR="${PROJECT_ROOT}/governance-portal/rust-did-generation-helper"
-docker build -t nexigen-did-gen "$DID_GEN_DIR" -q
+docker build -t etn-did-gen "$DID_GEN_DIR" -q
 
 echo "Generating user_config files for governance portals..."
 mkdir -p "${PROJECT_ROOT}/governance-portal/code/assets"
@@ -442,7 +442,7 @@ generate_admin_did() {
         -e "MEDIATOR_URL=${MEDIATOR_URL}" \
         -e "MEDIATOR_DID=${MEDIATOR_DID}" \
         -v "${DID_GEN_DIR}/output_tmp:/output" \
-        nexigen-did-gen
+        etn-did-gen
 
     # Validate output
     if [ ! -f "${DID_GEN_DIR}/output_tmp/.env.test" ]; then
@@ -804,15 +804,8 @@ MEDIATOR_URL=${MEDIATOR_URL}
 USER_CONFIG_PATH=assets/user_config.sg.json
 EOF
 
-# Copy governance portal env files into code/ directory for Docker build context
-# (Flutter web build needs --dart-define-from-file at build time, files must be in context)
-log_verbose "Copying governance portal env files into Docker build context..."
-cp "${PROJECT_ROOT}/governance-portal/instances/hk-ministry/.env.ngrok" \
-   "${PROJECT_ROOT}/governance-portal/code/.env.docker.hk"
-cp "${PROJECT_ROOT}/governance-portal/instances/macau-ministry/.env.ngrok" \
-   "${PROJECT_ROOT}/governance-portal/code/.env.docker.macau"
-cp "${PROJECT_ROOT}/governance-portal/instances/sg-ministry/.env.ngrok" \
-   "${PROJECT_ROOT}/governance-portal/code/.env.docker.sg"
+# Note: Governance portal env files are loaded at container runtime via env_file
+# in compose.governance.yml. No build-context copy needed (runtime config injection).
 
 # --- Education Ministries env file ---
 log_verbose "Creating Education Ministries service env file..."
@@ -942,14 +935,41 @@ done
 cd "${PROJECT_ROOT}/trust-registry"
 $DC down 2>/dev/null || true
 
+# Stop any old monolithic compose project
 cd "${PROJECT_ROOT}/deployment/docker"
+$DC -f docker-compose.localhost.yml down 2>/dev/null || true
+
 echo "  ✓ Existing containers cleaned up"
 
 echo ""
 echo "🔨 Building and starting ALL services via Docker..."
 echo "   (This may take several minutes on first run for Flutter builds)"
 echo ""
-$DC -f docker-compose.localhost.yml up -d --build
+
+# Create shared network (if not exists)
+docker network create education-trust-network 2>/dev/null || true
+
+# Start services in dependency order:
+# 1. Education Ministries (hosts DID documents needed by universities)
+# 2. Trust Registries (needed by governance portals and verifier)
+# 3. Universities (resolve DIDs from education ministries)
+# 4. Governance Portals (connect to trust registries)
+# 5. Verifier Portal (needs everything above)
+
+echo "  🏛️  Starting Education Ministries..."
+$DC -p etn-edu-ministries -f compose.edu-ministries.yml up -d --build
+
+echo "  📋 Starting Trust Registries..."
+$DC -p etn-trust-registries -f compose.trust-registries.yml up -d --build
+
+echo "  🎓 Starting Universities..."
+$DC -p etn-universities -f compose.universities.yml up -d --build
+
+echo "  🏢 Starting Governance Portals..."
+$DC -p etn-governance -f compose.governance.yml up -d --build
+
+echo "  🔍 Starting Verifier Portal..."
+$DC -p etn-nova-verifier -f compose.verifier.yml up -d --build
 
 log_info "All Docker services started"
 echo ""
@@ -963,8 +983,22 @@ RUNNING_CONTAINERS=$(docker ps --filter "status=running" --format '{{.Names}}' |
 TOTAL_EXPECTED=11
 log_info "Docker services ready ($RUNNING_CONTAINERS/$TOTAL_EXPECTED containers running)"
 
-# Show container status
-$DC -f docker-compose.localhost.yml ps
+# Show container status per group
+echo ""
+echo "  🎓 Universities:"
+$DC -p etn-universities -f compose.universities.yml ps
+echo ""
+echo "  🏛️  Education Ministries:"
+$DC -p etn-edu-ministries -f compose.edu-ministries.yml ps
+echo ""
+echo "  📋 Trust Registries:"
+$DC -p etn-trust-registries -f compose.trust-registries.yml ps
+echo ""
+echo "  🏢 Governance Portals:"
+$DC -p etn-governance -f compose.governance.yml ps
+echo ""
+echo "  🔍 Verifier Portal:"
+$DC -p etn-nova-verifier -f compose.verifier.yml ps
 echo ""
 
 # ============================================
@@ -1018,7 +1052,7 @@ echo ""
 echo "🐳 Docker Management:"
 echo "   bash deployment/scripts/dev-down.sh           # Stop all"
 echo "   bash deployment/scripts/cleanup.sh            # Full cleanup"
-echo "   docker compose -f deployment/docker/docker-compose.localhost.yml logs  # Logs"
+echo "   docker compose -p etn-universities -f deployment/docker/compose.universities.yml logs  # University logs"
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "📊 Ngrok Dashboard: http://localhost:4040"

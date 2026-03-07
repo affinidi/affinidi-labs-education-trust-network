@@ -1,0 +1,45 @@
+# Education Trust Network - University Issuance Services
+# Project: etn-universities
+
+services:
+  hk-university-issuer:
+    build:
+      context: ../../university-issuance-service/code
+      dockerfile: Dockerfile
+    container_name: hk-university-issuer
+    labels:
+      etn.group: "1-universities"
+      etn.role: "HK University Issuer"
+    ports:
+      - "3000:3000"
+    env_file:
+      - ../../university-issuance-service/instances/hk-university/.env.ngrok
+    volumes:
+      - ../../university-issuance-service/instances/hk-university/data:/app/data
+      - ../../university-issuance-service/instances/hk-university/keys:/app/keys
+    restart: unless-stopped
+    networks:
+      - education-trust-network
+
+  macau-university-issuer:
+    build:
+      context: ../../university-issuance-service/code
+      dockerfile: Dockerfile
+    container_name: macau-university-issuer
+    labels:
+      etn.group: "1-universities"
+      etn.role: "Macau University Issuer"
+    ports:
+      - "3001:3001"
+    env_file:
+      - ../../university-issuance-service/instances/macau-university/.env.ngrok
+    volumes:
+      - ../../university-issuance-service/instances/macau-university/data:/app/data
+      - ../../university-issuance-service/instances/macau-university/keys:/app/keys
+    restart: unless-stopped
+    networks:
+      - education-trust-network
+
+networks:
+  education-trust-network:
+    external: true

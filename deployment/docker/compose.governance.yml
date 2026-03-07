@@ -1,0 +1,67 @@
+# Education Trust Network - Governance Portals (HK, Macau, Singapore)
+# Project: etn-governance
+#
+# Single Flutter build, three containers with runtime config injection.
+# Config is injected via env vars → docker-entrypoint.sh → runtime-config.js
+
+services:
+  hk-governance-portal:
+    image: etn-governance-portal:latest
+    build:
+      context: ../../governance-portal/code
+      dockerfile: Dockerfile
+    container_name: hk-governance-portal
+    labels:
+      etn.group: "4-governance-portals"
+      etn.role: "Governance Portal (Hong Kong)"
+    env_file:
+      - ../../governance-portal/instances/hk-ministry/.env.ngrok
+    environment:
+      PORT: "8050"
+    ports:
+      - "8050:8050"
+    restart: unless-stopped
+    networks:
+      - education-trust-network
+
+  macau-governance-portal:
+    image: etn-governance-portal:latest
+    build:
+      context: ../../governance-portal/code
+      dockerfile: Dockerfile
+    container_name: macau-governance-portal
+    labels:
+      etn.group: "4-governance-portals"
+      etn.role: "Governance Portal (Macau)"
+    env_file:
+      - ../../governance-portal/instances/macau-ministry/.env.ngrok
+    environment:
+      PORT: "8051"
+    ports:
+      - "8051:8051"
+    restart: unless-stopped
+    networks:
+      - education-trust-network
+
+  sg-governance-portal:
+    image: etn-governance-portal:latest
+    build:
+      context: ../../governance-portal/code
+      dockerfile: Dockerfile
+    container_name: sg-governance-portal
+    labels:
+      etn.group: "4-governance-portals"
+      etn.role: "Governance Portal (Singapore)"
+    env_file:
+      - ../../governance-portal/instances/sg-ministry/.env.ngrok
+    environment:
+      PORT: "8052"
+    ports:
+      - "8052:8052"
+    restart: unless-stopped
+    networks:
+      - education-trust-network
+
+networks:
+  education-trust-network:
+    external: true

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Nexigen Demo - Stop All Services
+# Education Trust Network Demo - Stop All Services
 # Cross-platform: works on macOS, Linux, and Windows (Git Bash / WSL)
 set -e
 
@@ -18,16 +18,22 @@ else
 fi
 
 echo ""
-echo "Stopping Nexigen Demo..."
+echo "Stopping Education Trust Network Demo..."
 echo ""
 
-# Stop Docker containers
-if [ -f "$COMPOSE_FILE" ]; then
-    echo "Stopping Docker containers..."
-    cd "${PROJECT_ROOT}/deployment/docker"
-    $DC -f docker-compose.localhost.yml down 2>/dev/null || true
-    echo "✓ Docker containers stopped"
-fi
+# Stop Docker containers (reverse dependency order)
+echo "Stopping Docker containers..."
+cd "${PROJECT_ROOT}/deployment/docker"
+$DC -p etn-nova-verifier -f compose.verifier.yml down 2>/dev/null || true
+$DC -p etn-governance -f compose.governance.yml down 2>/dev/null || true
+$DC -p etn-universities -f compose.universities.yml down 2>/dev/null || true
+$DC -p etn-trust-registries -f compose.trust-registries.yml down 2>/dev/null || true
+$DC -p etn-edu-ministries -f compose.edu-ministries.yml down 2>/dev/null || true
+# Also stop legacy monolithic compose if still running
+$DC -f docker-compose.localhost.yml down 2>/dev/null || true
+# Remove shared network
+docker network rm education-trust-network 2>/dev/null || true
+echo "✓ Docker containers stopped"
 
 # Stop ngrok
 echo "Stopping ngrok..."

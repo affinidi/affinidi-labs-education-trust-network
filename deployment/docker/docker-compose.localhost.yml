@@ -1,4 +1,4 @@
-# Nexigen Demo - All-Docker Unified Compose
+# Education Trust Network - All-Docker Unified Compose
 # All services run in Docker, ngrok stays on the host
 # Generated configs come from: deployment/scripts/setup_ngrok.sh
 
@@ -12,6 +12,9 @@ services:
       context: ../../university-issuance-service/code
       dockerfile: Dockerfile
     container_name: hk-university-issuer
+    labels:
+      etn.group: "1-universities"
+      etn.role: "HK University Issuer"
     ports:
       - "3000:3000"
     env_file:
@@ -21,13 +24,16 @@ services:
       - ../../university-issuance-service/instances/hk-university/keys:/app/keys
     restart: unless-stopped
     networks:
-      - nexigen-network
+      - education-trust-network
 
   macau-university-issuer:
     build:
       context: ../../university-issuance-service/code
       dockerfile: Dockerfile
     container_name: macau-university-issuer
+    labels:
+      etn.group: "1-universities"
+      etn.role: "Macau University Issuer"
     ports:
       - "3001:3001"
     env_file:
@@ -37,7 +43,7 @@ services:
       - ../../university-issuance-service/instances/macau-university/keys:/app/keys
     restart: unless-stopped
     networks:
-      - nexigen-network
+      - education-trust-network
 
   # ════════════════════════════════════════════════════════
   # EDUCATION MINISTRIES DID HOSTING
@@ -48,6 +54,9 @@ services:
       context: ../../education-ministries-did-hosting/code
       dockerfile: Dockerfile
     container_name: education-ministries-did-hosting
+    labels:
+      etn.group: "2-education-ministries"
+      etn.role: "Education Ministries DID Hosting"
     ports:
       - "3100:3100"
     env_file:
@@ -56,7 +65,7 @@ services:
       - ../../education-ministries-did-hosting/instance/data:/app/data
     restart: unless-stopped
     networks:
-      - nexigen-network
+      - education-trust-network
 
   # ════════════════════════════════════════════════════════
   # TRUST REGISTRIES (HK, Macau, Singapore)
@@ -68,6 +77,9 @@ services:
       dockerfile: trust-registry/Dockerfile
     image: trust-registry:local
     container_name: trust-registry-hk
+    labels:
+      etn.group: "3-trust-registries"
+      etn.role: "Trust Registry (Hong Kong)"
     ports:
       - "3232:3232"
     env_file:
@@ -76,7 +88,7 @@ services:
       - ../../trust-registry/hk/data:/data
     restart: unless-stopped
     networks:
-      - nexigen-network
+      - education-trust-network
 
   trust-registry-macau:
     build:
@@ -84,6 +96,9 @@ services:
       dockerfile: trust-registry/Dockerfile
     image: trust-registry:local
     container_name: trust-registry-macau
+    labels:
+      etn.group: "3-trust-registries"
+      etn.role: "Trust Registry (Macau)"
     ports:
       - "3233:3232"
     env_file:
@@ -92,7 +107,7 @@ services:
       - ../../trust-registry/macau/data:/data
     restart: unless-stopped
     networks:
-      - nexigen-network
+      - education-trust-network
 
   trust-registry-sg:
     build:
@@ -100,6 +115,9 @@ services:
       dockerfile: trust-registry/Dockerfile
     image: trust-registry:local
     container_name: trust-registry-sg
+    labels:
+      etn.group: "3-trust-registries"
+      etn.role: "Trust Registry (Singapore)"
     ports:
       - "3234:3232"
     env_file:
@@ -108,7 +126,7 @@ services:
       - ../../trust-registry/sg/data:/data
     restart: unless-stopped
     networks:
-      - nexigen-network
+      - education-trust-network
 
   # ════════════════════════════════════════════════════════
   # GOVERNANCE PORTALS (HK, Macau, Singapore)
@@ -122,11 +140,14 @@ services:
         INSTANCE_ID: hk
         INSTANCE_PORT: "8050"
     container_name: hk-governance-portal
+    labels:
+      etn.group: "4-governance-portals"
+      etn.role: "Governance Portal (Hong Kong)"
     ports:
       - "8050:8050"
     restart: unless-stopped
     networks:
-      - nexigen-network
+      - education-trust-network
 
   macau-governance-portal:
     build:
@@ -136,11 +157,14 @@ services:
         INSTANCE_ID: macau
         INSTANCE_PORT: "8051"
     container_name: macau-governance-portal
+    labels:
+      etn.group: "4-governance-portals"
+      etn.role: "Governance Portal (Macau)"
     ports:
       - "8051:8051"
     restart: unless-stopped
     networks:
-      - nexigen-network
+      - education-trust-network
 
   sg-governance-portal:
     build:
@@ -150,11 +174,14 @@ services:
         INSTANCE_ID: sg
         INSTANCE_PORT: "8052"
     container_name: sg-governance-portal
+    labels:
+      etn.group: "4-governance-portals"
+      etn.role: "Governance Portal (Singapore)"
     ports:
       - "8052:8052"
     restart: unless-stopped
     networks:
-      - nexigen-network
+      - education-trust-network
 
   # ════════════════════════════════════════════════════════
   # VERIFIER PORTAL (Nova Corp)
@@ -165,6 +192,9 @@ services:
       context: ../../verifier-portal/code/backend
       dockerfile: Dockerfile
     container_name: nova-verifier-backend
+    labels:
+      etn.group: "5-verifier-portal"
+      etn.role: "Verifier Backend (Nova Corp)"
     ports:
       - "4001:4001"
     env_file:
@@ -174,25 +204,28 @@ services:
       - verifier-backend-keys:/app/keys
     restart: unless-stopped
     networks:
-      - nexigen-network
+      - education-trust-network
 
   nova-verifier-frontend:
     build:
       context: ../../verifier-portal/code/frontend
       dockerfile: Dockerfile
     container_name: nova-verifier-frontend
+    labels:
+      etn.group: "5-verifier-portal"
+      etn.role: "Verifier Frontend (Nova Corp)"
     ports:
       - "4000:4000"
     depends_on:
       - nova-verifier-backend
     restart: unless-stopped
     networks:
-      - nexigen-network
+      - education-trust-network
 
 networks:
-  nexigen-network:
+  education-trust-network:
     driver: bridge
-    name: nexigen-network
+    name: education-trust-network
 
 volumes:
   verifier-backend-data:

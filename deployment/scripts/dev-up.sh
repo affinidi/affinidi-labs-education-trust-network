@@ -1,5 +1,5 @@
 #!/bin/bash
-# Nexigen Demo - Start All Services
+# Education Trust Network Demo - Start All Services
 # Cross-platform: works on macOS, Linux, and Windows (Git Bash / WSL)
 #
 # This is the single entry point to start the entire demo.
@@ -15,7 +15,7 @@ set -e
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 echo ""
-echo "Starting Nexigen Demo (All-Docker + Ngrok)..."
+echo "Starting Education Trust Network Demo (All-Docker + Ngrok)..."
 echo ""
 
 # Run the main setup script

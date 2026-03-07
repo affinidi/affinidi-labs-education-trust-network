@@ -1,5 +1,5 @@
 #!/bin/bash
-# Cleanup script for Nexigen (All-Docker mode)
+# Cleanup script for Education Trust Network (All-Docker mode)
 # Cross-platform: works on macOS, Linux, and Windows (Git Bash / WSL)
 set -e  # Exit on error
 
@@ -7,7 +7,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PROJECT_ROOT="$( cd "${SCRIPT_DIR}/../.." && pwd )"
 cd "$SCRIPT_DIR"
 
-echo "🧹 Cleaning up Nexigen components (All-Docker mode)..."
+echo "🧹 Cleaning up Education Trust Network components (All-Docker mode)..."
 echo ""
 echo "📦 Note: Component code folders are part of the repository and will NOT be removed."
 echo "   Only generated environment files, user configs, and data directories will be cleaned."
@@ -32,7 +32,7 @@ fi
 # Clean ngrok log files
 echo "  🗑️  Removing ngrok log files..."
 rm -f /tmp/ngrok-*.log
-rm -f ~/.config/ngrok/ngrok-nexigen.yml
+rm -f ~/.config/ngrok/ngrok-etn.yml
 echo "  ✅ Ngrok log files removed"
 
 # Function to clean a directory
@@ -63,10 +63,19 @@ else
     DC="docker compose"
 fi
 
-# Stop unified docker-compose services
-if [ -f "../docker/docker-compose.localhost.yml" ]; then
+# Stop unified docker-compose services (per-group projects)
+if [ -d "../docker" ]; then
     echo "  Stopping all Docker services..."
-    $DC -f ../docker/docker-compose.localhost.yml down 2>/dev/null || true
+    cd "../docker"
+    $DC -p etn-nova-verifier -f compose.verifier.yml down 2>/dev/null || true
+    $DC -p etn-governance -f compose.governance.yml down 2>/dev/null || true
+    $DC -p etn-trust-registries -f compose.trust-registries.yml down 2>/dev/null || true
+    $DC -p etn-edu-ministries -f compose.edu-ministries.yml down 2>/dev/null || true
+    $DC -p etn-universities -f compose.universities.yml down 2>/dev/null || true
+    # Also stop legacy monolithic compose if still running
+    $DC -f docker-compose.localhost.yml down 2>/dev/null || true
+    docker network rm education-trust-network 2>/dev/null || true
+    cd "$SCRIPT_DIR"
     echo "  ✅ Docker services stopped"
 fi
 
@@ -80,7 +89,7 @@ fi
 
 # Remove Docker images from this project (including DID generation images)
 echo "  Removing Docker images..."
-docker images | grep -E 'nexigen|university-issuer|governance-portal|verifier|trust-registry|education-ministries|nexigen-did-gen|tr-did-gen' | awk '{print $3}' | xargs -r docker rmi -f 2>/dev/null || echo "  Some images could not be removed (may be in use)"
+docker images | grep -E 'etn-|university-issuer|governance-portal|verifier|trust-registry|education-ministries|etn-did-gen|tr-did-gen' | awk '{print $3}' | xargs -r docker rmi -f 2>/dev/null || echo "  Some images could not be removed (may be in use)"
 
 # Remove named volumes
 echo "  🗑️  Removing Docker volumes..."

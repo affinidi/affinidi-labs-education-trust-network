@@ -4,12 +4,13 @@
         docker-stop docker-restart docker-up docker-rebuild docker-rebuild-hk \
         docker-restart-quick docker-restart-hk dev-up dev-down cleanup
 
-COMPOSE_FILE=deployment/docker/docker-compose.localhost.yml
+COMPOSE_DIR=deployment/docker
+DC=docker compose
 
 # Default target - show help
 help:
 	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-	@echo "Nexigen Demo - All-Docker + Ngrok"
+	@echo "Education Trust Network Demo - All-Docker + Ngrok"
 	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 	@echo ""
 	@echo "ALL SERVICES RUN IN DOCKER (except ngrok + student mobile app)"
@@ -63,12 +64,31 @@ student-web:
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 docker-ps:
-	@echo "📊 Container status..."
-	@docker-compose -f $(COMPOSE_FILE) ps
+	@echo ""
+	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+	@echo "  📊 Education Trust Network - Service Status"
+	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+	@echo ""
+	@echo "  🎓 UNIVERSITIES"
+	@docker ps --filter "label=etn.group=1-universities" --format "     {{.Names}}\t{{.Status}}\t{{.Ports}}" 2>/dev/null || true
+	@echo ""
+	@echo "  🏛️  EDUCATION MINISTRIES"
+	@docker ps --filter "label=etn.group=2-education-ministries" --format "     {{.Names}}\t{{.Status}}\t{{.Ports}}" 2>/dev/null || true
+	@echo ""
+	@echo "  📋 TRUST REGISTRIES"
+	@docker ps --filter "label=etn.group=3-trust-registries" --format "     {{.Names}}\t{{.Status}}\t{{.Ports}}" 2>/dev/null || true
+	@echo ""
+	@echo "  🏢 GOVERNANCE PORTALS"
+	@docker ps --filter "label=etn.group=4-governance-portals" --format "     {{.Names}}\t{{.Status}}\t{{.Ports}}" 2>/dev/null || true
+	@echo ""
+	@echo "  🔍 VERIFIER PORTAL"
+	@docker ps --filter "label=etn.group=5-verifier-portal" --format "     {{.Names}}\t{{.Status}}\t{{.Ports}}" 2>/dev/null || true
+	@echo ""
+	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 docker-logs:
-	@echo "📋 All service logs..."
-	docker-compose -f $(COMPOSE_FILE) logs -f
+	@echo "📋 All service logs (use Ctrl+C to stop)..."
+	@docker logs -f hk-university-issuer macau-university-issuer education-ministries-did-hosting trust-registry-hk trust-registry-macau trust-registry-sg hk-governance-portal macau-governance-portal sg-governance-portal nova-verifier-backend nova-verifier-frontend 2>&1 || true
 
 docker-logs-hk:
 	docker logs hk-university-issuer -f
@@ -99,12 +119,21 @@ docker-logs-verifier-frontend:
 
 docker-stop:
 	@echo "🛑 Stopping all Docker services..."
-	@docker-compose -f $(COMPOSE_FILE) down
+	@cd $(COMPOSE_DIR) && $(DC) -p etn-nova-verifier -f compose.verifier.yml down 2>/dev/null || true
+	@cd $(COMPOSE_DIR) && $(DC) -p etn-governance -f compose.governance.yml down 2>/dev/null || true
+	@cd $(COMPOSE_DIR) && $(DC) -p etn-trust-registries -f compose.trust-registries.yml down 2>/dev/null || true
+	@cd $(COMPOSE_DIR) && $(DC) -p etn-edu-ministries -f compose.edu-ministries.yml down 2>/dev/null || true
+	@cd $(COMPOSE_DIR) && $(DC) -p etn-universities -f compose.universities.yml down 2>/dev/null || true
+	@docker network rm education-trust-network 2>/dev/null || true
 	@echo "✅ All services stopped"
 
 docker-restart:
 	@echo "🔄 Restarting all Docker services..."
-	docker-compose -f $(COMPOSE_FILE) restart
+	@cd $(COMPOSE_DIR) && $(DC) -p etn-edu-ministries -f compose.edu-ministries.yml restart
+	@cd $(COMPOSE_DIR) && $(DC) -p etn-trust-registries -f compose.trust-registries.yml restart
+	@cd $(COMPOSE_DIR) && $(DC) -p etn-universities -f compose.universities.yml restart
+	@cd $(COMPOSE_DIR) && $(DC) -p etn-governance -f compose.governance.yml restart
+	@cd $(COMPOSE_DIR) && $(DC) -p etn-nova-verifier -f compose.verifier.yml restart
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # DOCKER BUILD & DEPLOY
@@ -112,31 +141,45 @@ docker-restart:
 
 docker-up:
 	@echo "🚀 Starting all services..."
-	docker-compose -f $(COMPOSE_FILE) up -d
+	@docker network create education-trust-network 2>/dev/null || true
+	@cd $(COMPOSE_DIR) && $(DC) -p etn-edu-ministries -f compose.edu-ministries.yml up -d
+	@cd $(COMPOSE_DIR) && $(DC) -p etn-trust-registries -f compose.trust-registries.yml up -d
+	@cd $(COMPOSE_DIR) && $(DC) -p etn-universities -f compose.universities.yml up -d
+	@cd $(COMPOSE_DIR) && $(DC) -p etn-governance -f compose.governance.yml up -d
+	@cd $(COMPOSE_DIR) && $(DC) -p etn-nova-verifier -f compose.verifier.yml up -d
 
 docker-rebuild:
-	@echo "🔨 Rebuilding and restarting all services..."
-	docker-compose -f $(COMPOSE_FILE) up -d --build
+	@echo "🔨 Rebuilding and restarting all services (dependency order)..."
+	@docker network create education-trust-network 2>/dev/null || true
+	@cd $(COMPOSE_DIR) && $(DC) -p etn-edu-ministries -f compose.edu-ministries.yml up -d --build
+	@cd $(COMPOSE_DIR) && $(DC) -p etn-trust-registries -f compose.trust-registries.yml up -d --build
+	@cd $(COMPOSE_DIR) && $(DC) -p etn-universities -f compose.universities.yml up -d --build
+	@cd $(COMPOSE_DIR) && $(DC) -p etn-governance -f compose.governance.yml up -d --build
+	@cd $(COMPOSE_DIR) && $(DC) -p etn-nova-verifier -f compose.verifier.yml up -d --build
 
 docker-rebuild-hk:
 	@echo "🔨 Rebuilding HK University service..."
-	docker-compose -f $(COMPOSE_FILE) up -d --build hk-university-issuer
+	@cd $(COMPOSE_DIR) && $(DC) -p etn-universities -f compose.universities.yml up -d --build hk-university-issuer
 
 docker-rebuild-gov:
-	@echo "🔨 Rebuilding all Governance Portals..."
-	docker-compose -f $(COMPOSE_FILE) up -d --build hk-governance-portal macau-governance-portal sg-governance-portal
+	@echo "🔨 Rebuilding Governance Portals..."
+	@cd $(COMPOSE_DIR) && $(DC) -p etn-governance -f compose.governance.yml up -d --build
 
 docker-rebuild-verifier:
 	@echo "🔨 Rebuilding Verifier Portal..."
-	docker-compose -f $(COMPOSE_FILE) up -d --build nova-verifier-backend nova-verifier-frontend
+	@cd $(COMPOSE_DIR) && $(DC) -p etn-nova-verifier -f compose.verifier.yml up -d --build
 
 docker-restart-quick:
 	@echo "⚡ Quick restart without rebuild..."
-	docker-compose -f $(COMPOSE_FILE) restart
+	@cd $(COMPOSE_DIR) && $(DC) -p etn-universities -f compose.universities.yml restart
+	@cd $(COMPOSE_DIR) && $(DC) -p etn-edu-ministries -f compose.edu-ministries.yml restart
+	@cd $(COMPOSE_DIR) && $(DC) -p etn-trust-registries -f compose.trust-registries.yml restart
+	@cd $(COMPOSE_DIR) && $(DC) -p etn-governance -f compose.governance.yml restart
+	@cd $(COMPOSE_DIR) && $(DC) -p etn-nova-verifier -f compose.verifier.yml restart
 
 docker-restart-hk:
 	@echo "⚡ Restarting HK University service..."
-	docker-compose -f $(COMPOSE_FILE) restart hk-university-issuer
+	@cd $(COMPOSE_DIR) && $(DC) -p etn-universities -f compose.universities.yml restart hk-university-issuer
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # SETUP & CLEANUP
