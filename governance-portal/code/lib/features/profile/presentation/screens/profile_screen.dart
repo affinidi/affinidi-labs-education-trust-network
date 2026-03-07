@@ -46,13 +46,13 @@ class ProfileScreen extends ConsumerWidget {
                             context: context,
                             icon: Icons.email_outlined,
                             label: 'Email',
-                            value: 'johnny.demo@nexigen.com',
+                            value: 'johnny.demo@credulon.com',
                           ),
                           _buildInfoItem(
                             context: context,
                             icon: Icons.business_outlined,
                             label: 'Organization',
-                            value: 'Nexigen Inc.',
+                            value: 'Credulon Inc.',
                           ),
                           _buildInfoItem(
                             context: context,

@@ -32,7 +32,7 @@ class NotificationService extends _$NotificationService {
     final updatedCounters = Map<NotificationCounterType, int>.from(
       state.counters,
     );
-    updatedCounters[NotificationCounterType.nexigen] = count;
+    updatedCounters[NotificationCounterType.credulon] = count;
     state = state.copyWith(counters: updatedCounters);
   }
 }

@@ -43,7 +43,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DID_GEN_DIR="${SCRIPT_DIR}/rust-did-generation-helper"
 
 echo "Building generate-secrets Docker image..."
-docker build -t nexigen-did-gen "$DID_GEN_DIR" -q
+docker build -t credulon-did-gen "$DID_GEN_DIR" -q
 echo "Build complete."
 echo ""
 
@@ -66,7 +66,7 @@ generate_user_config() {
         -e "MEDIATOR_URL=${MEDIATOR_URL}" \
         -e "MEDIATOR_DID=${MEDIATOR_DID}" \
         -v "${DID_GEN_DIR}/output_tmp:/output" \
-        nexigen-did-gen 2>/dev/null
+        credulon-did-gen 2>/dev/null
 
     # Extract CLIENT_DID and CLIENT_SECRETS from .env.test
     local client_did client_secrets

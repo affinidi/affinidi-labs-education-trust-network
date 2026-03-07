@@ -495,7 +495,7 @@ class MpxClient {
     final contactCard = ContactCard(
       did: permanentDid,
       type: 'individual',
-      contactInfo: {"firstName": "Nexigen Bank", "lastName": "Issuer"},
+      contactInfo: {"firstName": "Credulon Bank", "lastName": "Issuer"},
     );
 
     print('[createOobInvite] Calling mpxSDK.createOobFlow...');

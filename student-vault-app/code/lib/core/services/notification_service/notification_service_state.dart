@@ -11,7 +11,7 @@ abstract class NotificationServiceState with _$NotificationServiceState {
       NotificationCounterType.contacts: 0,
       NotificationCounterType.connections: 0,
       NotificationCounterType.identities: 0,
-      NotificationCounterType.nexigen: 0,
+      NotificationCounterType.credulon: 0,
     })
     Map<NotificationCounterType, int> counters,
   }) = _NotificationServiceState;

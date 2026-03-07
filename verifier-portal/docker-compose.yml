@@ -23,5 +23,5 @@ services:
     restart: unless-stopped
 
 networks:
-  nexigen-network:
+  credulon-network:
     driver: bridge

@@ -7,15 +7,17 @@
 
 ## Overview
 
-This document provides the complete Flutter ThemeData configuration for Nexigen, mapping all design tokens from `03-design-tokens.yaml` to Flutter's Material 3 system (`ColorScheme`, `TextTheme`, component themes). Focus on **light mode** with warm orange (#FF8E32) primary and warm cream (#FFEEC8) secondary, per Headspace + Revolut design principles.
+This document provides the complete Flutter ThemeData configuration for Credulon, mapping all design tokens from `03-design-tokens.yaml` to Flutter's Material 3 system (`ColorScheme`, `TextTheme`, component themes). Focus on **light mode** with warm orange (#FF8E32) primary and warm cream (#FFEEC8) secondary, per Headspace + Revolut design principles.
 
 **Token-to-Flutter Mapping**:
+
 - `colors.primary.500` (#FF8E32) → `ColorScheme.primary` — Warm orange for key CTAs like "Claim Credential"
 - `colors.secondary.300` (#FFEEC8) → `ColorScheme.surface` — Warm cream for cards and backgrounds
 - `colors.text.light.primary` (#1E1E1E) → `ColorScheme.onSurface` — Dark text on light surfaces
 - `colors.surface.light.background` (#FFFDF7) → App background — Warm off-white
 
 **Example: Claim Credential Screen**
+
 ```dart
 // "Claim Credential" CTA button uses:
 ElevatedButton(
@@ -94,12 +96,12 @@ class AppColors {
   static const Color neutral900 = Color(0xFF212121); // Dark gray
   static const Color neutral950 = Color(0xFF0A0A0A);
   static const Color neutral1000 = Color(0xFF000000); // Black
-  
+
   // Text Colors (Light Mode - Primary)
   static const Color textLightPrimary = Color(0xFF1E1E1E);     // colors.text.light.primary (dark near-black)
   static const Color textLightSecondary = Color(0xFF4A4A4A);   // colors.text.light.secondary
   static const Color textLightDisabled = Color(0xFF9E9E9E);    // colors.text.light.disabled
-  
+
   // Surface Colors (Light Mode - Primary)
   static const Color surfaceLightBackground = Color(0xFFFFFDF7); // colors.surface.light.background
   static const Color surfaceLightSurface = Color(0xFFFFEEC8);     // colors.surface.light.surface (secondary.300)
@@ -199,7 +201,7 @@ class AppTheme {
   // ===========================================================================
   // LIGHT THEME (Default - Warm Orange/Cream Palette)
   // ===========================================================================
-  
+
   static ThemeData get lightTheme {
     final colorScheme = ColorScheme.light(
       // Primary: warm orange for key CTAs (Claim Credential, etc.)
@@ -207,33 +209,33 @@ class AppTheme {
       primaryContainer: AppColors.primary100,    // #FFEEC8
       onPrimary: AppColors.neutral0,              // #FFFFFF white text
       onPrimaryContainer: AppColors.primary700,  // #D56E1F
-      
+
       // Secondary: warm cream for supporting elements
       secondary: AppColors.secondary300,          // #FFEEC8 warm cream
       secondaryContainer: AppColors.secondary100,
       onSecondary: AppColors.neutral1000,         // Dark text
       onSecondaryContainer: AppColors.secondary700,
-      
+
       // Surface: light mode warm cream background (Home screen cards)
       surface: AppColors.secondary300,            // #FFEEC8 warm cream (card background)
       surfaceContainerHighest: AppColors.neutral0,
       onSurface: AppColors.textLightPrimary,      // #1E1E1E dark text
       onSurfaceVariant: AppColors.textLightSecondary,  // #4A4A4A mid-gray
-      
+
       // Semantic colors
       error: AppColors.errorMain,                 // #F44336
       errorContainer: AppColors.errorLight,      // #E57373
       onError: AppColors.neutral0,
       onErrorContainer: AppColors.errorDark,
-      
+
       // Background: warm off-white
       background: Color(0xFFFFFDF7),             // colors.surface.light.background
       onBackground: AppColors.textLightPrimary,  // #1E1E1E
-      
+
       // Outline: borders
       outline: AppColors.neutral300,              // #E0E0E0
       outlineVariant: AppColors.neutral200,
-      
+
       // Other
       shadow: AppColors.neutral900,
       scrim: AppColors.neutral1000.withOpacity(0.5),
@@ -246,11 +248,11 @@ class AppTheme {
       useMaterial3: true,
       brightness: Brightness.light,
       colorScheme: colorScheme,
-      
+
       // Typography
       fontFamily: 'IBM Plex Sans',
       textTheme: _textTheme,
-      
+
       // App Bar
       appBarTheme: AppBarTheme(
         backgroundColor: Color(0xFFFFFDF7),       // Warm off-white background
@@ -264,7 +266,7 @@ class AppTheme {
           color: Color(0xFF1E1E1E),
         ),
       ),
-      
+
       // Card (warm cream, light elevation)
       cardTheme: CardTheme(
         elevation: 1,                              // elevation.1 (Headspace-inspired)
@@ -273,7 +275,7 @@ class AppTheme {
           borderRadius: AppRadius.borderLg,       // 12px (radius.lg)
         ),
       ),
-      
+
       // Elevated Button (warm orange "Claim Credential" CTA, 56px height)
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
@@ -297,7 +299,7 @@ class AppTheme {
           ),
         ),
       ),
-      
+
       // Input Decoration (warm cream #FFEEC8, warm orange #FF8E32 focus)
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
@@ -361,7 +363,7 @@ class AppTheme {
           color: AppColors.errorLight,
         ),
       ),
-      
+
       // Icon Button
       iconButtonTheme: IconButtonThemeData(
         style: IconButton.styleFrom(
@@ -369,7 +371,7 @@ class AppTheme {
           minimumSize: const Size(48, 48),                // Touch target
         ),
       ),
-      
+
       // Snackbar
       snackBarTheme: SnackBarThemeData(
         backgroundColor: AppColors.neutral900,
@@ -379,7 +381,7 @@ class AppTheme {
         ),
         behavior: SnackBarBehavior.floating,
       ),
-      
+
       // Dialog
       dialogTheme: DialogTheme(
         backgroundColor: Color(0xFFFFFDF7),       // Warm off-white
@@ -395,7 +397,7 @@ class AppTheme {
   // DARK THEME (Alternative - Minimal shadows, warm accent)
         ),
       ),
-      
+
       // Input Decoration
       inputDecorationTheme: InputDecorationTheme(
         filled: false,
@@ -434,7 +436,7 @@ class AppTheme {
         hintStyle: const TextStyle(fontSize: 16, color: AppColors.neutral700),
         errorStyle: const TextStyle(fontSize: 12, color: AppColors.errorLight),
       ),
-      
+
       // Icon Button
       iconButtonTheme: IconButtonThemeData(
         style: IconButton.styleFrom(
@@ -442,7 +444,7 @@ class AppTheme {
           minimumSize: const Size(48, 48), // Touch target
         ),
       ),
-      
+
       // Bottom Navigation Bar
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         backgroundColor: AppColors.neutral1000,
@@ -451,7 +453,7 @@ class AppTheme {
         type: BottomNavigationBarType.fixed,
         elevation: 8,
       ),
-      
+
       // Snackbar
       snackBarTheme: SnackBarThemeData(
         backgroundColor: AppColors.neutral900,
@@ -461,7 +463,7 @@ class AppTheme {
         ),
         behavior: SnackBarBehavior.floating,
       ),
-      
+
       // Dialog
       dialogTheme: DialogTheme(
         backgroundColor: AppColors.neutral900,
@@ -470,14 +472,14 @@ class AppTheme {
           borderRadius: AppRadius.borderLg, // 12px
         ),
       ),
-      
+
       // Divider
       dividerTheme: DividerThemeData(
         color: AppColors.neutral700.withOpacity(0.2),
         thickness: 1,
         space: 1,
       ),
-      
+
       // Chip
       chipTheme: ChipThemeData(
         backgroundColor: AppColors.neutral900,
@@ -495,7 +497,7 @@ class AppTheme {
   // ===========================================================================
   // TEXT THEME (Typography mapping from 03-design-tokens.yaml)
   // ===========================================================================
-  
+
   static const TextTheme _textTheme = TextTheme(
     // Display (Hero text - fontSize.6xl)
     displayLarge: TextStyle(
@@ -504,7 +506,7 @@ class AppTheme {
       height: 1.2,                               // lineHeight.tight
       letterSpacing: -0.96,
     ),
-    
+
     // H1 (displayMedium: fontSize.5xl)
     displayMedium: TextStyle(
       fontSize: 36,                              // fontSize.5xl
@@ -518,21 +520,21 @@ class AppTheme {
       height: 1.2,
       letterSpacing: -0.56,
     ),
-    
+
     // H2 (headlineLarge: fontSize.2xl)
     headlineLarge: TextStyle(
       fontSize: 24,                              // fontSize.2xl
       fontWeight: FontWeight.w700,               // fontWeight.bold
       height: 1.2,
     ),
-    
+
     // H3 (headlineMedium: fontSize.xl)
     headlineMedium: TextStyle(
       fontSize: 20,                              // fontSize.xl (card titles)
       fontWeight: FontWeight.w600,               // fontWeight.semibold
       height: 1.5,                               // lineHeight.normal
     ),
-    
+
     // Subheading (titleLarge: fontSize.lg)
     titleLarge: TextStyle(
       fontSize: 18,                              // fontSize.lg
@@ -549,28 +551,28 @@ class AppTheme {
       fontWeight: FontWeight.w500,
       height: 1.5,
     ),
-    
+
     // Body Large (Primary body text - fontSize.md)
     bodyLarge: TextStyle(
       fontSize: 16,                              // fontSize.md (minimum readability)
       fontWeight: FontWeight.w400,               // fontWeight.regular
       height: 1.5,                               // lineHeight.normal
     ),
-    
+
     // Body Medium (Secondary body text - fontSize.base)
     bodyMedium: TextStyle(
       fontSize: 14,                              // fontSize.base
       fontWeight: FontWeight.w400,
       height: 1.5,
     ),
-    
+
     // Small text/Captions (fontSize.sm)
     bodySmall: TextStyle(
       fontSize: 12,                              // fontSize.sm
       fontWeight: FontWeight.w400,
       height: 1.5,
     ),
-    
+
     // Labels (interactive elements - fontSize.base to sm)
     labelLarge: TextStyle(
       fontSize: 14,                              // fontSize.base
@@ -609,13 +611,13 @@ class NexigenApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Nexigen',
-      
+      title: 'Credulon',
+
       // Apply themes
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.dark, // Default to dark mode
-      
+
       // Accessibility
       builder: (context, child) {
         return MediaQuery(
@@ -626,7 +628,7 @@ class NexigenApp extends StatelessWidget {
           child: child!,
         );
       },
-      
+
       home: const HomePage(),
     );
   }
@@ -734,6 +736,7 @@ This Flutter theme configuration provides:
 - ✅ Custom color extensions for semantic colors
 
 **Next Steps**:
+
 1. Copy theme files to your project's `lib/core/design_system/themes/` directory
 2. Import IBM Plex Sans font family (add to `pubspec.yaml`)
 3. Apply theme in `MaterialApp`

@@ -7,18 +7,19 @@
 
 ## Overview
 
-The Nexigen Design System is built on a foundation of clarity, trust, and accessibility. Our design philosophy guides every decision—from color choices to component behavior—ensuring a cohesive, professional experience across all platforms.
+The Credulon Design System is built on a foundation of clarity, trust, and accessibility. Our design philosophy guides every decision—from color choices to component behavior—ensuring a cohesive, professional experience across all platforms.
 
 ### Platform Mission
 
-Nexigen enables National Education Governors (Ministries) across Hong Kong, Macau, and Singapore to operate trust registries that authorize universities to issue verifiable degree certificates. The platform demonstrates complete end-to-end flows: from governance authority registration, credential issuance via VDIP, to employer verification via VDSP and TRQP protocols.
+Credulon enables National Education Governors (Ministries) across Hong Kong, Macau, and Singapore to operate trust registries that authorize universities to issue verifiable degree certificates. The platform demonstrates complete end-to-end flows: from governance authority registration, credential issuance via VDIP, to employer verification via VDSP and TRQP protocols.
 
 **User Contexts**:
+
 - **National Education Administrators**: Managing trust registries, authorizing universities, defining governance frameworks
 - **University Staff**: Issuing verifiable credentials through backend services
 - **Students**: Collecting, storing, and sharing credentials via mobile vault
 - **Employers**: Verifying credential authenticity and issuer authorization
-- **Nexigen Operators**: Platform administration and multi-jurisdiction coordination
+- **Credulon Operators**: Platform administration and multi-jurisdiction coordination
 
 ---
 
@@ -31,6 +32,7 @@ Nexigen enables National Education Governors (Ministries) across Hong Kong, Maca
 **Rationale**: Educational credentials are serious business. Users need to trust the system, understand their actions, and complete tasks efficiently. Clarity builds trust.
 
 **Application**:
+
 - Clear, concise labels and microcopy
 - Obvious call-to-action buttons
 - Predictable navigation patterns
@@ -38,6 +40,7 @@ Nexigen enables National Education Governors (Ministries) across Hong Kong, Maca
 - No ambiguous icons without labels
 
 **Example**:
+
 - ✅ "Issue Credential" button with explicit text
 - ❌ Abstract icon button without context
 
@@ -50,6 +53,7 @@ Nexigen enables National Education Governors (Ministries) across Hong Kong, Maca
 **Rationale**: Educational credentials must be available to all users, regardless of ability. WCAG 2.1 AA compliance is the baseline, not a goal.
 
 **Application**:
+
 - Colour contrast ratios meet or exceed WCAG standards
 - All interactive elements are keyboard accessible
 - Screen reader support is comprehensive
@@ -57,6 +61,7 @@ Nexigen enables National Education Governors (Ministries) across Hong Kong, Maca
 - Motion respects user preferences (prefers-reduced-motion)
 
 **Example**:
+
 - All buttons have visible focus states with 2px outlines
 - Icon-only buttons include accessible labels
 - Form errors are announced to screen readers
@@ -70,6 +75,7 @@ Nexigen enables National Education Governors (Ministries) across Hong Kong, Maca
 **Rationale**: Users interact with three distinct applications (Student Vault, Verifier Portal, Governance Portal). Consistent design language makes the ecosystem feel unified and trustworthy.
 
 **Application**:
+
 - Same colour palette across all apps
 - Identical button styles and behaviours
 - Consistent spacing and layout rhythms
@@ -77,6 +83,7 @@ Nexigen enables National Education Governors (Ministries) across Hong Kong, Maca
 - Shared component library
 
 **Example**:
+
 - "Submit" button looks and behaves the same in all three apps
 - Card components have identical padding and shadows
 - Error states use the same red colour and icon
@@ -90,6 +97,7 @@ Nexigen enables National Education Governors (Ministries) across Hong Kong, Maca
 **Rationale**: Credential management can be complex. Progressive disclosure prevents overwhelming users while maintaining access to advanced features.
 
 **Application**:
+
 - Primary actions are prominent; secondary actions are subtle
 - Advanced options hidden behind "More" or "Advanced" sections
 - Empty states guide first-time users
@@ -97,6 +105,7 @@ Nexigen enables National Education Governors (Ministries) across Hong Kong, Maca
 - Multi-step processes show clear progress
 
 **Example**:
+
 - Credential details are collapsed by default, expandable on demand
 - Advanced filtering options appear after clicking "Filters"
 - Onboarding tooltips appear for first-time actions
@@ -110,6 +119,7 @@ Nexigen enables National Education Governors (Ministries) across Hong Kong, Maca
 **Rationale**: Student Vault is primarily a mobile app. Starting mobile-first ensures core functionality works on the most constrained devices.
 
 **Application**:
+
 - Touch targets minimum 44x44px
 - Thumb-friendly navigation (bottom tabs on mobile)
 - Responsive layouts that scale gracefully
@@ -117,6 +127,7 @@ Nexigen enables National Education Governors (Ministries) across Hong Kong, Maca
 - Progressive enhancement, not graceful degradation
 
 **Example**:
+
 - Mobile: Single-column list of credentials
 - Tablet: Two-column grid
 - Desktop: Three-column grid with sidebar filters
@@ -131,11 +142,12 @@ Educational credential verification is fragmented, slow, and prone to fraud. Stu
 
 ### Solution
 
-Nexigen provides a decentralized, trustworthy platform for credential issuance, storage, and verification using DIDComm protocol and trust registries.
+Credulon provides a decentralized, trustworthy platform for credential issuance, storage, and verification using DIDComm protocol and trust registries.
 
 ### Design System's Role
 
 The design system ensures:
+
 - **Trust**: Professional, polished UI instills confidence
 - **Efficiency**: Consistent patterns accelerate development
 - **Accessibility**: All users can access their credentials
@@ -152,6 +164,7 @@ The design system ensures:
 **Measurement**: Time to implement common UI patterns (forms, lists, cards).
 
 **Success Criteria**:
+
 - Comprehensive component library covers 80% of use cases
 - Clear documentation reduces questions/confusion
 - Design tokens eliminate design decisions during development
@@ -165,6 +178,7 @@ The design system ensures:
 **Measurement**: Automated accessibility audits (axe, Lighthouse) + manual testing.
 
 **Success Criteria**:
+
 - All colour contrast ratios meet standards
 - Full keyboard navigation support
 - Screen reader compatibility verified
@@ -179,6 +193,7 @@ The design system ensures:
 **Measurement**: Design audit comparing components across apps.
 
 **Success Criteria**:
+
 - Identical colours, spacing, typography across apps
 - Component behaviour is predictable
 - User feedback indicates "unified experience"
@@ -192,6 +207,7 @@ The design system ensures:
 **Measurement**: Quality of AI-generated code (adherence to tokens, accessibility).
 
 **Success Criteria**:
+
 - AI assistants reference design tokens correctly
 - Generated components meet accessibility standards
 - Code requires minimal human review
@@ -203,6 +219,7 @@ The design system ensures:
 ### Primary Users
 
 #### 1. Students (Student Vault App)
+
 - **Age Range**: 18-35
 - **Technical Proficiency**: Low to Medium
 - **Context**: Mobile-first, on-the-go usage
@@ -213,6 +230,7 @@ The design system ensures:
   - Privacy controls
 
 #### 2. Employer (Verifier Portal)
+
 - **Age Range**: 25-60
 - **Technical Proficiency**: Medium
 - **Context**: Desktop, office environment
@@ -223,6 +241,7 @@ The design system ensures:
   - Bulk verification capabilities
 
 #### 3. Ministry Administrators (Governance Portal)
+
 - **Age Range**: 30-65
 - **Technical Proficiency**: Medium to High
 - **Context**: Desktop, office environment
@@ -237,6 +256,7 @@ The design system ensures:
 ### Secondary Users
 
 #### Developers (All Apps)
+
 - **Technical Proficiency**: High
 - **Context**: Development environment
 - **Needs**:
@@ -246,6 +266,7 @@ The design system ensures:
   - Component API documentation
 
 #### AI Coding Assistants
+
 - **Context**: Generating code based on documentation
 - **Needs**:
   - Structured, machine-readable guidelines
@@ -262,6 +283,7 @@ The design system ensures:
 **Decision**: Default to dark theme across all applications.
 
 **Rationale**:
+
 1. **Reduced Eye Strain**: Dark interfaces are easier on eyes during extended use
 2. **Modern Aesthetic**: Dark mode signals a modern, professional application
 3. **Battery Savings**: OLED screens consume less power with dark themes
@@ -276,13 +298,14 @@ The design system ensures:
 **Decision**: Build on Material Design 3 foundation.
 
 **Rationale**:
+
 1. **Proven Patterns**: Widely recognised, tested component behaviours
 2. **Accessibility Built-In**: MD3 components meet accessibility standards
 3. **Flutter Integration**: Excellent Flutter support with Material 3
 4. **Customisation**: Token-based system allows brand customisation
 5. **Future-Proof**: Active development and long-term support
 
-**Implementation**: Use MD3 as foundation, customise with Nexigen tokens.
+**Implementation**: Use MD3 as foundation, customise with Credulon tokens.
 
 ---
 
@@ -291,6 +314,7 @@ The design system ensures:
 **Decision**: All spacing values are multiples of 8px.
 
 **Rationale**:
+
 1. **Visual Rhythm**: Consistent spacing creates harmonious layouts
 2. **Simplicity**: Fewer spacing options = faster decisions
 3. **Alignment**: Easy to align elements across different components
@@ -306,6 +330,7 @@ The design system ensures:
 **Decision**: IBM Plex Sans as primary font family.
 
 **Rationale**:
+
 1. **Readability**: Excellent legibility at small sizes
 2. **Modern**: Contemporary, professional appearance
 3. **Open Source**: Free to use, no licensing issues
@@ -321,6 +346,7 @@ The design system ensures:
 **Decision**: Blue (#0368C0) as primary brand colour.
 
 **Rationale**:
+
 1. **Trust**: Blue universally associated with trust and security
 2. **Educational**: Common in educational institution branding
 3. **Professional**: Serious, corporate-friendly aesthetic
@@ -370,13 +396,14 @@ The design system ensures:
 
 ## Conclusion
 
-The Nexigen Design System is built on principles that prioritise user needs, accessibility, and developer efficiency. Every design decision is intentional, documented, and aligned with our mission to provide trustworthy, accessible credential management.
+The Credulon Design System is built on principles that prioritise user needs, accessibility, and developer efficiency. Every design decision is intentional, documented, and aligned with our mission to provide trustworthy, accessible credential management.
 
 When in doubt, return to these principles:
+
 1. **Clarity** over cleverness
 2. **Accessibility** by default
 3. **Consistency** breeds confidence
 4. **Progressive disclosure** reduces overwhelm
 5. **Mobile-first**, desktop-enhanced
 
-These principles guide every component, every colour choice, and every interaction pattern in the Nexigen ecosystem.
+These principles guide every component, every colour choice, and every interaction pattern in the Credulon ecosystem.

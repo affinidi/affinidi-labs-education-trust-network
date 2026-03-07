@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   sg-governance-portal:
@@ -15,11 +15,11 @@ services:
       - MINISTRY_NAME=Singapore Ministry of Education
       - API_BASE_URL=http://sg-trust-registry:3234/api
     networks:
-      - nexigen-network
+      - credulon-network
     depends_on:
       - sg-trust-registry
     restart: unless-stopped
 
 networks:
-  nexigen-network:
+  credulon-network:
     external: true

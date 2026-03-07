@@ -90,7 +90,7 @@ class LoginService extends _$LoginService {
     //       issuerDid: credentialResult!.credentialResult!.issuerDid,
     //     );
 
-    //     //update name in nexigen auth state
+    //     //update name in credulon auth state
     //     await ref
     //         .read(authProvider.notifier)
     //         .loadNameFromEmploymentCredential(

@@ -326,7 +326,7 @@ class VdipService {
               'email': email,
               'ecosystem_id': 'did:web:issuers.sa.affinidi.io:sweetlane-group',
               'issued_under_assertion_id': 'issue:ayracard:businesscard',
-              'issuer_id': 'did:web:issuers.sa.affinidi.io:nexigen',
+              'issuer_id': 'did:web:issuers.sa.affinidi.io:credulon',
               'egf_id': 'did:web:issuers.sa.affinidi.io:ayra-forum',
               'ayra_assurance_level': 0,
               'ayra_card_type': 'NexigenBusinessCard',

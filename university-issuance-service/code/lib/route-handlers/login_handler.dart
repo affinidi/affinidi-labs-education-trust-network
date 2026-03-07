@@ -34,7 +34,7 @@ Future<Response> loginHandler(Request req) async {
   // Get allowed domains from environment variable (comma-separated)
   final allowedDomainsStr = Env.get(
     'ALLOWED_EMAIL_DOMAIN',
-    'nexigen,affinidi',
+    'credulon,affinidi',
   );
   print('[LoginHandler] ALLOWED_EMAIL_DOMAIN from env: $allowedDomainsStr');
 

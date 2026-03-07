@@ -1,18 +1,21 @@
-# Nexigen Documentation
+# Credulon Documentation
 
-Comprehensive technical documentation for the Nexigen decentralized educational credentials platform.
+Comprehensive technical documentation for the Credulon decentralized educational credentials platform.
 
 ## 📖 Documentation Structure
 
 ### Getting Started
+
 - **[Setup Guide](setup.md)** - Complete installation and deployment instructions
 - **[Quick Reference](QUICK_REFERENCE.md)** - Common commands and operations
 
 ### Configuration & Environment
+
 - **[Environment Restructure](ENVIRONMENT_RESTRUCTURE.md)** - Environment configuration guide
 - **[Restructure Complete](RESTRUCTURE_COMPLETE.md)** - Project restructure summary
 
 ### Technical Documentation
+
 - **[Architecture](architecture.md)** - System design, components, and data flow
 - **[DIDComm Protocol](didcomm-protocol.md)** - DIDComm v2 implementation details
 - **[Trust Registry](trust-registry.md)** - Trust registry configuration and management
@@ -20,15 +23,17 @@ Comprehensive technical documentation for the Nexigen decentralized educational 
 - **[Troubleshooting](troubleshooting.md)** - Common issues and solutions
 
 ### Project Management
+
 - **[Product Requirements](product-requirements.md)** - Project specifications and requirements
 - **[Git Workflow](git-workflow.md)** - Version control and collaboration guidelines
 
 ### Historical Documentation
+
 - **[Archive](archive/)** - Historical implementation notes and refactoring summaries
 
 ## 🏗️ System Overview
 
-The Nexigen platform consists of:
+The Credulon platform consists of:
 
 1. **Student Vault App** (Flutter Mobile) - Credential storage and management
 2. **University Issuance Services** (Dart) - Credential issuance backends

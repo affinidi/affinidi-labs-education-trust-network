@@ -24,7 +24,7 @@ class LoginCard extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final emailController = useTextEditingController(text: '@nexigen.com');
+    final emailController = useTextEditingController(text: '@credulon.com');
     final otpController = useTextEditingController(text: '123456');
     final formKey = useMemoized(GlobalKey<FormState>.new);
     final otpSentNotifier = useCTNotifier(false);
