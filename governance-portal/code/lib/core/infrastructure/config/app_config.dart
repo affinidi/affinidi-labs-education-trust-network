@@ -10,18 +10,24 @@ class AppConfig {
   /// Load environment variables from .env file
   /// Returns true if file was loaded successfully
   static Future<bool> loadEnvironment() async {
+    // In Docker mode, config comes from runtime-config.js — skip dotenv
+    if (RuntimeConfig.get('INSTANCE_ID') != null) {
+      print('[AppConfig] Using runtime configuration (Docker mode)');
+      return true;
+    }
+
     const envFileName =
         String.fromEnvironment('ENV_FILE', defaultValue: '.env');
 
-    print('🔧 [AppConfig] Attempting to load $envFileName...');
+    print('[AppConfig] Attempting to load $envFileName...');
     try {
       await dotenv.load(fileName: envFileName);
-      print('✅ [AppConfig] Loaded configuration from $envFileName');
+      print('[AppConfig] Loaded configuration from $envFileName');
       _envLoaded = true;
       return true;
     } catch (e) {
       print(
-          '⚠️  [AppConfig] $envFileName file not found, using default configuration: $e');
+          '[AppConfig] $envFileName file not found, using default configuration: $e');
       _envLoaded = false;
       return false;
     }
