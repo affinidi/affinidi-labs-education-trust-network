@@ -13,8 +13,8 @@ part 'tr_admin_client.provider.g.dart';
 Future<TrAdminClient> trAdminClient(ref) async {
   final logger = Logger();
 
-  // Load user configuration from file
-  final configPath = UserConfig.getDefaultPath();
+  // Load user configuration from file (use AppConfig to read runtime-injected path)
+  final configPath = AppConfig.userConfigPath;
   logger.i('Loading user configuration from: $configPath');
   try {
     final userConfig = await UserConfig.loadFromFile(configPath);
