@@ -407,12 +407,12 @@ class MpxClient {
     final unsignedCredential = VcDataModelV2(
       context: [
         dmV2ContextUrl,
-        'https://schema.affinidi.io/AnyTNexigenPOCEdCertV1R0V1R0.jsonld',
+        'https://schema.affinidi.io/AnyTNexigenPOCEdCertV1R0.jsonld',
       ],
       credentialSchema: [
         CredentialSchema(
           id: Uri.parse(
-            'https://schema.affinidi.io/AnyTNexigenPOCEdCertV1R0V1R0.json',
+            'https://schema.affinidi.io/AnyTNexigenPOCEdCertV1R0.json',
           ),
           type: 'JsonSchemaValidator2018',
         ),

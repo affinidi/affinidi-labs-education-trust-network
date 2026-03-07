@@ -60,14 +60,54 @@ if [ "$PLATFORM" = "android" ] && [ "$ENV_FILE" = ".env.local-network" ]; then
 fi
 
 # Build the flutter run command
+# Helper: pick the first connected device matching a platform keyword
+pick_device() {
+    local keyword="$1"
+    flutter devices --machine 2>/dev/null \
+        | grep -o '"id":"[^"]*"' \
+        | head -1 \
+        | sed 's/"id":"//;s/"//'
+}
+
 case "$PLATFORM" in
     ios)
-        echo "📱 Starting on iOS Simulator..."
-        flutter run --dart-define-from-file="$ENV_FILE"
+        echo "📱 Looking for iOS device..."
+        DEVICE_ID=$(flutter devices --machine 2>/dev/null \
+            | python3 -c "
+import sys, json
+devs = json.load(sys.stdin)
+for d in devs:
+    if d.get('targetPlatform','').startswith('ios') or 'iphone' in d.get('name','').lower() or 'ipad' in d.get('name','').lower():
+        print(d['id']); break
+" 2>/dev/null || true)
+        if [ -n "$DEVICE_ID" ]; then
+            echo "   Found device: $DEVICE_ID"
+            flutter run -d "$DEVICE_ID" --dart-define-from-file="$ENV_FILE"
+        else
+            echo "   No iOS device found, letting Flutter choose..."
+            flutter run --dart-define-from-file="$ENV_FILE"
+        fi
         ;;
     android)
-        echo "📱 Starting on Android Emulator..."
-        flutter run -d android --dart-define-from-file="$ENV_FILE"
+        echo "📱 Looking for Android device..."
+        DEVICE_ID=$(flutter devices --machine 2>/dev/null \
+            | python3 -c "
+import sys, json
+devs = json.load(sys.stdin)
+for d in devs:
+    tp = d.get('targetPlatform','')
+    if 'android' in tp:
+        print(d['id']); break
+" 2>/dev/null || true)
+        if [ -n "$DEVICE_ID" ]; then
+            echo "   Found device: $DEVICE_ID"
+            flutter run -d "$DEVICE_ID" --dart-define-from-file="$ENV_FILE"
+        else
+            echo "   No Android device found. Connect a device or start an emulator."
+            echo "   Available devices:"
+            flutter devices
+            exit 1
+        fi
         ;;
     web)
         echo "🌐 Starting on Web (Chrome)..."
