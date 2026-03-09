@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   hk-governance-portal:
@@ -15,11 +15,11 @@ services:
       - MINISTRY_NAME=Hong Kong Ministry of Education
       - API_BASE_URL=http://hk-trust-registry:3232/api
     networks:
-      - nexigen-network
+      - credulon-network
     depends_on:
       - hk-trust-registry
     restart: unless-stopped
 
 networks:
-  nexigen-network:
+  credulon-network:
     external: true

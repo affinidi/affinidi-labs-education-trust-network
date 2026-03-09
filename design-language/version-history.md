@@ -73,7 +73,7 @@ Refinement release aligning design system with Student Vault App focus and high-
 ### Notes
 
 - **Priority Flows**: "Claim Credential" and "Home" screen specifications must remain pixel-perfect to high-fi wireframes in `inspiration/high-fi-wireframes/`
-- **Inspiration Sources**: 
+- **Inspiration Sources**:
   - [High-Fi Wireframes](inspiration/high-fi-wireframes/README.md) – Primary layout reference
   - [Moodboard](inspiration/moodboard/README.md) – Design philosophy and aesthetic direction
 - **Theme Implementation Status**: Color mapping documented; full dart code implementation to follow in patch release
@@ -82,7 +82,7 @@ Refinement release aligning design system with Student Vault App focus and high-
 
 ## Overview
 
-This document tracks all changes to the Nexigen Design System, including new components, token updates, breaking changes, and migration guides.
+This document tracks all changes to the Credulon Design System, including new components, token updates, breaking changes, and migration guides.
 
 ---
 
@@ -93,11 +93,12 @@ This document tracks all changes to the Nexigen Design System, including new com
 
 ### Summary
 
-Initial release of the Nexigen Design System for the trust registry prototype demonstrating end-to-end verifiable credential flows across Hong Kong, Macau, and Singapore jurisdictions. Comprehensive design language covering all aspects of frontend development for Student Vault App, Employer Verification Portal, and Trust Registry Admin Portal.
+Initial release of the Credulon Design System for the trust registry prototype demonstrating end-to-end verifiable credential flows across Hong Kong, Macau, and Singapore jurisdictions. Comprehensive design language covering all aspects of frontend development for Student Vault App, Employer Verification Portal, and Trust Registry Admin Portal.
 
 ### Platform Scope
 
-This design system supports the Nexigen prototype showcasing:
+This design system supports the Credulon prototype showcasing:
+
 - **Three Trust Registries**: Hong Kong, Macau, Singapore education authorities
 - **Multi-Stakeholder Flows**: National Education governors, universities (Horizon HK, Trident Macau), students, employers (Nova Corp SG)
 - **Protocol Implementation**: DIDComm, VDIP (credential issuance), VDSP (credential sharing), TRQP (trust registry queries)
@@ -112,6 +113,7 @@ This design system supports the Nexigen prototype showcasing:
 ### What's Included
 
 #### Documentation
+
 - ✅ Design Philosophy (principles, purpose, objectives, audience)
 - ✅ Art Direction (visual style, mood, tone of voice)
 - ✅ Design Tokens (complete YAML file with all foundational values)
@@ -122,6 +124,7 @@ This design system supports the Nexigen prototype showcasing:
 - ✅ Quick Reference (common patterns, decision trees, checklists)
 
 #### Design Tokens
+
 - **Colors**: Primary (blue), secondary (light blue), semantic (success/warning/error/info), neutrals, extended palette
 - **Typography**: IBM Plex Sans font family, 8px baseline grid, 11 size scales, 5 weight variations
 - **Spacing**: 8px grid system with 12 spacing values
@@ -132,6 +135,7 @@ This design system supports the Nexigen prototype showcasing:
 - **Component-Specific**: Button, input, card, app bar tokens
 
 #### Components Documented
+
 - **Actions**: Primary button, secondary button, text button, icon button, FAB
 - **Inputs**: Text field, select/dropdown, checkbox, radio, switch
 - **Display**: Card, list item, avatar, badge, chip
@@ -139,6 +143,7 @@ This design system supports the Nexigen prototype showcasing:
 - **Navigation**: App bar, bottom navigation, drawer, tabs
 
 #### Theme Implementation
+
 - ✅ Complete Material 3 ThemeData for dark mode (default)
 - ✅ Complete Material 3 ThemeData for light mode
 - ✅ Typography system with proper hierarchy
@@ -147,6 +152,7 @@ This design system supports the Nexigen prototype showcasing:
 - ✅ Accessibility-compliant (touch targets, contrast ratios, focus indicators)
 
 #### Accessibility
+
 - ✅ WCAG 2.1 Level AA compliance documented
 - ✅ Color contrast ratios validated (all text combinations meet standards)
 - ✅ Keyboard navigation guidelines
@@ -160,26 +166,31 @@ This design system supports the Nexigen prototype showcasing:
 ### Design Decisions
 
 #### Dark Mode First
+
 - **Decision**: Default to dark theme across all applications
 - **Rationale**: Reduced eye strain, modern aesthetic, battery savings on OLED screens, better for viewing sensitive credential information
 - **Implementation**: Dark mode is default, light mode available as alternative
 
 #### Material Design 3 Foundation
+
 - **Decision**: Build on Material Design 3 principles
 - **Rationale**: Proven patterns, excellent accessibility, strong Flutter support, token-based customization
-- **Implementation**: Use MD3 as foundation, customize with Nexigen brand colors
+- **Implementation**: Use MD3 as foundation, customize with Credulon brand colors
 
 #### 8px Grid System
+
 - **Decision**: All spacing values are multiples of 8px
 - **Rationale**: Visual rhythm, simplicity, alignment consistency, cross-platform compatibility
 - **Implementation**: Design tokens provide 8px increments
 
 #### IBM Plex Sans Font Family
+
 - **Decision**: IBM Plex Sans as primary font
 - **Rationale**: Excellent readability, modern appearance, open source, variable font support, wide character support
 - **Implementation**: IBM Plex Sans for all UI text, system fonts as fallback
 
 #### Primary Blue Color
+
 - **Decision**: Blue (#0368C0) as primary brand color
 - **Rationale**: Trust and security association, common in education, professional aesthetic, accessible contrast ratios, gender-neutral
 - **Implementation**: Primary blue for main actions, light blue for secondary actions
@@ -189,6 +200,7 @@ This design system supports the Nexigen prototype showcasing:
 ### Accessibility Achievements
 
 #### WCAG 2.1 Level AA Compliance ✅
+
 - ✅ All text contrast ratios meet or exceed 4.5:1 (normal text)
 - ✅ Large text contrast ratios meet or exceed 3:1
 - ✅ Non-text elements meet 3:1 contrast ratio
@@ -200,6 +212,7 @@ This design system supports the Nexigen prototype showcasing:
 - ✅ Error messages clear and actionable
 
 #### Known Accessibility Notes
+
 - ⚠️ Warning color (#D99A06) on white: 4.27:1 - **Use for large text only** or increase contrast for normal text
 - All other color combinations exceed WCAG AA standards
 
@@ -226,6 +239,7 @@ None
 ### Future Considerations
 
 #### Planned for v1.1.0 (Minor Release)
+
 - [ ] Institution-specific color theme variants
 - [ ] Additional illustration guidelines and examples
 - [ ] Data visualization component library (charts, graphs)
@@ -234,6 +248,7 @@ None
 - [ ] RTL language support guidelines
 
 #### Planned for v2.0.0 (Major Release)
+
 - [ ] Design tokens in JSON format (in addition to YAML)
 - [ ] Figma design library synchronized with tokens
 - [ ] Sketch library for designers
@@ -242,6 +257,7 @@ None
 - [ ] Expanded internationalization (i18n) support
 
 #### Under Consideration
+
 - [ ] Custom theme builder for institutions
 - [ ] Additional brand color options
 - [ ] Expanded animation guidelines
@@ -252,7 +268,7 @@ None
 
 ## Versioning Convention
 
-Nexigen Design System follows **Semantic Versioning** (SemVer):
+Credulon Design System follows **Semantic Versioning** (SemVer):
 
 ```
 MAJOR.MINOR.PATCH
@@ -263,9 +279,11 @@ Example: 1.2.3
 ### Version Number Meanings
 
 #### MAJOR (1.0.0 → 2.0.0)
+
 Breaking changes that require code updates.
 
 **Examples**:
+
 - Removing design tokens
 - Changing token naming conventions
 - Restructuring component APIs
@@ -277,9 +295,11 @@ Breaking changes that require code updates.
 ---
 
 #### MINOR (1.0.0 → 1.1.0)
+
 New features or components added, backward compatible.
 
 **Examples**:
+
 - Adding new components
 - Adding new design tokens
 - Expanding color palette
@@ -291,9 +311,11 @@ New features or components added, backward compatible.
 ---
 
 #### PATCH (1.0.0 → 1.0.1)
+
 Bug fixes, clarifications, corrections, backward compatible.
 
 **Examples**:
+
 - Fixing documentation typos
 - Correcting token values
 - Clarifying usage guidelines
@@ -376,6 +398,7 @@ When removing or significantly changing components:
    - Breaking change noted in release notes
 
 **Example Timeline**:
+
 - v1.5.0: Component deprecated, alternative recommended
 - v1.6.0: Still supported (with deprecation warning)
 - v1.7.0: Still supported (with deprecation warning)
@@ -388,21 +411,27 @@ When removing or significantly changing components:
 Each version includes:
 
 ### Added
+
 New features, components, or tokens
 
 ### Changed
+
 Updates to existing features (backward compatible)
 
 ### Deprecated
+
 Features marked for future removal
 
 ### Removed
+
 Features removed (breaking change)
 
 ### Fixed
+
 Bug fixes, corrections, clarifications
 
 ### Security
+
 Security-related changes
 
 ---
@@ -410,20 +439,26 @@ Security-related changes
 ## Contact & Support
 
 ### Questions
+
 For questions about the design system:
+
 - Review documentation first
 - Check Quick Reference for common patterns
 - Search version history for related changes
 
 ### Bug Reports
+
 Found an error or inconsistency?
+
 - Document the issue clearly
 - Provide examples or screenshots
 - Suggest a fix if possible
 - Submit via GitHub issues
 
 ### Feature Requests
+
 Have an idea for improvement?
+
 - Describe the use case
 - Provide examples or mockups
 - Explain the value/impact
@@ -434,12 +469,14 @@ Have an idea for improvement?
 ## Document Maintenance
 
 ### Responsibility
+
 - **Design Team**: Visual standards, component specifications, art direction
 - **Development Team**: Flutter theme, code examples, implementation guides
 - **Accessibility Officer**: WCAG compliance, accessibility guidelines, testing procedures
 - **Documentation Lead**: Version history, changelogs, migration guides
 
 ### Review Schedule
+
 - **Quarterly**: Review for accuracy, update examples, fix known issues
 - **After Major Feature**: Update relevant sections, add new components
 - **Annually**: Comprehensive review, roadmap update, deprecation assessment
@@ -448,22 +485,24 @@ Have an idea for improvement?
 
 ## Acknowledgments
 
-The Nexigen Design System was created for the Nexigen decentralized educational credential platform. It draws inspiration from:
+The Credulon Design System was created for the Credulon decentralized educational credential platform. It draws inspiration from:
+
 - Material Design 3 (Google)
 - Human Interface Guidelines (Apple)
 - Web Content Accessibility Guidelines (W3C)
 - Inclusive Design Principles (Microsoft)
 
 **Contributors**:
+
 - Design System Documentation: GitHub Copilot
-- Based on existing Nexigen codebase patterns
+- Based on existing Credulon codebase patterns
 - Aligned with Clean Architecture principles
 
 ---
 
 ## License
 
-This design system is part of the Nexigen project. See LICENSE file in the project root for details.
+This design system is part of the Credulon project. See LICENSE file in the project root for details.
 
 ---
 
@@ -478,27 +517,35 @@ Use this template for future releases:
 **Release Type**: Major | Minor | Patch
 
 ### Summary
+
 Brief overview of this release
 
 ### Added
+
 - New feature or component
 
 ### Changed
+
 - Updated feature (backward compatible)
 
 ### Deprecated
+
 - Feature marked for removal
 
 ### Removed
+
 - Feature removed (breaking change)
 
 ### Fixed
+
 - Bug fix or correction
 
 ### Migration Guide
+
 Instructions for upgrading from previous version (if breaking changes)
 
 ### Known Issues
+
 List of known issues or limitations
 ```
 

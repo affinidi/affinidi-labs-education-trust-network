@@ -3,7 +3,7 @@
 > **⚠️ PROTOTYPE/REFERENCE IMPLEMENTATION**  
 > This is a prototype service developed for demonstration and educational purposes only. It is **not a production-ready product** from Affinidi. This reference implementation showcases technical concepts and should not be used in production environments without significant additional development, security hardening, and testing.
 
-A dedicated service for hosting DID:web documents for education ministries in the Nexigen Demo.
+A dedicated service for hosting DID:web documents for education ministries in the Credulon Demo.
 
 ## Overview
 
@@ -231,7 +231,7 @@ services:
 
 ### Cannot access from other services
 
-1. Ensure Docker network `nexigen-network` exists
+1. Ensure Docker network `credulon-network` exists
 2. Verify container is on the same network
 3. Check firewall settings
 

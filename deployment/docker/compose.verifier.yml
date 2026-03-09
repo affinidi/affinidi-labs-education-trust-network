@@ -1,0 +1,46 @@
+# Education Trust Network - Verifier Portal (Nova Corp)
+# Project: etn-nova-verifier
+
+services:
+  nova-verifier-backend:
+    build:
+      context: ../../verifier-portal/code/backend
+      dockerfile: Dockerfile
+    container_name: nova-verifier-backend
+    labels:
+      etn.group: "5-verifier-portal"
+      etn.role: "Verifier Backend (Nova Corp)"
+    ports:
+      - "4001:4001"
+    env_file:
+      - ../../verifier-portal/code/backend/.env.ngrok
+    volumes:
+      - verifier-backend-data:/app/data
+      - verifier-backend-keys:/app/keys
+    restart: unless-stopped
+    networks:
+      - education-trust-network
+
+  nova-verifier-frontend:
+    build:
+      context: ../../verifier-portal/code/frontend
+      dockerfile: Dockerfile
+    container_name: nova-verifier-frontend
+    labels:
+      etn.group: "5-verifier-portal"
+      etn.role: "Verifier Frontend (Nova Corp)"
+    ports:
+      - "4000:4000"
+    depends_on:
+      - nova-verifier-backend
+    restart: unless-stopped
+    networks:
+      - education-trust-network
+
+networks:
+  education-trust-network:
+    external: true
+
+volumes:
+  verifier-backend-data:
+  verifier-backend-keys:

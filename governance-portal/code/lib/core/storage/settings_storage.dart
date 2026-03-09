@@ -19,7 +19,7 @@ class SettingsStorage {
     return SettingsStorage(prefs);
   }
 
-  /// Get app name (defaults to 'Nexigen')
+  /// Get app name (defaults to 'Credulon')
   String getAppName() =>
       _prefs.getString(_keyAppName) ?? SettingsConstants.defaultAppName;
 

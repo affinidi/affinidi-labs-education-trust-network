@@ -38,7 +38,7 @@ Future<Map<String, dynamic>> generateDidWeb({
     );
   }
 
-  //storing did doc in did:web path e.g. /nexigen/did.json - used for resolving
+  //storing did doc in did:web path e.g. /credulon/did.json - used for resolving
   await storage.put(didWebPath, didDocument.toString());
 
   print('[generateDidWeb] DID document generated and stored');

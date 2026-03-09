@@ -240,7 +240,7 @@
 	"subtitleAddNew": "Crear un nuevo alias",
 	"subtitleAlias": "Identidad de alias",
 	"subtitlePrimary": "Su identidad principal",
-	"tabsTitle": "{tabName, select, connections{Invitations} contacts{Channels} identities{Identities} settings{Settings} nexigen{Ayra} other{Invalid}}",
+	"tabsTitle": "{tabName, select, connections{Invitations} contacts{Channels} identities{Identities} settings{Settings} credulon{Ayra} other{Invalid}}",
 	"theirDetails": "Sus detalles",
 	"thisFieldIsRequired": "Este campo es obligatorio",
 	"timeAgoDay": "{days, plural, =1{1 day ago} other{{days} days ago}}",

@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   macau-university-issuer:
@@ -19,11 +19,11 @@ services:
       - ./data:/app/data
       - ./keys:/app/keys
     networks:
-      - nexigen-network
+      - credulon-network
     depends_on:
       - macau-trust-registry
     restart: unless-stopped
 
 networks:
-  nexigen-network:
+  credulon-network:
     external: true

@@ -133,7 +133,7 @@ Copy the desired one to `.env.ngrok` before running.
 
 ### Integration with Full Demo
 
-The full Nexigen demo setup handles all services:
+The full Credulon demo setup handles all services:
 
 ```bash
 cd affinidi-labs-education-trust-network

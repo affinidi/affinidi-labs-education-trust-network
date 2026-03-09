@@ -37,7 +37,7 @@ Future<Response> dcqlRequestHandler(Request req) async {
   await SendVdspRequestUseCase(vdspClients, requestIds)(
     data['clientId'],
     data['holder_channel_did'],
-    'Nexigen card payload dcql request',
+    'Credulon card payload dcql request',
     dcql,
     // data['payloadId'],
   );

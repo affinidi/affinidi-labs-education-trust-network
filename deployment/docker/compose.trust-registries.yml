@@ -1,0 +1,64 @@
+# Education Trust Network - Trust Registries (HK, Macau, Singapore)
+# Project: etn-trust-registries
+
+services:
+  trust-registry-hk:
+    build:
+      context: ../../trust-registry/affinidi-trust-registry-rs
+      dockerfile: trust-registry/Dockerfile
+    image: trust-registry:local
+    container_name: trust-registry-hk
+    labels:
+      etn.group: "3-trust-registries"
+      etn.role: "Trust Registry (Hong Kong)"
+    ports:
+      - "3232:3232"
+    env_file:
+      - ../../trust-registry/hk/docker.env
+    volumes:
+      - ../../trust-registry/hk/data:/data
+    restart: unless-stopped
+    networks:
+      - education-trust-network
+
+  trust-registry-macau:
+    build:
+      context: ../../trust-registry/affinidi-trust-registry-rs
+      dockerfile: trust-registry/Dockerfile
+    image: trust-registry:local
+    container_name: trust-registry-macau
+    labels:
+      etn.group: "3-trust-registries"
+      etn.role: "Trust Registry (Macau)"
+    ports:
+      - "3233:3232"
+    env_file:
+      - ../../trust-registry/macau/docker.env
+    volumes:
+      - ../../trust-registry/macau/data:/data
+    restart: unless-stopped
+    networks:
+      - education-trust-network
+
+  trust-registry-sg:
+    build:
+      context: ../../trust-registry/affinidi-trust-registry-rs
+      dockerfile: trust-registry/Dockerfile
+    image: trust-registry:local
+    container_name: trust-registry-sg
+    labels:
+      etn.group: "3-trust-registries"
+      etn.role: "Trust Registry (Singapore)"
+    ports:
+      - "3234:3232"
+    env_file:
+      - ../../trust-registry/sg/docker.env
+    volumes:
+      - ../../trust-registry/sg/data:/data
+    restart: unless-stopped
+    networks:
+      - education-trust-network
+
+networks:
+  education-trust-network:
+    external: true

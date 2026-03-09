@@ -7,11 +7,11 @@
 
 ## Overview
 
-Nexigen's art direction establishes the visual identity and emotional tone across all applications. This document defines the aesthetic principles, illustration style, mood, and tone of voice that make Nexigen recognizable and trustworthy.
+Credulon's art direction establishes the visual identity and emotional tone across all applications. This document defines the aesthetic principles, illustration style, mood, and tone of voice that make Credulon recognizable and trustworthy.
 
 ### Design Context
 
-Nexigen serves multiple stakeholder groups across three jurisdictions (Hong Kong, Macau, Singapore):
+Credulon serves multiple stakeholder groups across three jurisdictions (Hong Kong, Macau, Singapore):
 
 **Trust Registry Admin Portal**: Government administrators managing educational governance frameworks, authorizing universities, and creating authority statements. Interface must convey authority, control, and precision.
 
@@ -29,9 +29,10 @@ Nexigen serves multiple stakeholder groups across three jurisdictions (Hong Kong
 
 **Headspace Warmth, Revolut Efficiency**
 
-Nexigen combines the calm, approachable palette of Headspace with the clear, organized information architecture of Revolut. Clean, modern, and emotionally warm—never cold or corporate.
+Credulon combines the calm, approachable palette of Headspace with the clear, organized information architecture of Revolut. Clean, modern, and emotionally warm—never cold or corporate.
 
 **Key Characteristics**:
+
 - **Warm**: Cream and orange accents create calm yet energetic atmosphere
 - **Organized**: Clear modular patterns, efficient information hierarchy, decisive UI
 - **Clean**: Generous negative space, uncluttered layouts, purposeful spacing
@@ -45,11 +46,13 @@ Nexigen combines the calm, approachable palette of Headspace with the clear, org
 #### Shapes & Forms
 
 **Primary Shapes**:
+
 - **Rounded Rectangles**: Primary container shape (8-12px border radius)
 - **Circles**: Icons, avatars, badges
 - **Clean Lines**: Dividers, borders, underlines
 
 **Avoid**:
+
 - Overly sharp corners (except for intentional emphasis)
 - Irregular organic shapes
 - Excessive ornamentation
@@ -58,6 +61,7 @@ Nexigen combines the calm, approachable palette of Headspace with the clear, org
 #### Depth & Elevation
 
 **Subtle Layering** (Headspace-inspired lightness):
+
 - Use shadows sparingly to indicate elevation
 - Elevation levels: 0 (flat), 1 (subtle), 3 (raised), 8 (prominent), 16 (modal)
 - Light mode: Minimal shadows; rely on warm cream surface colors and spacing for hierarchy
@@ -70,12 +74,14 @@ Nexigen combines the calm, approachable palette of Headspace with the clear, org
 #### Borders & Dividers
 
 **Border Philosophy**:
+
 - Use borders to separate, not decorate
 - 1px borders for subtle separation
 - 2px borders for emphasis
 - High contrast borders only when necessary for accessibility
 
 **Divider Usage**:
+
 - Prefer spacing over dividers when possible
 - Use subtle dividers (low opacity) within grouped content
 - Full-width dividers for major section breaks
@@ -87,6 +93,7 @@ Nexigen combines the calm, approachable palette of Headspace with the clear, org
 #### 8px Baseline Grid
 
 All elements align to an 8px grid:
+
 - Spacing: 8, 16, 24, 32, 40, 48, 64, 80, 96...
 - Component dimensions: Heights and widths in 8px increments
 - Line heights: Based on 8px rhythm
@@ -94,18 +101,21 @@ All elements align to an 8px grid:
 #### Layout Patterns
 
 **Mobile (< 640px)**:
+
 - Single column layouts
 - Full-width cards with 16px margins
 - Bottom navigation for primary actions
 - Stacked forms
 
 **Tablet (640px - 1024px)**:
+
 - Two-column layouts where appropriate
 - Side navigation option
 - Adaptive card widths
 - Side-by-side forms
 
 **Desktop (> 1024px)**:
+
 - Multi-column layouts (2-3 columns)
 - Persistent side navigation
 - Max content width: 1440px (centered)
@@ -126,9 +136,10 @@ All elements align to an 8px grid:
 
 **Minimalist Iconography**
 
-Nexigen uses Material Icons for UI elements and simple, geometric illustrations for empty states and onboarding.
+Credulon uses Material Icons for UI elements and simple, geometric illustrations for empty states and onboarding.
 
 **Characteristics**:
+
 - **Geometric**: Simple shapes, clean lines (Revolut organization)
 - **Flat Design**: No gradients, shadows, or 3D effects in illustrations
 - **Warm Color Palette**: Warm orange (#FF8E32) for key actions, cream backgrounds, neutral grays
@@ -173,18 +184,21 @@ Nexigen uses Material Icons for UI elements and simple, geometric illustrations 
 #### Example Scenarios
 
 **Empty Credential List**:
+
 - Icon: Minimalist credential card outline
 - Color: Warm orange (#FF8E32) outline on warm cream background
 - Composition: Centered, 300px wide
 - Supporting text: "No credentials yet"
 
 **Network Error**:
+
 - Icon: Disconnected plug or signal
 - Color: Warning amber
 - Composition: Centerd, 250px wide
 - Supporting text: "Connection lost"
 
 **Verification Success**:
+
 - Icon: Checkmark in circle
 - Color: Success green
 - Animation: Subtle scale-up entrance
@@ -198,15 +212,17 @@ Nexigen uses Material Icons for UI elements and simple, geometric illustrations 
 
 **Warm Professionalism** (Headspace + Revolut)
 
-Nexigen balances authoritative competence (educational credentials are serious) with warm approachability (users should feel comfortable and empowered).
+Credulon balances authoritative competence (educational credentials are serious) with warm approachability (users should feel comfortable and empowered).
 
 **Primary Emotions**:
+
 1. **Trust**: Reliable, secure, authoritative
 2. **Clarity**: Clear, organized, transparent (Revolut efficiency)
 3. **Confidence**: Decisive, professional, capable (bold orange accents for key actions)
 4. **Calm**: Warm colors, uncluttered layouts, peaceful focus (Headspace warmth)
 
 **Avoid**:
+
 - Overly formal/corporate (cold, intimidating)
 - Too casual (unprofessional, flippant)
 - Anxious (urgent warnings, aggressive CTAs)
@@ -217,6 +233,7 @@ Nexigen balances authoritative competence (educational credentials are serious) 
 ### Visual Mood Board
 
 **Color Atmosphere** (Headspace warmth, organized clarity):
+
 - **Warm Orange (#FF8E32)**: High-priority actions, key features stand out ("Claim Credential", primary CTAs)
 - **Warm Cream (#FFEEC8, #FFFDF7)**: Approachable backgrounds, reduces eye strain, feels inviting
 - **Dark Near-Black Text (#1E1E1E)**: Clear, readable on warm surfaces, sophisticated
@@ -224,6 +241,7 @@ Nexigen balances authoritative competence (educational credentials are serious) 
 - **Modular Sections**: Color blocking organizes content (Revolut organization)
 
 **Interaction Atmosphere**:
+
 - **Smooth Animations**: Polished, responsive, delightful
 - **Instant Feedback**: Confident, reliable, responsive
 - **Clear States**: Unambiguous, transparent, honest
@@ -238,6 +256,7 @@ Nexigen balances authoritative competence (educational credentials are serious) 
 **Clear, Confident, and Concise**
 
 All interface text should be:
+
 - **Direct**: Get to the point quickly
 - **Active Voice**: "Issue credential" not "Credential is issued"
 - **User-Focused**: "Your credentials" not "Credentials list"
@@ -288,7 +307,7 @@ All interface text should be:
 
 **Principle**: Professional but not stiff, friendly but not casual.
 
-✅ **Good**: "Welcome to Nexigen! Let's get started."  
+✅ **Good**: "Welcome to Credulon! Let's get started."  
 ❌ **Too Casual**: "Hey there! 👋 Ready to rock?"  
 ❌ **Too Formal**: "Greetings. Please commence onboarding procedures."
 
@@ -303,23 +322,27 @@ All interface text should be:
 #### Button Labels
 
 **Primary Actions** (CTAs):
+
 - "Issue Credential"
 - "Verify Now"
 - "Add to Wallet"
 - "Create Record"
 
 **Secondary Actions**:
+
 - "View Details"
 - "Edit Record"
 - "Cancel"
 - "Go Back"
 
 **Destructive Actions**:
+
 - "Delete Credential"
 - "Remove Record"
 - "Revoke Access"
 
 **Rules**:
+
 - Use action verbs
 - Be specific (not generic "Submit")
 - Keep under 3 words when possible
@@ -329,16 +352,19 @@ All interface text should be:
 #### Form Labels
 
 **Field Labels**:
+
 - "Institution Name" (not "Name")
 - "Credential Type" (not "Type")
 - "Issue Date" (not "Date")
 
 **Placeholder Text**:
+
 - "Enter your email address"
 - "Select a credential type"
 - "YYYY-MM-DD"
 
 **Rules**:
+
 - Labels are nouns
 - Placeholders are instructions
 - Never rely on placeholder alone (accessibility)
@@ -366,6 +392,7 @@ Try adjusting your filters or search terms
 ```
 
 **Rules**:
+
 - Heading: State the situation
 - Description: Explain or encourage
 - CTA: Suggest next action
@@ -375,11 +402,13 @@ Try adjusting your filters or search terms
 #### Success Messages
 
 **Toast/Snackbar Messages**:
+
 - "Credential issued successfully"
 - "Record created"
 - "Changes saved"
 
 **Full-Page Success**:
+
 ```
 [Icon: Checkmark]
 Credential Verified
@@ -388,6 +417,7 @@ This credential is valid and issued by Hong Kong University
 ```
 
 **Rules**:
+
 - Confirm the action completed
 - Keep brief for transient messages
 - Provide details for important confirmations
@@ -397,15 +427,18 @@ This credential is valid and issued by Hong Kong University
 #### Error Messages
 
 **Validation Errors** (inline):
+
 - "Email address is required"
 - "Password must be at least 8 characters"
 - "Please select a credential type"
 
 **System Errors** (banner):
+
 - "Connection lost. Please check your internet and try again."
 - "Unable to load credentials. Tap to retry."
 
 **Critical Errors** (full-page):
+
 ```
 [Icon: Warning]
 Something Went Wrong
@@ -414,6 +447,7 @@ We encountered an unexpected error. Please try again later.
 ```
 
 **Rules**:
+
 - Explain what happened
 - Provide a solution or next step
 - Never blame the user
@@ -451,6 +485,7 @@ We encountered an unexpected error. Please try again later.
 ### Color Atmosphere
 
 Based on existing implementation:
+
 - **Warm Orange (#FF8E32)**: Key features and actions that should stand out (primary CTAs, highlights)
 - **Warm Cream (#FFEEC8, #FFFDF7)**: Card backgrounds and supporting surfaces
 - **Dark Near-Black (#1E1E1E)**: Primary text on warm backgrounds
@@ -459,6 +494,7 @@ Based on existing implementation:
 ### Component Atmosphere
 
 From existing screens:
+
 - **Cards**: Minimal shadows (elevation 1), warm cream backgrounds, rounded corners (8-12px)
 - **Buttons**: Bold warm orange (#FF8E32) for primary CTAs (especially "Claim Credential"), warm cream for secondary
 - **Forms**: Clear labels, outlined inputs, warm backgrounds, generous padding
@@ -482,7 +518,7 @@ From existing screens:
 ✅ Align elements to 8px grid (Revolut organization)  
 ✅ Use minimal shadows (elevation 1) for depth  
 ✅ Keep layouts modular and sectioned (color-blocked organization)  
-✅ Use warm orange for key features—make them stand out and look exciting  
+✅ Use warm orange for key features—make them stand out and look exciting
 
 ### Visual Don'ts
 
@@ -490,7 +526,7 @@ From existing screens:
 ❌ Cram content with minimal spacing  
 ❌ Misalign elements to grid  
 ❌ Overuse shadows or elevation  
-❌ Add decorative elements without purpose  
+❌ Add decorative elements without purpose
 
 ---
 
@@ -500,7 +536,7 @@ From existing screens:
 ✅ Keep sentences short  
 ✅ Use simple, common words  
 ✅ Explain technical terms  
-✅ Guide users to next steps  
+✅ Guide users to next steps
 
 ### Content Don'ts
 
@@ -508,23 +544,25 @@ From existing screens:
 ❌ Write long, complex sentences  
 ❌ Use jargon without explanation  
 ❌ Leave users wondering what to do  
-❌ Blame users for errors  
+❌ Blame users for errors
 
 ---
 
 ## Conclusion
 
-Nexigen's art direction creates a cohesive visual and emotional experience:
+Credulon's art direction creates a cohesive visual and emotional experience:
+
 - **Visually**: Warm, organized, modern (Headspace colors + Revolut organization)
 - **Emotionally**: Trustworthy, approachable, confident, calm
 - **Verbally**: Clear, helpful, empowering
 - **Hierarchically**: Key features stand out with bold orange accents and strong visual weight
 
 When making design decisions, ask:
+
 1. Does this feel warm and trustworthy, not cold or sterile?
 2. Is this organized and clear with strong information hierarchy?
 3. Do key actions ("Claim Credential", primary CTAs) stand out with visual prominence?
 4. Does this empower the user with clarity and confidence?
 5. Is this consistent with our established warm orange + cream palette and patterns?
 
-If the answer to all five is "yes," you're aligned with Nexigen's art direction.
+If the answer to all five is "yes," you're aligned with Credulon's art direction.

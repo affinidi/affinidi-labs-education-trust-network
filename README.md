@@ -146,7 +146,7 @@ The system consists of:
 
 #### Presentation
 
-The student uses the **Nexigen Student App** (powered by **Affinidi TDK**) to present credentials to **Nova Corp** via **DIDComm (VDSP) protocol**.
+The student uses the **Credulon Student App** (powered by **Affinidi TDK**) to present credentials to **Nova Corp** via **DIDComm (VDSP) protocol**.
 
 #### Verification Process
 

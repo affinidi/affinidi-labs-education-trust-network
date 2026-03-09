@@ -1,0 +1,25 @@
+# Education Trust Network - Education Ministries DID Hosting
+# Project: etn-edu-ministries
+
+services:
+  education-ministries:
+    build:
+      context: ../../education-ministries-did-hosting/code
+      dockerfile: Dockerfile
+    container_name: education-ministries-did-hosting
+    labels:
+      etn.group: "2-education-ministries"
+      etn.role: "Education Ministries DID Hosting"
+    ports:
+      - "3100:3100"
+    env_file:
+      - ../../education-ministries-did-hosting/instance/.env.ngrok
+    volumes:
+      - ../../education-ministries-did-hosting/instance/data:/app/data
+    restart: unless-stopped
+    networks:
+      - education-trust-network
+
+networks:
+  education-trust-network:
+    external: true

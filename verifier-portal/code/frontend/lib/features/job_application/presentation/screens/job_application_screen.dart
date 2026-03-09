@@ -362,7 +362,7 @@ class JobApplicationScreen extends HookConsumerWidget {
                       _buildStatusCheck(
                         context,
                         govMessage.isEmpty
-                            ? 'Ecosystem recognized by Nexigen Trust Registry'
+                            ? 'Ecosystem recognized by Credulon Trust Registry'
                             : govMessage,
                         govValid,
                       ),

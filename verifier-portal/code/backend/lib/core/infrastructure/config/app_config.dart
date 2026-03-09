@@ -13,7 +13,7 @@ class AppConfig {
   static Future<bool> loadEnvironment() async {
     bool envLoaded = false;
 
-    for (final envFile in ['.env.ngrok']) {
+    for (final envFile in ['.env.ngrok', '.env.local-network', '.env']) {
       try {
         // Check if file exists first
         if (await File(envFile).exists()) {

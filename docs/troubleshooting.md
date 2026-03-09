@@ -1,6 +1,6 @@
 # Troubleshooting Guide
 
-This guide covers common issues and their solutions across the Nexigen Demo project.
+This guide covers common issues and their solutions across the Credulon Demo project.
 
 ## Table of Contents
 

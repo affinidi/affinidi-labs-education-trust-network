@@ -15,7 +15,7 @@ The **Student Vault App Design System** is the single source of truth for the St
 
 ### Platform Context
 
-Nexigen operates a trust registry system enabling collaboration with National Education Governors (Ministries) across multiple jurisdictions. The platform maintains public lists of trusted universities authorized to issue degree certificates, demonstrating end-to-end verifiable credential flows.
+Credulon operates a trust registry system enabling collaboration with National Education Governors (Ministries) across multiple jurisdictions. The platform maintains public lists of trusted universities authorized to issue degree certificates, demonstrating end-to-end verifiable credential flows.
 
 **Target Jurisdictions**: Hong Kong, Macau, Singapore
 
@@ -97,7 +97,7 @@ Always use `HookConsumerWidget` or `HookWidget` (never `StatefulWidget`). State 
 
 ### 5. Material Design 3 Foundation
 
-Built on Material Design 3 with warm, approachable Nexigen branding.
+Built on Material Design 3 with warm, approachable Credulon branding.
 
 ---
 
@@ -156,7 +156,7 @@ Every interactive component must implement:
 
 ## Accessibility Commitment
 
-Nexigen is committed to inclusive design:
+Credulon is committed to inclusive design:
 
 - **WCAG 2.1 Level AA** minimum (AAA where possible)
 - **Color Contrast**: 4.5:1 for normal text, 3:1 for large text
@@ -262,4 +262,4 @@ For questions or issues:
 
 ## License
 
-This design system is part of the Nexigen project. See LICENSE file for details.
+This design system is part of the Credulon project. See LICENSE file for details.

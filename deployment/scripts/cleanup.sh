@@ -1,12 +1,16 @@
 #!/bin/bash
-# Cleanup script for Nexigen
+# Cleanup script for Education Trust Network (All-Docker mode)
+# Cross-platform: works on macOS, Linux, and Windows (Git Bash / WSL)
 set -e  # Exit on error
 
-echo "🧹 Cleaning up Nexigen components..."
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PROJECT_ROOT="$( cd "${SCRIPT_DIR}/../.." && pwd )"
+cd "$SCRIPT_DIR"
+
+echo "🧹 Cleaning up Education Trust Network components (All-Docker mode)..."
 echo ""
-echo "📦 Note: Component code folders (governance-portal, university-issuance-service,"
-echo "   verifier-portal, trust-registry, student-vault-app) are part of the repository and will NOT be removed"
-echo "   Only generated environment files, user configs, and data directories will be cleaned"
+echo "📦 Note: Component code folders are part of the repository and will NOT be removed."
+echo "   Only generated environment files, user configs, and data directories will be cleaned."
 echo ""
 
 # Stop ngrok tunnels if running
@@ -14,31 +18,22 @@ echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "Stopping ngrok tunnels..."
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-if pgrep -f ngrok > /dev/null; then
-    echo "  🛑 Stopping ngrok processes..."
-    pkill -f ngrok || true
-    echo "  ✅ Ngrok tunnels stopped"
-else
-    echo "  ⏭️  No ngrok processes running"
+if [ -f "${PROJECT_ROOT}/deployment/ngrok.pid" ]; then
+    echo "  Stopping ngrok via PID file..."
+    NGROK_PID=$(cat "${PROJECT_ROOT}/deployment/ngrok.pid")
+    kill "$NGROK_PID" 2>/dev/null || true
+    rm -f "${PROJECT_ROOT}/deployment/ngrok.pid"
+    echo "  ✅ Ngrok stopped"
+fi
+if command -v pkill >/dev/null 2>&1; then
+    pkill -f ngrok 2>/dev/null || true
 fi
 
 # Clean ngrok log files
 echo "  🗑️  Removing ngrok log files..."
 rm -f /tmp/ngrok-*.log
-rm -f ~/.config/ngrok/ngrok-nexigen.yml
+rm -f ~/.config/ngrok/ngrok-etn.yml
 echo "  ✅ Ngrok log files removed"
-
-# Clean ngrok token from .env files
-echo "  🗑️  Removing ngrok token from .env files..."
-if [ -f "../../deployment/.env.ngrok" ]; then
-    sed -i.bak '/^NGROK_AUTH_TOKEN=/d' ../../deployment/.env.ngrok
-    rm -f ../../deployment/.env.ngrok.bak
-fi
-if [ -f "../../deployment/.env.local-network" ]; then
-    sed -i.bak '/^NGROK_AUTH_TOKEN=/d' ../../deployment/.env.local-network
-    rm -f ../../deployment/.env.local-network.bak
-fi
-echo "  ✅ Ngrok token removed"
 
 # Function to clean a directory
 cleanup_directory() {
@@ -56,12 +51,58 @@ cleanup_directory() {
 
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "Cleaning Governance Portal environment files..."
+echo "Stopping ALL Docker containers..."
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
-# Clean environment files created by setup scripts
+# Docker compose v2 detection
+if docker compose version >/dev/null 2>&1; then
+    DC="docker compose"
+elif command -v docker-compose >/dev/null 2>&1; then
+    DC="docker-compose"
+else
+    DC="docker compose"
+fi
+
+# Stop unified docker-compose services (per-group projects)
+if [ -d "../docker" ]; then
+    echo "  Stopping all Docker services..."
+    cd "../docker"
+    $DC -p etn-nova-verifier -f compose.verifier.yml down 2>/dev/null || true
+    $DC -p etn-governance -f compose.governance.yml down 2>/dev/null || true
+    $DC -p etn-trust-registries -f compose.trust-registries.yml down 2>/dev/null || true
+    $DC -p etn-edu-ministries -f compose.edu-ministries.yml down 2>/dev/null || true
+    $DC -p etn-universities -f compose.universities.yml down 2>/dev/null || true
+    # Also stop legacy monolithic compose if still running
+    $DC -f docker-compose.localhost.yml down 2>/dev/null || true
+    docker network rm education-trust-network 2>/dev/null || true
+    cd "$SCRIPT_DIR"
+    echo "  ✅ Docker services stopped"
+fi
+
+# Also stop any legacy trust-registry docker-compose containers
+if [ -f "../../trust-registry/docker-compose.yml" ]; then
+    echo "  Stopping legacy Trust Registry containers..."
+    cd ../../trust-registry && $DC down 2>/dev/null || true
+    cd "$SCRIPT_DIR"
+    echo "  ✅ Legacy Trust Registry containers stopped"
+fi
+
+# Remove Docker images from this project (including DID generation images)
+echo "  Removing Docker images..."
+docker images | grep -E 'etn-|university-issuer|governance-portal|verifier|trust-registry|education-ministries|etn-did-gen|tr-did-gen' | awk '{print $3}' | xargs -r docker rmi -f 2>/dev/null || echo "  Some images could not be removed (may be in use)"
+
+# Remove named volumes
+echo "  🗑️  Removing Docker volumes..."
+docker volume rm verifier-backend-data verifier-backend-keys 2>/dev/null || true
+echo "  ✅ Docker cleanup complete"
+
+echo ""
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "Cleaning Governance Portal files..."
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
 if [ -d "../../governance-portal/code" ]; then
-    echo "  🗑️  Removing governance portal environment files..."
+    echo "  🗑️  Removing governance portal environment and config files..."
     rm -f ../../governance-portal/code/.env.hk.local-network
     rm -f ../../governance-portal/code/.env.macau.local-network
     rm -f ../../governance-portal/code/.env.sg.local-network
@@ -74,123 +115,65 @@ if [ -d "../../governance-portal/code" ]; then
     rm -f ../../governance-portal/code/.env.hk
     rm -f ../../governance-portal/code/.env.macau
     rm -f ../../governance-portal/code/.env.sg
+    rm -f ../../governance-portal/code/.env.docker.hk
+    rm -f ../../governance-portal/code/.env.docker.macau
+    rm -f ../../governance-portal/code/.env.docker.sg
     rm -f ../../governance-portal/code/.mediator_config
     rm -f ../../governance-portal/code/assets/user_config.hk.json
     rm -f ../../governance-portal/code/assets/user_config.macau.json
     rm -f ../../governance-portal/code/assets/user_config.sg.json
     rm -f ../../governance-portal/code/assets/user_config.json
-    echo "  ✅ Governance portal environment files removed"
-else
-    echo "  ⏭️  Governance portal code directory not found, skipping..."
+    echo "  ✅ Governance portal files removed"
 fi
+
+# Clean instance env files
+rm -f ../../governance-portal/instances/hk-ministry/.env.ngrok
+rm -f ../../governance-portal/instances/macau-ministry/.env.ngrok
+rm -f ../../governance-portal/instances/sg-ministry/.env.ngrok
 
 # Clean Rust DID generation helper temporary files
 if [ -d "../../governance-portal/rust-did-generation-helper" ]; then
-    echo "  🗑️  Removing Rust DID generation helper temporary files..."
+    echo "  Removing Rust DID generation helper temporary files..."
     rm -f ../../governance-portal/rust-did-generation-helper/.env.test
     rm -f ../../governance-portal/rust-did-generation-helper/.env
+    rm -rf ../../governance-portal/rust-did-generation-helper/output_tmp
     echo "  ✅ Rust DID generation helper temporary files removed"
 fi
 
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "Cleaning Trust Registry Docker containers..."
+echo "Cleaning Trust Registry files..."
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 if [ -d "../../trust-registry" ]; then
-    cd ../../trust-registry
-    if [ -f "docker-compose.yml" ]; then
-        echo "  🛑 Stopping Trust Registry containers..."
-        docker-compose down 2>/dev/null || true
-        echo "  ✅ Trust Registry containers stopped"
-    fi
-    
-    # Clean generated config and data
-    echo "  🗑️  Removing Trust Registry data and configs..."
-    rm -rf hk/config/*.json
-    rm -rf macau/config/*.json
-    rm -rf sg/config/*.json
-    rm -f .env
+    echo "  🗑️  Removing Trust Registry data, configs, and env files..."
+    rm -rf ../../trust-registry/hk/config/*.json
+    rm -rf ../../trust-registry/macau/config/*.json
+    rm -rf ../../trust-registry/sg/config/*.json
+    rm -f ../../trust-registry/.env
+    rm -f ../../trust-registry/hk/docker.env
+    rm -f ../../trust-registry/macau/docker.env
+    rm -f ../../trust-registry/sg/docker.env
     
     # Remove cloned repository
-    if [ -d "affinidi-trust-registry-rs" ]; then
+    if [ -d "../../trust-registry/affinidi-trust-registry-rs" ]; then
         echo "  🗑️  Removing cloned Trust Registry repository..."
-        rm -rf affinidi-trust-registry-rs
+        rm -rf ../../trust-registry/affinidi-trust-registry-rs
     fi
     
-    # Reset CSV files to empty state with proper header only
-    echo "entity_id,authority_id,action,resource,context" > hk/data/data.csv
-    echo "entity_id,authority_id,action,resource,context" > macau/data/data.csv
-    echo "entity_id,authority_id,action,resource,context" > sg/data/data.csv
+    # Reset CSV files to empty state with proper header
+    echo "entity_id,authority_id,action,resource,recognized,authorized,context,record_type" > ../../trust-registry/hk/data/data.csv
+    echo "entity_id,authority_id,action,resource,recognized,authorized,context,record_type" > ../../trust-registry/macau/data/data.csv
+    echo "entity_id,authority_id,action,resource,recognized,authorized,context,record_type" > ../../trust-registry/sg/data/data.csv
     
-    cd ../deployment/scripts
     echo "  ✅ Trust Registry files cleaned"
-else
-    echo "  ⏭️  Trust Registry directory not found, skipping..."
 fi
 
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "Cleaning Governance Portal data..."
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-cleanup_directory "../../governance-portal/data" "Governance Portal data"
-
-echo ""
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "Cleaning generated data directories..."
+echo "Cleaning university service files..."
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
-cleanup_directory "../../verifier-portal/data" "Verifier Portal data"
-cleanup_directory "../../hk-issuance-service/data" "HK Issuance Service data"
-cleanup_directory "../../macau-issuance-service/data" "Macau Issuance Service data"
-
-
-cp "../../student-vault-app/configs/organizations.dart" "../../student-vault-app/code/lib/core/infrastructure/repositories/organizations_repository/organizations.dart"
-
-# echo ""
-# echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-# echo "Cleaning ngrok domains..."
-# echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-# if [ -f "ngrok/domains.json" ]; then
-#     echo "  🗑️  Removing domains.json..."
-#     rm -f "ngrok/domains.json"
-#     echo "  ✅ domains.json removed"
-# else
-#     echo "  ⏭️  domains.json not found, skipping..."
-# fi
-
-echo ""
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "Cleaning Docker containers and volumes..."
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-
-# Stop localhost Docker services
-if [ -f "../docker/docker-compose.localhost.yml" ]; then
-    echo "  🛑 Stopping localhost Docker services..."
-    docker-compose -f ../docker/docker-compose.localhost.yml down 2>/dev/null || true
-    echo "  ✅ Localhost Docker services stopped"
-fi
-
-# Stop ngrok Docker services
-if docker compose ps -q 2>/dev/null | grep -q .; then
-    echo "  🛑 Stopping ngrok Docker containers..."
-    docker compose down 2>/dev/null || true
-    echo "  ✅ Ngrok Docker containers stopped"
-else
-    echo "  ⏭️  No running ngrok containers found"
-fi
-
-# Remove Docker images from this project
-echo "  🗑️  Removing Docker images..."
-docker images | grep -E 'nexigen|university-issuer' | awk '{print $3}' | xargs -r docker rmi 2>/dev/null || echo "  ⚠️  Some images could not be removed (may be in use)"
-echo "  ✅ Docker images cleaned"
-
-echo ""
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "Cleaning university service data..."
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-
-# Clean university instances
 cleanup_directory "../../university-issuance-service/instances/hk-university/data" "HK University data"
 cleanup_directory "../../university-issuance-service/instances/hk-university/keys" "HK University keys"
 cleanup_directory "../../university-issuance-service/instances/macau-university/data" "Macau University data"
@@ -213,30 +196,48 @@ echo "  ✅ University service files cleaned"
 
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "Cleaning verifier and student app environment files..."
+echo "Cleaning verifier, education ministries, and student app files..."
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
+# Verifier portal
 rm -f ../../verifier-portal/code/.env.local-network
 rm -f ../../verifier-portal/code/.env.localhost
 rm -f ../../verifier-portal/code/.env.ngrok
+rm -f ../../verifier-portal/code/backend/.env.ngrok
+rm -f ../../verifier-portal/code/backend/.env
+rm -f ../../verifier-portal/code/frontend/.env.ngrok
+cleanup_directory "../../verifier-portal/code/backend/data" "Verifier backend data"
+cleanup_directory "../../verifier-portal/code/backend/keys" "Verifier backend keys"
+
+# Education ministries
+rm -f ../../education-ministries-did-hosting/instance/.env.ngrok
+cleanup_directory "../../education-ministries-did-hosting/instance/data" "Education Ministries data"
+
+# Student vault app
 rm -f ../../student-vault-app/code/.env.local-network
 rm -f ../../student-vault-app/code/.env.localhost
 rm -f ../../student-vault-app/code/.env.ngrok
+
+# Reset organizations.json
+if [ -f "../../student-vault-app/configs/organizations.dart" ]; then
+    cp "../../student-vault-app/configs/organizations.dart" \
+       "../../student-vault-app/code/lib/core/infrastructure/repositories/organizations_repository/organizations.dart"
+fi
 
 echo "  ✅ Environment files cleaned"
 
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "Cleaning main .env file..."
+echo "Cleaning deployment env files..."
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
-if [ -f "../.env" ]; then
-    # rm -f ../.env
-    echo "  ✅ Main .env file removed"
-fi
+rm -f ../../deployment/.env.ngrok
+rm -f ../../deployment/.env.local-network
+rm -f ../../deployment/ngrok.pid
+echo "  ✅ Deployment env files cleaned"
 
 echo ""
 echo "✅ Cleanup completed!"
 echo ""
 echo "To set up again, run:"
-echo "  make setup"
+echo "  bash deployment/scripts/dev-up.sh"

@@ -1,6 +1,9 @@
 #!/bin/bash
-# Nexigen Demo - Ngrok Complete Environment Setup
-# This script starts ngrok tunnels FIRST, captures domains, writes .env.ngrok, then generates configs
+# Education Trust Network - All-Docker + Ngrok Setup
+# Cross-platform: works on macOS, Linux, and Windows (Git Bash / WSL)
+#
+# Host requirements: ngrok, docker, docker-compose, jq, curl, git, bash
+# Everything else (Rust, Dart, Flutter) runs inside Docker containers.
 set -e  # Exit on error
 
 # Script directory and project root
@@ -12,27 +15,43 @@ log_info() { echo "✓ $1"; }
 log_verbose() { echo "  $1"; }
 log_error() { echo "❌ $1"; exit 1; }
 
+# Cross-platform sed -i (macOS vs GNU)
+sed_inplace() {
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        sed -i '' "$@"
+    else
+        sed -i "$@"
+    fi
+}
+
 clear
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "🌐 Nexigen Demo - Localhost + Ngrok Setup"
+echo "🌐 Education Trust Network - All-Docker + Ngrok Setup"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
 echo "This will:"
 echo "  1. Start 3 ngrok tunnels (Universities + Education Ministries)"
-echo "  2. Use localhost for other services"
-echo "  3. Write .env.ngrok with localhost/ngrok configuration"
-echo "  4. Generate all configs & DIDs"
-echo "  5. Launch Docker containers"
+echo "  2. Generate all DIDs inside Docker (no Rust/Dart needed on host)"
+echo "  3. Build and start ALL services in Docker"
 echo ""
-echo "⚠️  Note: Ngrok free plan = 3 tunnels (using all available)"
-echo "   Universities & Education Ministries: Internet accessible via ngrok"
-echo "   Other services: Localhost only"
+echo "Host requirements: ngrok, docker, docker-compose, jq, curl, git"
 echo ""
 
-# Check prerequisites
+# Check prerequisites (only tools that MUST be on host)
 command -v ngrok >/dev/null 2>&1 || log_error "ngrok not installed. Install from: https://ngrok.com/download"
-command -v docker >/dev/null 2>&1 || log_error "Docker not installed"
-command -v jq >/dev/null 2>&1 || log_error "jq not installed. Install with: brew install jq"
+command -v docker >/dev/null 2>&1 || log_error "Docker not installed. Install from: https://docs.docker.com/get-docker/"
+command -v jq >/dev/null 2>&1 || log_error "jq not installed. Install from: https://jqlang.github.io/jq/download/"
+command -v curl >/dev/null 2>&1 || log_error "curl not installed"
+command -v git >/dev/null 2>&1 || log_error "git not installed"
+
+# Docker compose v2 detection (docker compose vs docker-compose)
+if docker compose version >/dev/null 2>&1; then
+    DC="docker compose"
+elif command -v docker-compose >/dev/null 2>&1; then
+    DC="docker-compose"
+else
+    log_error "Neither 'docker compose' nor 'docker-compose' found"
+fi
 
 # Check if Docker daemon is running
 if ! docker ps >/dev/null 2>&1; then
@@ -68,8 +87,7 @@ else
     
     # Save token to .env.ngrok for future use
     if grep -q "^NGROK_AUTH_TOKEN=" "${PROJECT_ROOT}/deployment/.env.ngrok" 2>/dev/null; then
-        sed -i.bak "s|^NGROK_AUTH_TOKEN=.*|NGROK_AUTH_TOKEN=${NGROK_AUTH_TOKEN}|" "${PROJECT_ROOT}/deployment/.env.ngrok"
-        rm -f "${PROJECT_ROOT}/deployment/.env.ngrok.bak"
+        sed_inplace "s|^NGROK_AUTH_TOKEN=.*|NGROK_AUTH_TOKEN=${NGROK_AUTH_TOKEN}|" "${PROJECT_ROOT}/deployment/.env.ngrok"
     else
         echo "NGROK_AUTH_TOKEN=${NGROK_AUTH_TOKEN}" >> "${PROJECT_ROOT}/deployment/.env.ngrok"
     fi
@@ -147,13 +165,21 @@ echo "━━━━━━━━━━━━━━━━━━━━━━━━�
 echo "Creating ngrok config with 3 tunnels (2 universities + education ministries)..."
 echo ""
 
-# Kill any existing ngrok processes
-pkill -f ngrok || true
+# Kill any existing ngrok processes (cross-platform)
+if [ -f "${PROJECT_ROOT}/deployment/ngrok.pid" ]; then
+    OLD_PID=$(cat "${PROJECT_ROOT}/deployment/ngrok.pid")
+    kill "$OLD_PID" 2>/dev/null || true
+    rm -f "${PROJECT_ROOT}/deployment/ngrok.pid"
+fi
+# Also try pkill as fallback (not available on all platforms)
+if command -v pkill >/dev/null 2>&1; then
+    pkill -f ngrok 2>/dev/null || true
+fi
 sleep 2
 
 # Create ngrok config file with 3 tunnels
 mkdir -p ~/.config/ngrok
-cat > ~/.config/ngrok/ngrok-nexigen.yml << EOF
+cat > ~/.config/ngrok/ngrok-etn.yml << EOF
 version: "2"
 authtoken: ${NGROK_AUTH_TOKEN}
 tunnels:
@@ -169,15 +195,15 @@ tunnels:
 EOF
 
 log_verbose "Starting ngrok agent with 3 tunnels (2 universities + education ministries)..."
-nohup ngrok start --all --config ~/.config/ngrok/ngrok-nexigen.yml > "${PROJECT_ROOT}/deployment/ngrok.log" 2>&1 &
+ngrok start --all --config ~/.config/ngrok/ngrok-etn.yml > "${PROJECT_ROOT}/deployment/ngrok.log" 2>&1 &
 NGROK_PID=$!
 echo "$NGROK_PID" > "${PROJECT_ROOT}/deployment/ngrok.pid"
 
 log_verbose "Waiting for ngrok to initialize..."
 sleep 5
 
-# Check if ngrok is running
-if ! ps -p "$NGROK_PID" > /dev/null 2>&1; then
+# Check if ngrok is running (cross-platform: use kill -0 instead of ps -p)
+if ! kill -0 "$NGROK_PID" 2>/dev/null; then
     echo ""
     echo "❌ Ngrok failed to start. Checking error log..."
     echo ""
@@ -313,11 +339,11 @@ echo "━━━━━━━━━━━━━━━━━━━━━━━━�
 log_verbose "Writing localhost/ngrok hybrid configuration to .env.ngrok..."
 
 cat > "${PROJECT_ROOT}/deployment/.env.ngrok" << EOF
-# Nexigen Demo - Localhost + Ngrok Configuration
+# Education Trust Network - All-Docker + Ngrok Configuration
 # Generated on $(date)
 
 # Mode Configuration
-MODE=localhost-ngrok
+MODE=all-docker
 NGROK_AUTH_TOKEN=${NGROK_AUTH_TOKEN}
 
 # DIDComm Service Configuration
@@ -377,28 +403,71 @@ SG_EDUCATION_MINISTRY_DID=did:web:${EDU_MINISTRIES_DOMAIN}:singapore-education-m
 SG_EDUCATION_MINISTRY_TRUST_REGISTRY_URL=http://localhost:3234
 EOF
 
-log_info ".env.ngrok created with hybrid configuration"
-
-# Set shell variables for later use in echo statements
-HK_UNIVERSITY_SERVICE_DID="did:web:${HK_UNI_DOMAIN}:hongkong-university"
-MACAU_UNIVERSITY_SERVICE_DID="did:web:${MACAU_UNI_DOMAIN}:macau-university"
-HK_EDUCATION_ECOSYSTEM_ID="did:web:${EDU_MINISTRIES_DOMAIN}:hongkong-education-ministry"
-MACAU_EDUCATION_ECOSYSTEM_ID="did:web:${EDU_MINISTRIES_DOMAIN}:macau-education-ministry"
-SG_EDUCATION_ECOSYSTEM_ID="did:web:${EDU_MINISTRIES_DOMAIN}:singapore-education-ministry"
-NOVA_CORP_SERVICE_DID="did:web:localhost%3A4001:nova-corp"
+log_info ".env.ngrok created with all-docker configuration"
 
 echo ""
 
 # ============================================
-# STEP 7: GENERATE ADMIN DIDs (using .env.ngrok)
+# STEP 7: GENERATE ADMIN DIDs (Docker - no Rust needed on host)
 # ============================================
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "🔐 Step 7: Generate Admin DIDs"
+echo "🔐 Step 7: Generate Admin DIDs (Docker)"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "Generating user_config files for governance portals..."
+echo "Building generate-secrets Docker image (first run compiles Rust - may take a few minutes)..."
 
-cd "${PROJECT_ROOT}/governance-portal"
-./generate-user-configs.sh "$MEDIATOR_URL" "$MEDIATOR_DID" >/dev/null 2>&1
+DID_GEN_DIR="${PROJECT_ROOT}/governance-portal/rust-did-generation-helper"
+docker build -t etn-did-gen "$DID_GEN_DIR" -q
+
+echo "Generating user_config files for governance portals..."
+mkdir -p "${PROJECT_ROOT}/governance-portal/code/assets"
+
+# Function: generate a governance portal user config using Docker
+generate_admin_did() {
+    local label=$1
+    local alias=$2
+    local output_file=$3
+
+    # Run generate-secrets in Docker; it writes .env.test in /output
+    rm -rf "${DID_GEN_DIR}/output_tmp"
+    mkdir -p "${DID_GEN_DIR}/output_tmp"
+    docker run --rm \
+        -e "MEDIATOR_URL=${MEDIATOR_URL}" \
+        -e "MEDIATOR_DID=${MEDIATOR_DID}" \
+        -v "${DID_GEN_DIR}/output_tmp:/output" \
+        etn-did-gen
+
+    # Validate output
+    if [ ! -f "${DID_GEN_DIR}/output_tmp/.env.test" ]; then
+        log_error "generate-secrets failed for ${label} — no .env.test produced"
+    fi
+
+    # Extract CLIENT_DID and CLIENT_SECRETS from .env.test
+    local client_did client_secrets
+    client_did=$(grep "^CLIENT_DID=" "${DID_GEN_DIR}/output_tmp/.env.test" | cut -d'=' -f2-)
+    client_secrets=$(grep "^CLIENT_SECRETS=" "${DID_GEN_DIR}/output_tmp/.env.test" | cut -d'=' -f2- | sed 's/^"//' | sed 's/"$//' | sed 's/\\"/"/g')
+
+    # Create user_config JSON
+    cat > "$output_file" << EOJSON
+{
+  "${client_did}": {
+    "alias": "${alias}",
+    "secrets": ${client_secrets}
+  }
+}
+EOJSON
+
+    # Clean up temp
+    rm -rf "${DID_GEN_DIR}/output_tmp"
+
+    log_verbose "  ${label}: ${client_did:0:60}..."
+}
+
+generate_admin_did "HK" "Hong Kong Ministry of Education" \
+    "${PROJECT_ROOT}/governance-portal/code/assets/user_config.hk.json"
+generate_admin_did "Macau" "Macau Ministry of Education" \
+    "${PROJECT_ROOT}/governance-portal/code/assets/user_config.macau.json"
+generate_admin_did "SG" "Singapore Ministry of Education" \
+    "${PROJECT_ROOT}/governance-portal/code/assets/user_config.sg.json"
 
 # Extract the generated DIDs (they are the keys in the JSON object)
 HK_ADMIN_DID=$(jq -r 'keys[0]' "${PROJECT_ROOT}/governance-portal/code/assets/user_config.hk.json")
@@ -422,20 +491,74 @@ EOF
 echo ""
 
 # ============================================
-# STEP 8: GENERATE TRUST REGISTRY DIDs (using .env.ngrok)
+# STEP 8: GENERATE TRUST REGISTRY DIDs (Docker - no Rust needed on host)
 # ============================================
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "🔑 Step 8: Generate Trust Registry DIDs"
+echo "🔑 Step 8: Generate Trust Registry DIDs (Docker)"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "Generating unique DIDs for each Trust Registry instance..."
 
 cd "${PROJECT_ROOT}/trust-registry"
-./generate-trust-registry-dids.sh >/dev/null 2>&1
+
+# Clone the trust registry repository if not already present
+TRUST_REGISTRY_API_REPO_URL="${TRUST_REGISTRY_API_REPO_URL:-https://github.com/affinidi/affinidi-trust-registry-rs}"
+TRUST_REGISTRY_API_COMMIT="${TRUST_REGISTRY_API_COMMIT:-2c87c33}"
+
+if [ ! -d "affinidi-trust-registry-rs" ]; then
+    echo "📥 Cloning Trust Registry repository..."
+    git clone "$TRUST_REGISTRY_API_REPO_URL" ./affinidi-trust-registry-rs
+    cd affinidi-trust-registry-rs && git checkout "$TRUST_REGISTRY_API_COMMIT" && cd ..
+else
+    echo "✓ Trust Registry repository already exists"
+fi
+
+echo "Building setup-trust-registry Docker image (first run compiles Rust - may take a few minutes)..."
+docker build -f Dockerfile.did-gen -t tr-did-gen ./affinidi-trust-registry-rs -q
+
+# Function: generate a trust registry DID using Docker
+generate_tr_did() {
+    local region=$1
+    local admin_did=$2
+    local output_file="${PROJECT_ROOT}/trust-registry/${region}/config/user_config.${region}.json"
+
+    mkdir -p "${PROJECT_ROOT}/trust-registry/${region}/config"
+    mkdir -p "${PROJECT_ROOT}/trust-registry/${region}/data"
+
+    # Skip if already generated
+    if [ -f "$output_file" ] && [ -s "$output_file" ]; then
+        log_verbose "  ${region}: DID already exists, skipping"
+        return 0
+    fi
+
+    # Run setup-trust-registry in Docker
+    OUTPUT=$(docker run --rm \
+        -v "${PROJECT_ROOT}/trust-registry/${region}/data:/data" \
+        tr-did-gen \
+        --mediator-did "$MEDIATOR_DID" \
+        --did-method peer \
+        --storage-backend csv \
+        --file-storage-path /data \
+        --admin-dids "$admin_did" 2>&1)
+
+    # Extract PROFILE_CONFIG JSON from output
+    PROFILE_JSON=$(echo "$OUTPUT" | grep '"PROFILE_CONFIG":' | sed 's/.*"PROFILE_CONFIG": "\(.*\)".*/\1/' | sed 's/\\"/"/g' | sed "s/^'//;s/'$//")
+
+    if [ -n "$PROFILE_JSON" ]; then
+        echo "$PROFILE_JSON" > "$output_file"
+        log_verbose "  ${region}: DID generated"
+    else
+        log_error "Failed to generate Trust Registry DID for ${region}"
+    fi
+}
+
+generate_tr_did "hk" "$HK_ADMIN_DID"
+generate_tr_did "macau" "$MACAU_ADMIN_DID"
+generate_tr_did "sg" "$SG_ADMIN_DID"
 
 # Extract Trust Registry DIDs
-HK_TRUST_REGISTRY_DID=$(jq -r '.did' "${PROJECT_ROOT}/trust-registry/hk/config/user_config.hk.json")
-MACAU_TRUST_REGISTRY_DID=$(jq -r '.did' "${PROJECT_ROOT}/trust-registry/macau/config/user_config.macau.json")
-SG_TRUST_REGISTRY_DID=$(jq -r '.did' "${PROJECT_ROOT}/trust-registry/sg/config/user_config.sg.json")
+HK_TRUST_REGISTRY_DID=$(jq -r '.did' "${PROJECT_ROOT}/trust-registry/hk/config/user_config.hk.json" 2>/dev/null || echo "")
+MACAU_TRUST_REGISTRY_DID=$(jq -r '.did' "${PROJECT_ROOT}/trust-registry/macau/config/user_config.macau.json" 2>/dev/null || echo "")
+SG_TRUST_REGISTRY_DID=$(jq -r '.did' "${PROJECT_ROOT}/trust-registry/sg/config/user_config.sg.json" 2>/dev/null || echo "")
 
 log_info "Trust Registry DIDs generated"
 echo "   HK:    $HK_TRUST_REGISTRY_DID"
@@ -454,28 +577,85 @@ EOF
 echo ""
 
 # ============================================
-# STEP 9: DEPLOY TRUST REGISTRIES
+# STEP 9: PREPARE TRUST REGISTRY CONFIGS (no Docker start yet)
 # ============================================
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "🏛️  Step 9: Deploy Trust Registries"
+echo "🏛️  Step 9: Prepare Trust Registry Configs"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "Deploying 3 Trust Registry instances on Docker..."
+echo "Preparing configs for 3 Trust Registry instances..."
 
 cd "${PROJECT_ROOT}/trust-registry"
-./setup.sh >/dev/null 2>&1
 
-log_info "Trust Registry instances deployed"
+# Repository already cloned in Step 8
+
+# Extract profile configs (JSON objects compressed to single line)
+HK_PROFILE_CONFIG=$(cat hk/config/user_config.hk.json | tr -d '\n' | tr -d ' ')
+MACAU_PROFILE_CONFIG=$(cat macau/config/user_config.macau.json | tr -d '\n' | tr -d ' ')
+SG_PROFILE_CONFIG=$(cat sg/config/user_config.sg.json | tr -d '\n' | tr -d ' ')
+
+# Create per-instance Docker env files for the unified docker-compose
+CORS_ORIGINS="http://localhost:3000,http://localhost:3001,http://localhost:4000,http://localhost:4001,http://localhost:8050,http://localhost:8051,http://localhost:8052"
+
+mkdir -p hk/data macau/data sg/data
+
+cat > hk/docker.env << EOF
+LISTEN_ADDRESS=0.0.0.0:3232
+TR_STORAGE_BACKEND=csv
+FILE_STORAGE_PATH=/data/data.csv
+CORS_ALLOWED_ORIGINS=${CORS_ORIGINS}
+AUDIT_LOG_FORMAT=json
+ENABLE_DIDCOMM=true
+MEDIATOR_DID=${MEDIATOR_DID}
+ADMIN_DIDS=${HK_ADMIN_DID}
+PROFILE_CONFIG=${HK_PROFILE_CONFIG}
+EOF
+
+cat > macau/docker.env << EOF
+LISTEN_ADDRESS=0.0.0.0:3232
+TR_STORAGE_BACKEND=csv
+FILE_STORAGE_PATH=/data/data.csv
+CORS_ALLOWED_ORIGINS=${CORS_ORIGINS}
+AUDIT_LOG_FORMAT=json
+ENABLE_DIDCOMM=true
+MEDIATOR_DID=${MEDIATOR_DID}
+ADMIN_DIDS=${MACAU_ADMIN_DID}
+PROFILE_CONFIG=${MACAU_PROFILE_CONFIG}
+EOF
+
+cat > sg/docker.env << EOF
+LISTEN_ADDRESS=0.0.0.0:3232
+TR_STORAGE_BACKEND=csv
+FILE_STORAGE_PATH=/data/data.csv
+CORS_ALLOWED_ORIGINS=${CORS_ORIGINS}
+AUDIT_LOG_FORMAT=json
+ENABLE_DIDCOMM=true
+MEDIATOR_DID=${MEDIATOR_DID}
+ADMIN_DIDS=${SG_ADMIN_DID}
+PROFILE_CONFIG=${SG_PROFILE_CONFIG}
+EOF
+
+# Create empty CSV files with headers if they don't exist or are empty
+for region in hk macau sg; do
+    if [ ! -s "${region}/data/data.csv" ]; then
+        echo "entity_id,authority_id,action,resource,recognized,authorized,context,record_type" > "${region}/data/data.csv"
+    fi
+done
+
+log_info "Trust Registry configs prepared"
 echo ""
 
 # ============================================
-# STEP 10: CREATE APP ENV FILES (from .env.ngrok)
+# STEP 10: CREATE APP ENV FILES (for Docker)
 # ============================================
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "📝 Step 10: Creating app environment files"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
-# Create university instance env files (using ngrok with SSL)
-log_verbose "Creating Docker environment files for universities..."
+# --- University instance env files (used by Docker at runtime via env_file) ---
+log_verbose "Creating university instance env files..."
+
+# Docker internal URLs for backend-to-backend communication
+# Trust registries listen on port 3232 internally (mapped to 3232/3233/3234 on host)
 
 mkdir -p "${PROJECT_ROOT}/university-issuance-service/instances/hk-university"
 cat > "${PROJECT_ROOT}/university-issuance-service/instances/hk-university/.env.ngrok" << EOF
@@ -488,7 +668,7 @@ SERVICE_DID=${SERVICE_DID}
 MEDIATOR_DID=${MEDIATOR_DID}
 MEDIATOR_URL=${MEDIATOR_URL}
 TRUST_REGISTRY_DID=${HK_TRUST_REGISTRY_DID}
-TRUST_REGISTRY_URL=http://localhost:3232
+TRUST_REGISTRY_URL=http://trust-registry-hk:3232
 EDUCATION_ECOSYSTEM_ID=did:web:${EDU_MINISTRIES_DOMAIN}:hongkong-education-ministry
 STORAGE_BACKEND=json
 DATA_PATH=./data
@@ -511,7 +691,7 @@ SERVICE_DID=${SERVICE_DID}
 MEDIATOR_DID=${MEDIATOR_DID}
 MEDIATOR_URL=${MEDIATOR_URL}
 TRUST_REGISTRY_DID=${MACAU_TRUST_REGISTRY_DID}
-TRUST_REGISTRY_URL=http://localhost:3233
+TRUST_REGISTRY_URL=http://trust-registry-macau:3232
 EDUCATION_ECOSYSTEM_ID=did:web:${EDU_MINISTRIES_DOMAIN}:macau-education-ministry
 STORAGE_BACKEND=json
 DATA_PATH=./data
@@ -523,18 +703,16 @@ STUDENT_LAST_NAME=${STUDENT_LAST_NAME}
 STUDENT_EMAIL=${STUDENT_EMAIL}
 EOF
 
-# Create verifier portal env files (using ngrok)
+# --- Verifier Portal env files ---
 log_verbose "Creating Verifier Portal env files..."
 mkdir -p "${PROJECT_ROOT}/verifier-portal/code/backend"
 mkdir -p "${PROJECT_ROOT}/verifier-portal/code/frontend"
 
 # Clean old DID keys to force regeneration with new domain
-log_verbose "Cleaning old verifier DID keys..."
 rm -f "${PROJECT_ROOT}/verifier-portal/code/backend/keys/did-document.json"
 rm -f "${PROJECT_ROOT}/verifier-portal/code/backend/keys/secrets.json"
-log_verbose "Keys cleaned - fresh DID will be generated"
 
-# Backend env file (Dart API server on port 4001)
+# Backend env file (Dart API server on port 4001, uses Docker service names for trust registries)
 cat > "${PROJECT_ROOT}/verifier-portal/code/backend/.env.ngrok" << EOF
 APP_NAME=Nova Corp Verifier
 APP_VERSION=1.0.0
@@ -548,17 +726,20 @@ MEDIATOR_URL=${MEDIATOR_URL}
 ISSUER_MEDIATOR=${MEDIATOR_DID}
 STORAGE_BACKEND=json
 DATA_PATH=./data
-HK_TRUST_REGISTRY_URL=http://localhost:3232
-MACAU_TRUST_REGISTRY_URL=http://localhost:3233
-SG_TRUST_REGISTRY_URL=http://localhost:3234
+HK_TRUST_REGISTRY_URL=http://trust-registry-hk:3232
+HK_TRUST_REGISTRY_DID=${HK_TRUST_REGISTRY_DID}
+MACAU_TRUST_REGISTRY_URL=http://trust-registry-macau:3232
+MACAU_TRUST_REGISTRY_DID=${MACAU_TRUST_REGISTRY_DID}
+SG_TRUST_REGISTRY_URL=http://trust-registry-sg:3232
+SG_TRUST_REGISTRY_DID=${SG_TRUST_REGISTRY_DID}
 SG_EDUCATION_MINISTRY_DID=did:web:${EDU_MINISTRIES_DOMAIN}:singapore-education-ministry
-SG_EDUCATION_MINISTRY_TRUST_REGISTRY_URL=http://localhost:3234
+SG_EDUCATION_MINISTRY_TRUST_REGISTRY_URL=http://trust-registry-sg:3232
 STUDENT_FIRST_NAME=${STUDENT_FIRST_NAME}
 STUDENT_LAST_NAME=${STUDENT_LAST_NAME}
 STUDENT_EMAIL=${STUDENT_EMAIL}
 EOF
 
-# Frontend env file (Flutter web on port 4000)
+# Frontend env file (Flutter web - uses localhost URLs since it runs in the browser)
 cat > "${PROJECT_ROOT}/verifier-portal/code/frontend/.env.ngrok" << EOF
 APP_NAME=Nova Corp Verifier
 APP_VERSION=1.0.0
@@ -570,15 +751,18 @@ STUDENT_LAST_NAME=${STUDENT_LAST_NAME}
 STUDENT_EMAIL=${STUDENT_EMAIL}
 EOF
 
-# Create governance portal env files (using local network)
+# --- Governance Portal env files (compile-time for Flutter web via --dart-define-from-file) ---
 log_verbose "Creating Governance Portal env files..."
+
+# These files are used at Docker BUILD TIME by flutter build web --dart-define-from-file
+# They use localhost URLs because the Flutter web app runs in the browser on the host
 
 mkdir -p "${PROJECT_ROOT}/governance-portal/instances/hk-ministry"
 cat > "${PROJECT_ROOT}/governance-portal/instances/hk-ministry/.env.ngrok" << EOF
 INSTANCE_ID=hk
-UNIVERSITY_NAME=Hong Kong Ministry
+MINISTRY_NAME=Hong Kong Ministry
 GOVERNANCE_DID=did:web:localhost%3A8050:hk-ministry
-TRUST_REGISTRY_URL=https://${HK_TR_DOMAIN}
+TRUST_REGISTRY_URL=http://localhost:3232
 TRUST_REGISTRY_DID=${HK_TRUST_REGISTRY_DID}
 ADMIN_DID=${HK_ADMIN_DID}
 MEDIATOR_DID=${MEDIATOR_DID}
@@ -589,7 +773,7 @@ EOF
 mkdir -p "${PROJECT_ROOT}/governance-portal/instances/macau-ministry"
 cat > "${PROJECT_ROOT}/governance-portal/instances/macau-ministry/.env.ngrok" << EOF
 INSTANCE_ID=macau
-UNIVERSITY_NAME=Macau Ministry
+MINISTRY_NAME=Macau Ministry
 GOVERNANCE_DID=did:web:localhost%3A8051:macau-ministry
 TRUST_REGISTRY_URL=http://localhost:3233
 TRUST_REGISTRY_DID=${MACAU_TRUST_REGISTRY_DID}
@@ -602,7 +786,7 @@ EOF
 mkdir -p "${PROJECT_ROOT}/governance-portal/instances/sg-ministry"
 cat > "${PROJECT_ROOT}/governance-portal/instances/sg-ministry/.env.ngrok" << EOF
 INSTANCE_ID=sg
-UNIVERSITY_NAME=Singapore Ministry
+MINISTRY_NAME=Singapore Ministry
 GOVERNANCE_DID=did:web:localhost%3A8052:sg-ministry
 TRUST_REGISTRY_URL=http://localhost:3234
 TRUST_REGISTRY_DID=${SG_TRUST_REGISTRY_DID}
@@ -612,7 +796,10 @@ MEDIATOR_URL=${MEDIATOR_URL}
 USER_CONFIG_PATH=assets/user_config.sg.json
 EOF
 
-# Create education ministries service env file
+# Note: Governance portal env files are loaded at container runtime via env_file
+# in compose.governance.yml. No build-context copy needed (runtime config injection).
+
+# --- Education Ministries env file ---
 log_verbose "Creating Education Ministries service env file..."
 mkdir -p "${PROJECT_ROOT}/education-ministries-did-hosting/instance"
 cat > "${PROJECT_ROOT}/education-ministries-did-hosting/instance/.env.ngrok" << EOF
@@ -635,7 +822,7 @@ singapore-education-ministry_DOMAIN=${EDU_MINISTRIES_DOMAIN}/singapore-education
 singapore-education-ministry_TRUST_REGISTRY_URL=http://localhost:3234
 EOF
 
-# Create student vault app env file (universities use ngrok, others use localhost)
+# --- Student Vault App env file (for mobile/web use) ---
 log_verbose "Creating Student Vault App env file..."
 mkdir -p "${PROJECT_ROOT}/student-vault-app/code"
 cat > "${PROJECT_ROOT}/student-vault-app/code/.env.ngrok" << EOF
@@ -687,40 +874,30 @@ log_info "Environment files created"
 echo ""
 
 # ============================================
-# STEP 11: RUN SETUP SCRIPTS
+# STEP 11: RUN SETUP SCRIPTS (only for student app)
 # ============================================
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "🔧 Step 11: Running setup scripts"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
-log_verbose "Setting up University Issuance Service..."
-cd "${PROJECT_ROOT}/university-issuance-service"
-./setup.sh >/dev/null 2>&1
-log_info "University Issuance Service setup complete"
+# Education ministries data directory
+mkdir -p "${PROJECT_ROOT}/education-ministries-did-hosting/instance/data"
+log_info "Education Ministries data directory ready"
 
-log_verbose "Setting up Education Ministries DID Hosting..."
-cd "${PROJECT_ROOT}/education-ministries-did-hosting"
-./setup.sh >/dev/null 2>&1
-log_info "Education Ministries service setup complete"
-
-log_verbose "Setting up Verifier Portal..."
-cd "${PROJECT_ROOT}/verifier-portal"
-./setup.sh >/dev/null 2>&1
-log_info "Verifier Portal setup complete"
-
+# Student Vault App setup (still needed for mobile app)
 log_verbose "Setting up Student Vault App..."
 cd "${PROJECT_ROOT}/student-vault-app"
-./setup.sh >/dev/null 2>&1
+./setup.sh >/dev/null 2>&1 || true
 log_info "Student Vault App setup complete"
 
-log_info "All setup scripts completed"
+log_info "Setup scripts completed"
 echo ""
 
 # ============================================
-# STEP 12: START DOCKER SERVICES
+# STEP 12: START ALL DOCKER SERVICES
 # ============================================
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "🐳 Step 12: Starting Docker services"
+echo "🐳 Step 12: Starting ALL Docker services"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 cd "${PROJECT_ROOT}/deployment/docker"
@@ -732,86 +909,151 @@ rm -rf "${PROJECT_ROOT}/university-issuance-service/instances/hk-university/keys
 rm -rf "${PROJECT_ROOT}/university-issuance-service/instances/macau-university/data" 2>/dev/null || true
 rm -rf "${PROJECT_ROOT}/university-issuance-service/instances/macau-university/keys" 2>/dev/null || true
 rm -rf "${PROJECT_ROOT}/education-ministries-did-hosting/instance/data" 2>/dev/null || true
-rm -rf "${PROJECT_ROOT}/education-ministries-did-hosting/instance/keys" 2>/dev/null || true
 log_info "Data and keys folders cleared (will be regenerated with new domains)"
 
-# Stop and remove existing containers if they exist
+# Stop and remove ALL existing containers
 echo "  Checking for existing containers..."
-for container_name in hk-university-issuer macau-university-issuer education-ministries-did-hosting; do
+for container_name in hk-university-issuer macau-university-issuer education-ministries-did-hosting \
+                      trust-registry-hk trust-registry-macau trust-registry-sg \
+                      hk-governance-portal macau-governance-portal sg-governance-portal \
+                      nova-verifier-backend nova-verifier-frontend; do
     if docker ps -a --format '{{.Names}}' | grep -q "^${container_name}$"; then
         echo "  Removing existing container: ${container_name}"
         docker rm -f "${container_name}" > /dev/null 2>&1 || true
     fi
 done
+
+# Also stop any old trust-registry docker-compose containers
+cd "${PROJECT_ROOT}/trust-registry"
+$DC down 2>/dev/null || true
+
+# Stop any old monolithic compose project
+cd "${PROJECT_ROOT}/deployment/docker"
+$DC -f docker-compose.localhost.yml down 2>/dev/null || true
+
 echo "  ✓ Existing containers cleaned up"
 
-echo "Starting HK & Macau Universities + Education Ministries via Docker..."
-docker-compose -f docker-compose.localhost.yml up -d --build
-
-log_info "Docker services started"
+echo ""
+echo "🔨 Building and starting ALL services via Docker..."
+echo "   (This may take several minutes on first run for Flutter builds)"
 echo ""
 
-echo "⏳ Waiting for Docker services to start (15 seconds)..."
-sleep 15
+# Create shared network (if not exists)
+docker network create education-trust-network 2>/dev/null || true
+
+# Start services in dependency order:
+# 1. Education Ministries (hosts DID documents needed by universities)
+# 2. Trust Registries (needed by governance portals and verifier)
+# 3. Universities (resolve DIDs from education ministries)
+# 4. Governance Portals (connect to trust registries)
+# 5. Verifier Portal (needs everything above)
+
+echo "  🏛️  Starting Education Ministries..."
+$DC -p etn-edu-ministries -f compose.edu-ministries.yml up -d --build
+
+echo "  📋 Starting Trust Registries..."
+$DC -p etn-trust-registries -f compose.trust-registries.yml up -d --build
+
+echo "  🎓 Starting Universities..."
+$DC -p etn-universities -f compose.universities.yml up -d --build
+
+echo "  🏢 Starting Governance Portals..."
+$DC -p etn-governance -f compose.governance.yml up -d --build
+
+echo "  🔍 Starting Verifier Portal..."
+$DC -p etn-nova-verifier -f compose.verifier.yml up -d --build
+
+log_info "All Docker services started"
+echo ""
+
+echo "⏳ Waiting for Docker services to start (20 seconds)..."
+sleep 20
 
 echo ""
 echo "🔍 Checking Docker container status..."
-RUNNING_CONTAINERS=$(docker ps --filter "status=running" | grep -E "university-issuer|education-ministries" | wc -l | tr -d ' ')
-log_info "Docker services ready ($RUNNING_CONTAINERS containers running)"
+RUNNING_CONTAINERS=$(docker ps --filter "status=running" --format '{{.Names}}' | grep -E "university-issuer|education-ministries|trust-registry|governance-portal|nova-verifier" | wc -l | tr -d ' ')
+TOTAL_EXPECTED=11
+log_info "Docker services ready ($RUNNING_CONTAINERS/$TOTAL_EXPECTED containers running)"
+
+# Show container status per group
+echo ""
+echo "  🎓 Universities:"
+$DC -p etn-universities -f compose.universities.yml ps
+echo ""
+echo "  🏛️  Education Ministries:"
+$DC -p etn-edu-ministries -f compose.edu-ministries.yml ps
+echo ""
+echo "  📋 Trust Registries:"
+$DC -p etn-trust-registries -f compose.trust-registries.yml ps
+echo ""
+echo "  🏢 Governance Portals:"
+$DC -p etn-governance -f compose.governance.yml ps
+echo ""
+echo "  🔍 Verifier Portal:"
+$DC -p etn-nova-verifier -f compose.verifier.yml ps
 echo ""
 
 # ============================================
 # SETUP COMPLETE
 # ============================================
 echo "═══════════════════════════════════════════════════════════"
-echo "✅ Localhost + Ngrok Environment Ready!"
+echo "✅ All-Docker + Ngrok Environment Ready!"
 echo "═══════════════════════════════════════════════════════════"
 echo ""
-echo "📦 Docker Services:"
-echo "   🇭🇰 HK University:        https://$HK_UNI_DOMAIN"
-echo "   🇲🇴 Macau University:     https://$MACAU_UNI_DOMAIN"
-echo "   🎓 Education Ministries:  https://$EDU_MINISTRIES_DOMAIN (port 3100)"
+echo "📦 All Services Running in Docker:"
 echo ""
-echo "🌐 Education Ministry DIDs (all on ngrok):"
-echo "      - HK Ministry:         https://$EDU_MINISTRIES_DOMAIN/hongkong-education-ministry/did.json"
-echo "      - Macau Ministry:      https://$EDU_MINISTRIES_DOMAIN/macau-education-ministry/did.json"
-echo "      - SG Ministry:         https://$EDU_MINISTRIES_DOMAIN/singapore-education-ministry/did.json"
+echo "   🇭🇰 HK University:        https://$HK_UNI_DOMAIN (ngrok → port 3000)"
+echo "   🇲🇴 Macau University:     https://$MACAU_UNI_DOMAIN (ngrok → port 3001)"
+echo "   🎓 Education Ministries:  https://$EDU_MINISTRIES_DOMAIN (ngrok → port 3100)"
 echo ""
-echo "🆔 All DIDs Created:"
+echo "   🏛️  Trust Registries:"
+echo "      HK:    http://localhost:3232"
+echo "      Macau: http://localhost:3233"
+echo "      SG:    http://localhost:3234"
+echo ""
+echo "   📋 Governance Portals:"
+echo "      HK:    http://localhost:8050"
+echo "      Macau: http://localhost:8051"
+echo "      SG:    http://localhost:8052"
+echo ""
+echo "   ✅ Nova Corp Verifier:"
+echo "      Frontend: http://localhost:4000"
+echo "      Backend:  http://localhost:4001"
+echo ""
+echo "� All DIDs Created:"
 echo "   Universities:"
-echo "      🇭🇰 HK University:     $HK_UNIVERSITY_SERVICE_DID"
-echo "      🇲🇴 Macau University:  $MACAU_UNIVERSITY_SERVICE_DID"
+echo "      🇭🇰 HK University:     did:web:${HK_UNI_DOMAIN}:hongkong-university"
+echo "      🇲🇴 Macau University:  did:web:${MACAU_UNI_DOMAIN}:macau-university"
 echo "   Education Ministries:"
-echo "      🇭🇰 HK Ministry:       $HK_EDUCATION_ECOSYSTEM_ID"
-echo "      🇲🇴 Macau Ministry:    $MACAU_EDUCATION_ECOSYSTEM_ID"
-echo "      🇸🇬 SG Ministry:       $SG_EDUCATION_ECOSYSTEM_ID"
-echo "   Verifier:"
-echo "      ✅ Nova Corp:          $NOVA_CORP_SERVICE_DID"
+echo "      🇭🇰 HK Ministry:       did:web:${EDU_MINISTRIES_DOMAIN}:hongkong-education-ministry"
+echo "      🇲🇴 Macau Ministry:    did:web:${EDU_MINISTRIES_DOMAIN}:macau-education-ministry"
+echo "      🇸🇬 SG Ministry:       did:web:${EDU_MINISTRIES_DOMAIN}:singapore-education-ministry"
 echo ""
-echo "💻 Localhost Services:"
-echo "   🏛️  Trust Registries:     http://localhost:3232 (HK), :3233 (Macau), :3234 (SG)"
-echo "   📋 Governance Portals:    http://localhost:8050 (HK), :8051 (Macau), :8052 (SG)"
-echo "   ✅ Nova Corp Verifier:    http://localhost:4001"
+echo "🌐 DID Documents (via ngrok):"
+echo "   Universities:"
+echo "      HK:    https://$HK_UNI_DOMAIN/hongkong-university/did.json"
+echo "      Macau: https://$MACAU_UNI_DOMAIN/macau-university/did.json"
+echo "   Education Ministries:"
+echo "      HK:    https://$EDU_MINISTRIES_DOMAIN/hongkong-education-ministry/did.json"
+echo "      Macau: https://$EDU_MINISTRIES_DOMAIN/macau-education-ministry/did.json"
+echo "      SG:    https://$EDU_MINISTRIES_DOMAIN/singapore-education-ministry/did.json"
 echo ""
-echo "🚀 Next: Start Flutter apps manually"
+echo "📱 Mobile App:"
+echo "   cd student-vault-app && flutter run   # Student Vault App"
 echo ""
-echo "Governance Portals:"
-echo "   make hk-gov              # HK Ministry (port 8050)"
-echo "   make macau-gov           # Macau Ministry (port 8051)"
-echo "   make sg-gov              # Singapore Ministry (port 8052)"
-echo ""
-echo "Verifier & Student App:"
-echo "   make verifier            # Nova Corp Verifier (port 4000)"
-echo "   make student-ios         # Student Vault App (iOS)"
+echo "🐳 Docker Management:"
+echo "   bash deployment/scripts/dev-down.sh           # Stop all"
+echo "   bash deployment/scripts/cleanup.sh            # Full cleanup"
+echo "   docker compose -p etn-universities -f deployment/docker/compose.universities.yml logs  # University logs"
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "📊 Ngrok Dashboard: http://localhost:4040"
 echo "   (3 tunnels active: HK & Macau Universities + Education Ministries)"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
-echo "📄 Environment file: deployment/.env.ngrok (MODE=localhost-ngrok)"
+echo "📄 Environment file: deployment/.env.ngrok (MODE=all-docker)"
 echo ""
 echo "To restart everything (new domains):"
-echo "   make dev-down && make dev-up"
+echo "   bash deployment/scripts/dev-down.sh && bash deployment/scripts/dev-up.sh"
 echo ""
 echo "═══════════════════════════════════════════════════════════"

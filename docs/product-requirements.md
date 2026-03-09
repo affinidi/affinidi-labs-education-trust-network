@@ -1,8 +1,8 @@
-# Nexigen Demo - Project Requirements Document (PRD)
+# Credulon Demo - Project Requirements Document (PRD)
 
 ## 1. Executive Summary
 
-**Project Name:** Nexigen Demo  
+**Project Name:** Credulon Demo  
 **Purpose:** Demonstrate university credential issuance and employment verification using decentralized identity infrastructure  
 **Architecture:** Clean Architecture with separation of concerns across all Flutter applications. Single codebase with multiple instances pattern for scalability.
 
@@ -1264,18 +1264,18 @@ SECONDARY_COLOR=#FFFFFF
 
 ```bash
 # Connect to HK ministry database
-docker exec -it nexigen-hk-tr-db psql -U postgres -d hk_trust_registry
+docker exec -it credulon-hk-tr-db psql -U postgres -d hk_trust_registry
 
 # Backup database
-docker exec nexigen-hk-tr-db pg_dump -U postgres hk_trust_registry > hk_tr_backup.sql
+docker exec credulon-hk-tr-db pg_dump -U postgres hk_trust_registry > hk_tr_backup.sql
 
 # Restore database
-docker exec -i nexigen-hk-tr-db psql -U postgres hk_trust_registry < hk_tr_backup.sql
+docker exec -i credulon-hk-tr-db psql -U postgres hk_trust_registry < hk_tr_backup.sql
 ```
 
 **Student Vault Drift Database:**
 
-- Located on device: `/data/data/com.nexigen.student_vault/databases/nexigen_student_vault.sqlite`
+- Located on device: `/data/data/com.credulon.student_vault/databases/nexigen_student_vault.sqlite`
 - Managed by Drift ORM
 - No manual intervention required
 

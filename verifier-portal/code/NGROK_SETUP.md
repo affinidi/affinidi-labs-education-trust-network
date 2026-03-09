@@ -170,7 +170,7 @@ dart run bin/did_server.dart --env-file=.env.ngrok
 
 ## Integration with Full Demo
 
-To run the entire Nexigen demo with ngrok (all universities + verifier):
+To run the entire Credulon demo with ngrok (all universities + verifier):
 
 ```bash
 cd /path/to/affinidi-labs-education-trust-network
