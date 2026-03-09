@@ -62,7 +62,6 @@ fi
 # Build the flutter run command
 # Helper: pick the first connected device matching a platform keyword
 pick_device() {
-    local keyword="$1"
     flutter devices --machine 2>/dev/null \
         | grep -o '"id":"[^"]*"' \
         | head -1 \
