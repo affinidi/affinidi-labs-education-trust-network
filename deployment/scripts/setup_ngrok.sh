@@ -405,14 +405,6 @@ EOF
 
 log_info ".env.ngrok created with all-docker configuration"
 
-# Set shell variables for later use in echo statements
-HK_UNIVERSITY_SERVICE_DID="did:web:${HK_UNI_DOMAIN}:hongkong-university"
-MACAU_UNIVERSITY_SERVICE_DID="did:web:${MACAU_UNI_DOMAIN}:macau-university"
-HK_EDUCATION_ECOSYSTEM_ID="did:web:${EDU_MINISTRIES_DOMAIN}:hongkong-education-ministry"
-MACAU_EDUCATION_ECOSYSTEM_ID="did:web:${EDU_MINISTRIES_DOMAIN}:macau-education-ministry"
-SG_EDUCATION_ECOSYSTEM_ID="did:web:${EDU_MINISTRIES_DOMAIN}:singapore-education-ministry"
-NOVA_CORP_SERVICE_DID="did:web:localhost%3A4001:nova-corp"
-
 echo ""
 
 # ============================================
