@@ -5,7 +5,8 @@ FROM dart:stable AS build
 WORKDIR /app
 
 # Copy pubspec files first for better layer caching
-COPY pubspec.yaml pubspec.lock ./
+# Use glob for pubspec.lock since .gitignore excludes it — it may not exist
+COPY pubspec.yaml pubspec.loc* ./
 
 # Get dependencies
 RUN dart pub get

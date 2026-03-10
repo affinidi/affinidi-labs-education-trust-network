@@ -58,6 +58,13 @@ if ! docker ps >/dev/null 2>&1; then
     log_error "Docker is not running. Please start Docker Desktop and try again."
 fi
 
+# Windows Git Bash (MSYS2) path conversion fix.
+# MSYS2 auto-converts Unix paths like /output to C:/Program Files/Git/output
+# which breaks Docker volume mounts. docker run calls use MSYS_NO_PATHCONV=1 inline.
+if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "mingw"* || "$OSTYPE" == "cygwin" ]]; then
+    log_info "Detected Git Bash/MSYS on Windows — MSYS_NO_PATHCONV enabled for Docker calls"
+fi
+
 # Create initial .env.ngrok file if it doesn't exist
 if [ ! -f "${PROJECT_ROOT}/deployment/.env.ngrok" ]; then
     touch "${PROJECT_ROOT}/deployment/.env.ngrok"
@@ -430,7 +437,8 @@ generate_admin_did() {
     # Run generate-secrets in Docker; it writes .env.test in /output
     rm -rf "${DID_GEN_DIR}/output_tmp"
     mkdir -p "${DID_GEN_DIR}/output_tmp"
-    docker run --rm \
+    # MSYS_NO_PATHCONV prevents Git Bash on Windows from mangling the /output mount path
+    MSYS_NO_PATHCONV=1 docker run --rm \
         -e "MEDIATOR_URL=${MEDIATOR_URL}" \
         -e "MEDIATOR_DID=${MEDIATOR_DID}" \
         -v "${DID_GEN_DIR}/output_tmp:/output" \
@@ -531,7 +539,8 @@ generate_tr_did() {
     fi
 
     # Run setup-trust-registry in Docker
-    OUTPUT=$(docker run --rm \
+    # MSYS_NO_PATHCONV prevents Git Bash on Windows from mangling the /data mount path
+    OUTPUT=$(MSYS_NO_PATHCONV=1 docker run --rm \
         -v "${PROJECT_ROOT}/trust-registry/${region}/data:/data" \
         tr-did-gen \
         --mediator-did "$MEDIATOR_DID" \

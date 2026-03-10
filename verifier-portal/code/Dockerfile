@@ -4,7 +4,8 @@ FROM ghcr.io/cirruslabs/flutter:stable
 WORKDIR /app
 
 # Copy pubspec files first for better layer caching
-COPY pubspec.yaml pubspec.lock ./
+# Use glob for pubspec.lock since .gitignore excludes it — it may not exist
+COPY pubspec.yaml pubspec.loc* ./
 
 # Get dependencies
 RUN flutter pub get
@@ -23,7 +24,7 @@ RUN mkdir -p /app/keys && chmod 777 /app/keys
 
 # Copy entrypoint script
 COPY docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod +x /docker-entrypoint.sh
+RUN sed -i 's/\r$//' /docker-entrypoint.sh && chmod +x /docker-entrypoint.sh
 
 # Expose port 4000
 EXPOSE 4000

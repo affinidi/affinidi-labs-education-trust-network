@@ -29,7 +29,7 @@ COPY --from=build /app/bin/did_server /app/bin/did_server
 
 # Copy entrypoint
 COPY docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod +x /docker-entrypoint.sh
+RUN sed -i 's/\r$//' /docker-entrypoint.sh && chmod +x /docker-entrypoint.sh
 
 # Create data and keys directories
 RUN mkdir -p /app/data /app/keys && chown -R dartapp:dartapp /app
