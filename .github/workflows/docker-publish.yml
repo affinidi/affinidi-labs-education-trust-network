@@ -1,113 +1,113 @@
 name: Build & Publish Docker Images
 
 on:
-    push:
-        branches: ["**"]
-        paths:
-            - "university-issuance-service/code/**"
-            - "education-ministries-did-hosting/code/**"
-            - "trust-registry/**"
-            - "governance-portal/code/**"
-            - "governance-portal/rust-did-generation-helper/**"
-            - "verifier-portal/code/**"
-            - ".github/workflows/docker-publish.yml"
+  push:
+    branches: ["**"]
+    paths:
+      - "university-issuance-service/code/**"
+      - "education-ministries-did-hosting/code/**"
+      - "trust-registry/**"
+      - "governance-portal/code/**"
+      - "governance-portal/rust-did-generation-helper/**"
+      - "verifier-portal/code/**"
+      - ".github/workflows/docker-publish.yml"
 
-    # Allow manual trigger from GitHub UI
-    workflow_dispatch:
+  # Allow manual trigger from GitHub UI
+  workflow_dispatch:
 
 permissions:
-    contents: read
-    actions: read
-    packages: write
+  contents: read
+  actions: read
+  packages: write
 
 jobs:
-    build-images:
-        runs-on: ubuntu-latest
-        strategy:
-            fail-fast: false
-            matrix:
-                include:
-                    - image: etn-university-issuer
-                      context: university-issuance-service/code
-                      dockerfile: university-issuance-service/code/Dockerfile
+  build-images:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - image: etn-university-issuer
+            context: university-issuance-service/code
+            dockerfile: university-issuance-service/code/Dockerfile
 
-                    - image: etn-edu-ministries
-                      context: education-ministries-did-hosting/code
-                      dockerfile: education-ministries-did-hosting/code/Dockerfile
+          - image: etn-edu-ministries
+            context: education-ministries-did-hosting/code
+            dockerfile: education-ministries-did-hosting/code/Dockerfile
 
-                    - image: etn-trust-registry
-                      context: trust-registry
-                      dockerfile: trust-registry/Dockerfile.trust-registry
-                      needs_trust_registry_rs: true
+          - image: etn-trust-registry
+            context: trust-registry
+            dockerfile: trust-registry/Dockerfile.trust-registry
+            needs_trust_registry_rs: true
 
-                    - image: etn-governance-portal
-                      context: governance-portal/code
-                      dockerfile: governance-portal/code/Dockerfile
+          - image: etn-governance-portal
+            context: governance-portal/code
+            dockerfile: governance-portal/code/Dockerfile
 
-                    - image: etn-verifier-backend
-                      context: verifier-portal/code/backend
-                      dockerfile: verifier-portal/code/backend/Dockerfile
+          - image: etn-verifier-backend
+            context: verifier-portal/code/backend
+            dockerfile: verifier-portal/code/backend/Dockerfile
 
-                    - image: etn-verifier-frontend
-                      context: verifier-portal/code/frontend
-                      dockerfile: verifier-portal/code/frontend/Dockerfile
+          - image: etn-verifier-frontend
+            context: verifier-portal/code/frontend
+            dockerfile: verifier-portal/code/frontend/Dockerfile
 
-                    - image: etn-did-gen
-                      context: governance-portal/rust-did-generation-helper
-                      dockerfile: governance-portal/rust-did-generation-helper/Dockerfile
+          - image: etn-did-gen
+            context: governance-portal/rust-did-generation-helper
+            dockerfile: governance-portal/rust-did-generation-helper/Dockerfile
 
-                    - image: etn-tr-did-gen
-                      context: trust-registry/affinidi-trust-registry-rs
-                      dockerfile: trust-registry/Dockerfile.did-gen
-                      needs_trust_registry_rs: true
+          - image: etn-tr-did-gen
+            context: trust-registry/affinidi-trust-registry-rs
+            dockerfile: trust-registry/Dockerfile.did-gen
+            needs_trust_registry_rs: true
 
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v4
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-            - name: Clone affinidi-trust-registry-rs
-              if: matrix.needs_trust_registry_rs
-              run: |
-                  git clone https://github.com/affinidi/affinidi-trust-registry-rs.git trust-registry/affinidi-trust-registry-rs
-                  cd trust-registry/affinidi-trust-registry-rs && git checkout 2c87c33
+      - name: Clone affinidi-trust-registry-rs
+        if: matrix.needs_trust_registry_rs
+        run: |
+          git clone https://github.com/affinidi/affinidi-trust-registry-rs.git trust-registry/affinidi-trust-registry-rs
+          cd trust-registry/affinidi-trust-registry-rs && git checkout 2c87c33
 
-            - name: Set up Docker Buildx
-              uses: docker/setup-buildx-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-            - name: Login to GHCR
-              uses: docker/login-action@v3
-              with:
-                  registry: ghcr.io
-                  username: ${{ github.actor }}
-                  password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-            - name: Sanitize branch name for Docker tag
-              id: meta
-              run: echo "branch_tag=$(echo '${{ github.ref_name }}' | sed 's/[^a-zA-Z0-9._-]/-/g')" >> "$GITHUB_OUTPUT"
+      - name: Sanitize branch name for Docker tag
+        id: meta
+        run: echo "branch_tag=$(echo '${{ github.ref_name }}' | sed 's/[^a-zA-Z0-9._-]/-/g')" >> "$GITHUB_OUTPUT"
 
-            - name: Build and push to GHCR
-              uses: docker/build-push-action@v6
-              with:
-                  context: ${{ matrix.context }}
-                  file: ${{ matrix.dockerfile }}
-                  push: true
-                  tags: |
-                      ghcr.io/affinidi/${{ matrix.image }}:latest
-                      ghcr.io/affinidi/${{ matrix.image }}:${{ steps.meta.outputs.branch_tag }}
-                  cache-from: type=gha,scope=${{ matrix.image }}
-                  cache-to: type=gha,mode=max,scope=${{ matrix.image }}
+      - name: Build and push to GHCR
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ matrix.context }}
+          file: ${{ matrix.dockerfile }}
+          push: true
+          tags: |
+            ghcr.io/affinidi/${{ matrix.image }}:latest
+            ghcr.io/affinidi/${{ matrix.image }}:${{ steps.meta.outputs.branch_tag }}
+          cache-from: type=gha,scope=${{ matrix.image }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.image }}
 
-            - name: Pull and retag for local save
-              run: |
-                  docker pull ghcr.io/affinidi/${{ matrix.image }}:latest
-                  docker tag ghcr.io/affinidi/${{ matrix.image }}:latest ${{ matrix.image }}:latest
+      - name: Pull and retag for local save
+        run: |
+          docker pull ghcr.io/affinidi/${{ matrix.image }}:latest
+          docker tag ghcr.io/affinidi/${{ matrix.image }}:latest ${{ matrix.image }}:latest
 
-            - name: Save image tarball
-              run: docker save ${{ matrix.image }}:latest | gzip > ${{ matrix.image }}.tar.gz
+      - name: Save image tarball
+        run: docker save ${{ matrix.image }}:latest | gzip > ${{ matrix.image }}.tar.gz
 
-            - name: Upload image as artifact
-              uses: actions/upload-artifact@v4
-              with:
-                  name: ${{ matrix.image }}
-                  path: ${{ matrix.image }}.tar.gz
-                  retention-days: 90
+      - name: Upload image as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.image }}
+          path: ${{ matrix.image }}.tar.gz
+          retention-days: 90
