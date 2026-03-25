@@ -20,6 +20,7 @@
 #   ./build-images.sh --status    # Show image status (Docker / CI / local cache)
 #   ./build-images.sh --services  # Smart build service images only
 #   ./build-images.sh --tools     # Smart build tool images only
+#   ./build-images.sh --tag main  # Pull images tagged :main instead of :latest
 #
 # CI artifacts are produced by the "Build & Publish Docker Images" workflow.
 # Public repo = gh CLI can download artifacts without push access.
@@ -104,12 +105,12 @@ load_image() {
 pull_ghcr_image() {
     local local_tag=$1
     local asset_name=$2
-    local ghcr_image="${GH_REGISTRY}/${asset_name}:latest"
+    local ghcr_image="${GH_REGISTRY}/${asset_name}:${GHCR_TAG}"
 
     echo "    ☁️  Pulling ${ghcr_image}..."
     if docker pull "$ghcr_image" 2>/dev/null; then
         docker tag "$ghcr_image" "$local_tag"
-        echo "  ✅ $local_tag — pulled from GHCR"
+        echo "  ✅ $local_tag — pulled from GHCR (:${GHCR_TAG})"
         return 0
     fi
     return 1
@@ -226,7 +227,22 @@ process_image() {
 # Command Dispatch
 # ──────────────────────────────────────────────
 
-MODE="${1:-smart}"
+# Parse --tag option from any position
+GHCR_TAG="latest"
+ARGS=()
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --tag)
+            GHCR_TAG="${2:-latest}"
+            shift 2
+            ;;
+        *)
+            ARGS+=("$1")
+            shift
+            ;;
+    esac
+done
+MODE="${ARGS[0]:-smart}"
 
 case "$MODE" in
     --status)
@@ -314,15 +330,9 @@ case "$MODE" in
 
     --pull)
         echo ""
-        echo "☁️  Downloading Docker images from latest CI build..."
-        echo "   Repo: ${GH_REPO}"
-        echo "   Workflow: ${CI_WORKFLOW}"
+        echo "☁️  Downloading Docker images from GHCR (tag: ${GHCR_TAG})..."
+        echo "   Registry: ${GH_REGISTRY}"
         echo ""
-
-        if ! command -v gh >/dev/null 2>&1; then
-            echo "  ❌ GitHub CLI (gh) is required. Install: brew install gh"
-            exit 1
-        fi
 
         pulled=0
         skipped=0
@@ -332,13 +342,15 @@ case "$MODE" in
             if image_exists "$local_tag"; then
                 echo "  ✅ $local_tag — already in Docker"
                 ((skipped++))
+            elif pull_ghcr_image "$local_tag" "$asset_name"; then
+                ((pulled++))
             else
-                echo "    ☁️  Downloading ${asset_name}..."
-                if download_ci_image "$local_tag" "$asset_name"; then
-                    echo "  ✅ $local_tag — loaded"
+                echo "    ☁️  Trying CI artifact fallback for ${asset_name}..."
+                if command -v gh >/dev/null 2>&1 && download_ci_image "$local_tag" "$asset_name"; then
+                    echo "  ✅ $local_tag — loaded from CI artifact"
                     ((pulled++))
                 else
-                    echo "  ⚠️  $local_tag — not in CI artifacts (build needed)"
+                    echo "  ⚠️  $local_tag — not available (build needed)"
                     ((failed++))
                 fi
             fi

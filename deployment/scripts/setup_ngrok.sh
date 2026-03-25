@@ -70,6 +70,26 @@ if [ ! -f "${PROJECT_ROOT}/deployment/.env.ngrok" ]; then
     touch "${PROJECT_ROOT}/deployment/.env.ngrok"
 fi
 
+# ──────────────────────────────────────────────
+# Docker Image Tag Selection
+# ──────────────────────────────────────────────
+echo ""
+echo "Which Docker image tag should be used for pre-built images?"
+echo "  1) latest  — most recent build from any branch"
+echo "  2) main    — last stable build from main branch"
+echo ""
+read -r -p "Choose [1/2] (default: 1): " tag_choice
+case "$tag_choice" in
+    2|main)
+        GHCR_TAG="main"
+        ;;
+    *)
+        GHCR_TAG="latest"
+        ;;
+esac
+echo "→ Using GHCR tag: :${GHCR_TAG}"
+echo ""
+
 # ============================================
 # STEP 1: NGROK AUTHENTICATION
 # ============================================
@@ -438,9 +458,9 @@ fi
 
 if docker image inspect etn-did-gen:latest >/dev/null 2>&1; then
     log_info "generate-secrets image already exists — skipping"
-elif docker pull "${GH_REGISTRY}/etn-did-gen:latest" 2>/dev/null && \
-     docker tag "${GH_REGISTRY}/etn-did-gen:latest" etn-did-gen:latest; then
-    log_info "generate-secrets image pulled from GHCR"
+elif docker pull "${GH_REGISTRY}/etn-did-gen:${GHCR_TAG}" 2>/dev/null && \
+     docker tag "${GH_REGISTRY}/etn-did-gen:${GHCR_TAG}" etn-did-gen:latest; then
+    log_info "generate-secrets image pulled from GHCR (:${GHCR_TAG})"
 elif [ -n "$CI_RUN_ID" ] && \
      gh run download "$CI_RUN_ID" --repo "$GH_REPO" --name "etn-did-gen" \
         --dir "${CACHE_DIR}/etn-did-gen" && \
@@ -558,9 +578,9 @@ echo "Building setup-trust-registry Docker image (reusing cached layers)..."
 # Smart build: Docker → CI artifact → local cache → build from source
 if docker image inspect tr-did-gen:latest >/dev/null 2>&1; then
     log_info "setup-trust-registry image already exists — skipping"
-elif docker pull "${GH_REGISTRY}/etn-tr-did-gen:latest" 2>/dev/null && \
-     docker tag "${GH_REGISTRY}/etn-tr-did-gen:latest" tr-did-gen:latest; then
-    log_info "setup-trust-registry image pulled from GHCR"
+elif docker pull "${GH_REGISTRY}/etn-tr-did-gen:${GHCR_TAG}" 2>/dev/null && \
+     docker tag "${GH_REGISTRY}/etn-tr-did-gen:${GHCR_TAG}" tr-did-gen:latest; then
+    log_info "setup-trust-registry image pulled from GHCR (:${GHCR_TAG})"
 elif [ -n "$CI_RUN_ID" ] && \
      gh run download "$CI_RUN_ID" --repo "$GH_REPO" --name "etn-tr-did-gen" \
         --dir "${CACHE_DIR}/etn-tr-did-gen" && \
@@ -1007,7 +1027,7 @@ echo ""
 # This builds only images that don't already exist in Docker or local cache.
 # BuildKit cache mounts in Dockerfiles ensure dependencies aren't re-downloaded.
 echo "⚡ Preparing Docker images (smart-cached build)..."
-bash "${SCRIPT_DIR}/build-images.sh" --services
+bash "${SCRIPT_DIR}/build-images.sh" --services --tag "${GHCR_TAG}"
 
 # Create shared network (if not exists)
 docker network create education-trust-network 2>/dev/null || true

@@ -83,7 +83,16 @@ jobs:
 
       - name: Sanitize branch name for Docker tag
         id: meta
-        run: echo "branch_tag=$(echo '${{ github.ref_name }}' | sed 's/[^a-zA-Z0-9._-]/-/g')" >> "$GITHUB_OUTPUT"
+        run: |
+          branch_tag=$(echo '${{ github.ref_name }}' | sed 's/[^a-zA-Z0-9._-]/-/g')
+          echo "branch_tag=${branch_tag}" >> "$GITHUB_OUTPUT"
+          # Build tag list: always latest + branch; add :main explicitly on main
+          tags="ghcr.io/affinidi/${{ matrix.image }}:latest"
+          tags="${tags},ghcr.io/affinidi/${{ matrix.image }}:${branch_tag}"
+          if [ "${{ github.ref_name }}" = "main" ]; then
+            tags="${tags},ghcr.io/affinidi/${{ matrix.image }}:main"
+          fi
+          echo "tags=${tags}" >> "$GITHUB_OUTPUT"
 
       - name: Build and push to GHCR
         uses: docker/build-push-action@v6
@@ -91,9 +100,7 @@ jobs:
           context: ${{ matrix.context }}
           file: ${{ matrix.dockerfile }}
           push: true
-          tags: |
-            ghcr.io/affinidi/${{ matrix.image }}:latest
-            ghcr.io/affinidi/${{ matrix.image }}:${{ steps.meta.outputs.branch_tag }}
+          tags: ${{ steps.meta.outputs.tags }}
           cache-from: type=gha,scope=${{ matrix.image }}
           cache-to: type=gha,mode=max,scope=${{ matrix.image }}
 
