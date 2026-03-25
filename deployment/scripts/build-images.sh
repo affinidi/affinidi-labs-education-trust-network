@@ -98,6 +98,22 @@ load_image() {
     return 1
 }
 
+# Resolve the latest successful CI run ID (cached for the session)
+_CI_RUN_ID=""
+get_ci_run_id() {
+    if [ -n "$_CI_RUN_ID" ]; then
+        echo "$_CI_RUN_ID"
+        return 0
+    fi
+    _CI_RUN_ID=$(gh run list --repo "$GH_REPO" --workflow "$CI_WORKFLOW" \
+        --status success --limit 1 --json databaseId --jq '.[0].databaseId' 2>/dev/null || true)
+    if [ -z "$_CI_RUN_ID" ] || [ "$_CI_RUN_ID" = "null" ]; then
+        _CI_RUN_ID=""
+        return 1
+    fi
+    echo "$_CI_RUN_ID"
+}
+
 # Download a single image tarball from CI artifacts and docker load it
 download_ci_image() {
     local local_tag=$1
@@ -105,16 +121,22 @@ download_ci_image() {
     local tarball
     tarball=$(tarball_path "$asset_name")
 
-    # Download the specific artifact from the latest successful CI run
-    if gh run download \
+    local run_id
+    run_id=$(get_ci_run_id) || return 1
+
+    echo "    ☁️  Downloading ${asset_name} from CI run #${run_id}..."
+
+    # Download with explicit run ID (avoids slow scan of all runs)
+    if gh run download "$run_id" \
         --repo "$GH_REPO" \
         --name "$asset_name" \
-        --dir "${CACHE_DIR}/${asset_name}" 2>/dev/null; then
+        --dir "${CACHE_DIR}/${asset_name}"; then
         # gh run download extracts into a directory; find the tarball
         local downloaded="${CACHE_DIR}/${asset_name}/${asset_name}.tar.gz"
         if [ -f "$downloaded" ]; then
             mv "$downloaded" "$tarball"
             rm -rf "${CACHE_DIR:?}/${asset_name:?}"
+            echo "    📦 Loading into Docker..."
             gunzip -c "$tarball" | docker load -q >/dev/null 2>&1
             return 0
         fi

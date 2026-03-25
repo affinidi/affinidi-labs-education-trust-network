@@ -428,11 +428,18 @@ mkdir -p "$CACHE_DIR"
 
 # Smart build: Docker → CI artifact → local cache → build from source
 export DOCKER_BUILDKIT=1
+# Resolve latest successful CI run ID once (fast API call)
+CI_RUN_ID=""
+if command -v gh >/dev/null 2>&1; then
+    CI_RUN_ID=$(gh run list --repo "$GH_REPO" --workflow docker-publish.yml \
+        --status success --limit 1 --json databaseId --jq '.[0].databaseId' 2>/dev/null || true)
+fi
+
 if docker image inspect etn-did-gen:latest >/dev/null 2>&1; then
     log_info "generate-secrets image already exists — skipping"
-elif command -v gh >/dev/null 2>&1 && \
-     gh run download --repo "$GH_REPO" --name "etn-did-gen" \
-        --dir "${CACHE_DIR}/etn-did-gen" 2>/dev/null && \
+elif [ -n "$CI_RUN_ID" ] && \
+     gh run download "$CI_RUN_ID" --repo "$GH_REPO" --name "etn-did-gen" \
+        --dir "${CACHE_DIR}/etn-did-gen" && \
      [ -f "${CACHE_DIR}/etn-did-gen/etn-did-gen.tar.gz" ]; then
     mv "${CACHE_DIR}/etn-did-gen/etn-did-gen.tar.gz" "${CACHE_DIR}/etn-did-gen.tar.gz"
     rm -rf "${CACHE_DIR}/etn-did-gen"
@@ -547,9 +554,9 @@ echo "Building setup-trust-registry Docker image (reusing cached layers)..."
 # Smart build: Docker → CI artifact → local cache → build from source
 if docker image inspect tr-did-gen:latest >/dev/null 2>&1; then
     log_info "setup-trust-registry image already exists — skipping"
-elif command -v gh >/dev/null 2>&1 && \
-     gh run download --repo "$GH_REPO" --name "etn-tr-did-gen" \
-        --dir "${CACHE_DIR}/etn-tr-did-gen" 2>/dev/null && \
+elif [ -n "$CI_RUN_ID" ] && \
+     gh run download "$CI_RUN_ID" --repo "$GH_REPO" --name "etn-tr-did-gen" \
+        --dir "${CACHE_DIR}/etn-tr-did-gen" && \
      [ -f "${CACHE_DIR}/etn-tr-did-gen/etn-tr-did-gen.tar.gz" ]; then
     mv "${CACHE_DIR}/etn-tr-did-gen/etn-tr-did-gen.tar.gz" "${CACHE_DIR}/etn-tr-did-gen.tar.gz"
     rm -rf "${CACHE_DIR}/etn-tr-did-gen"
