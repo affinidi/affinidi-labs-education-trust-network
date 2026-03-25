@@ -420,10 +420,33 @@ echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "🔐 Step 7: Generate Admin DIDs (Docker)"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "Building generate-secrets Docker image (first run compiles Rust - may take a few minutes)..."
 
 DID_GEN_DIR="${PROJECT_ROOT}/governance-portal/rust-did-generation-helper"
-docker build -t etn-did-gen "$DID_GEN_DIR" -q
+CACHE_DIR="${PROJECT_ROOT}/.docker-cache"
+GH_REPO="affinidi/affinidi-labs-education-trust-network"
+mkdir -p "$CACHE_DIR"
+
+# Smart build: Docker → CI artifact → local cache → build from source
+export DOCKER_BUILDKIT=1
+if docker image inspect etn-did-gen:latest >/dev/null 2>&1; then
+    log_info "generate-secrets image already exists — skipping"
+elif command -v gh >/dev/null 2>&1 && \
+     gh run download --repo "$GH_REPO" --name "etn-did-gen" \
+        --dir "${CACHE_DIR}/etn-did-gen" 2>/dev/null && \
+     [ -f "${CACHE_DIR}/etn-did-gen/etn-did-gen.tar.gz" ]; then
+    mv "${CACHE_DIR}/etn-did-gen/etn-did-gen.tar.gz" "${CACHE_DIR}/etn-did-gen.tar.gz"
+    rm -rf "${CACHE_DIR}/etn-did-gen"
+    gunzip -c "${CACHE_DIR}/etn-did-gen.tar.gz" | docker load -q >/dev/null 2>&1
+    log_info "generate-secrets image downloaded from CI"
+elif [ -f "${CACHE_DIR}/etn-did-gen.tar.gz" ]; then
+    echo "📦 Loading generate-secrets image from local cache..."
+    gunzip -c "${CACHE_DIR}/etn-did-gen.tar.gz" | docker load -q >/dev/null 2>&1
+    log_info "generate-secrets image loaded from local cache"
+else
+    echo "🔨 Building generate-secrets Docker image (first run compiles Rust)..."
+    docker build -t etn-did-gen "$DID_GEN_DIR" -q
+    log_info "generate-secrets image built"
+fi
 
 echo "Generating user_config files for governance portals..."
 mkdir -p "${PROJECT_ROOT}/governance-portal/code/assets"
@@ -520,8 +543,27 @@ else
     echo "✓ Trust Registry repository already exists"
 fi
 
-echo "Building setup-trust-registry Docker image (first run compiles Rust - may take a few minutes)..."
-docker build -f Dockerfile.did-gen -t tr-did-gen ./affinidi-trust-registry-rs -q
+echo "Building setup-trust-registry Docker image (reusing cached layers)..."
+# Smart build: Docker → CI artifact → local cache → build from source
+if docker image inspect tr-did-gen:latest >/dev/null 2>&1; then
+    log_info "setup-trust-registry image already exists — skipping"
+elif command -v gh >/dev/null 2>&1 && \
+     gh run download --repo "$GH_REPO" --name "etn-tr-did-gen" \
+        --dir "${CACHE_DIR}/etn-tr-did-gen" 2>/dev/null && \
+     [ -f "${CACHE_DIR}/etn-tr-did-gen/etn-tr-did-gen.tar.gz" ]; then
+    mv "${CACHE_DIR}/etn-tr-did-gen/etn-tr-did-gen.tar.gz" "${CACHE_DIR}/etn-tr-did-gen.tar.gz"
+    rm -rf "${CACHE_DIR}/etn-tr-did-gen"
+    gunzip -c "${CACHE_DIR}/etn-tr-did-gen.tar.gz" | docker load -q >/dev/null 2>&1
+    log_info "setup-trust-registry image downloaded from CI"
+elif [ -f "${CACHE_DIR}/etn-tr-did-gen.tar.gz" ]; then
+    echo "📦 Loading setup-trust-registry image from local cache..."
+    gunzip -c "${CACHE_DIR}/etn-tr-did-gen.tar.gz" | docker load -q >/dev/null 2>&1
+    log_info "setup-trust-registry image loaded from local cache"
+else
+    echo "🔨 Building setup-trust-registry Docker image (first run compiles Rust)..."
+    DOCKER_BUILDKIT=1 docker build -f Dockerfile.did-gen -t tr-did-gen ./affinidi-trust-registry-rs -q
+    log_info "setup-trust-registry image built"
+fi
 
 # Function: generate a trust registry DID using Docker
 generate_tr_did() {
@@ -944,13 +986,19 @@ echo "  ✓ Existing containers cleaned up"
 
 echo ""
 echo "🔨 Building and starting ALL services via Docker..."
-echo "   (This may take several minutes on first run for Flutter builds)"
+echo "   (First run builds images; subsequent runs use cached images)"
 echo ""
+
+# ── Build Docker images with smart caching ──
+# This builds only images that don't already exist in Docker or local cache.
+# BuildKit cache mounts in Dockerfiles ensure dependencies aren't re-downloaded.
+echo "⚡ Preparing Docker images (smart-cached build)..."
+bash "${SCRIPT_DIR}/build-images.sh" --services
 
 # Create shared network (if not exists)
 docker network create education-trust-network 2>/dev/null || true
 
-# Start services in dependency order:
+# Start services in dependency order (images already built — no --build needed):
 # 1. Education Ministries (hosts DID documents needed by universities)
 # 2. Trust Registries (needed by governance portals and verifier)
 # 3. Universities (resolve DIDs from education ministries)
@@ -958,19 +1006,19 @@ docker network create education-trust-network 2>/dev/null || true
 # 5. Verifier Portal (needs everything above)
 
 echo "  🏛️  Starting Education Ministries..."
-$DC -p etn-edu-ministries -f compose.edu-ministries.yml up -d --build
+$DC -p etn-edu-ministries -f compose.edu-ministries.yml up -d
 
 echo "  📋 Starting Trust Registries..."
-$DC -p etn-trust-registries -f compose.trust-registries.yml up -d --build
+$DC -p etn-trust-registries -f compose.trust-registries.yml up -d
 
 echo "  🎓 Starting Universities..."
-$DC -p etn-universities -f compose.universities.yml up -d --build
+$DC -p etn-universities -f compose.universities.yml up -d
 
 echo "  🏢 Starting Governance Portals..."
-$DC -p etn-governance -f compose.governance.yml up -d --build
+$DC -p etn-governance -f compose.governance.yml up -d
 
 echo "  🔍 Starting Verifier Portal..."
-$DC -p etn-nova-verifier -f compose.verifier.yml up -d --build
+$DC -p etn-nova-verifier -f compose.verifier.yml up -d
 
 log_info "All Docker services started"
 echo ""

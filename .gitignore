@@ -84,6 +84,9 @@ student-vault-app/code/assets/organizations.json
 deployment/ngrok.pid
 deployment/ngrok.log
 
+# Docker image cache (local-only fallback; primary cache is GHCR)
+.docker-cache/
+
 mediator/affinidi-tdk-rs
 quicktips.txt
 trust-registry/hk/docker.env

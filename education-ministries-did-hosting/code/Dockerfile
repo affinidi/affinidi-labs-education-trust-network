@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1
 FROM dart:stable AS build
 
 WORKDIR /app
@@ -5,14 +6,16 @@ WORKDIR /app
 # Copy pubspec files
 COPY pubspec.yaml ./
 
-# Get dependencies (this will create pubspec.lock)
-RUN dart pub get
+# Get dependencies — cache mount persists pub packages across builds
+RUN --mount=type=cache,target=/root/.pub-cache \
+    dart pub get
 
 # Copy source code
 COPY . .
 
-# Compile to executable
-RUN dart compile exe bin/server.dart -o bin/server
+# Compile to executable — cache mount ensures pub get is instant
+RUN --mount=type=cache,target=/root/.pub-cache \
+    dart compile exe bin/server.dart -o bin/server
 
 # Build minimal serving image
 FROM alpine:latest

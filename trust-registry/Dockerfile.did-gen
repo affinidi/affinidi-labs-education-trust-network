@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1
 # Builds the setup-trust-registry binary from the affinidi-trust-registry-rs repo
 # Used by setup scripts to generate Trust Registry DIDs without requiring Rust on the host
 #
@@ -20,8 +21,12 @@ COPY sample-data/data.csv sample-data/data.csv
 # Copy full source
 COPY . .
 
-# Build the setup-trust-registry dev tool
-RUN cargo build --release --bin setup-trust-registry --features="dev-tools"
+# Build with cargo cache mounts — registry + git deps + compiled artifacts persist
+RUN --mount=type=cache,target=/usr/local/cargo/registry \
+    --mount=type=cache,target=/usr/local/cargo/git \
+    --mount=type=cache,target=/app/target \
+    cargo build --release --bin setup-trust-registry --features="dev-tools" && \
+    cp target/release/setup-trust-registry /usr/local/bin/setup-trust-registry
 
 # Runtime stage
 FROM debian:bookworm-slim
@@ -29,7 +34,7 @@ FROM debian:bookworm-slim
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates libdbus-1-3 && rm -rf /var/lib/apt/lists/*
 
-COPY --from=build /app/target/release/setup-trust-registry /usr/local/bin/setup-trust-registry
+COPY --from=build /usr/local/bin/setup-trust-registry /usr/local/bin/setup-trust-registry
 
 WORKDIR /data
 

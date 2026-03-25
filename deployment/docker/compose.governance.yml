@@ -20,6 +20,8 @@ services:
       PORT: "8050"
     ports:
       - "8050:8050"
+    volumes:
+      - ../../governance-portal/code/assets/user_config.hk.json:/usr/share/nginx/html/assets/user_config.hk.json:ro
     restart: unless-stopped
     networks:
       - education-trust-network
@@ -39,6 +41,8 @@ services:
       PORT: "8051"
     ports:
       - "8051:8051"
+    volumes:
+      - ../../governance-portal/code/assets/user_config.macau.json:/usr/share/nginx/html/assets/user_config.macau.json:ro
     restart: unless-stopped
     networks:
       - education-trust-network
@@ -58,6 +62,8 @@ services:
       PORT: "8052"
     ports:
       - "8052:8052"
+    volumes:
+      - ../../governance-portal/code/assets/user_config.sg.json:/usr/share/nginx/html/assets/user_config.sg.json:ro
     restart: unless-stopped
     networks:
       - education-trust-network
