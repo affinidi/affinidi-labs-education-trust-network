@@ -458,7 +458,7 @@ fi
 
 if docker image inspect etn-did-gen:latest >/dev/null 2>&1; then
     log_info "generate-secrets image already exists — skipping"
-elif docker pull "${GH_REGISTRY}/etn-did-gen:${GHCR_TAG}" 2>/dev/null && \
+elif docker pull "${GH_REGISTRY}/etn-did-gen:${GHCR_TAG}" && \
      docker tag "${GH_REGISTRY}/etn-did-gen:${GHCR_TAG}" etn-did-gen:latest; then
     log_info "generate-secrets image pulled from GHCR (:${GHCR_TAG})"
 elif [ -n "$CI_RUN_ID" ] && \
@@ -578,7 +578,7 @@ echo "Building setup-trust-registry Docker image (reusing cached layers)..."
 # Smart build: Docker → CI artifact → local cache → build from source
 if docker image inspect tr-did-gen:latest >/dev/null 2>&1; then
     log_info "setup-trust-registry image already exists — skipping"
-elif docker pull "${GH_REGISTRY}/etn-tr-did-gen:${GHCR_TAG}" 2>/dev/null && \
+elif docker pull "${GH_REGISTRY}/etn-tr-did-gen:${GHCR_TAG}" && \
      docker tag "${GH_REGISTRY}/etn-tr-did-gen:${GHCR_TAG}" tr-did-gen:latest; then
     log_info "setup-trust-registry image pulled from GHCR (:${GHCR_TAG})"
 elif [ -n "$CI_RUN_ID" ] && \
