@@ -6,9 +6,10 @@
 #
 # Image resolution order (smart build):
 #   1. Image already in local Docker? → Use it (instant)
-#   2. Image in CI artifacts? → Download + load (seconds, via gh CLI)
-#   3. Local .docker-cache/ tarball? → Load it (seconds)
-#   4. None of the above? → Build from source (minutes, with BuildKit caching)
+#   2. Image in GHCR? → docker pull (fast, native Docker registry)
+#   3. Image in CI artifacts? → Download + load (slower, via gh CLI)
+#   4. Local .docker-cache/ tarball? → Load it (seconds)
+#   5. None of the above? → Build from source (minutes, with BuildKit caching)
 #
 # Usage:
 #   ./build-images.sh             # Smart build (download/load/build as needed)
@@ -38,6 +39,7 @@ export COMPOSE_DOCKER_CLI_BUILD=1
 # GitHub Configuration
 # ──────────────────────────────────────────────
 GH_REPO="affinidi/affinidi-labs-education-trust-network"
+GH_REGISTRY="ghcr.io/affinidi"
 CI_WORKFLOW="docker-publish.yml"
 
 # ──────────────────────────────────────────────
@@ -93,6 +95,21 @@ load_image() {
     if [ -f "$tarball" ]; then
         echo "    📦 Loading $image from local cache..."
         gunzip -c "$tarball" | docker load -q >/dev/null 2>&1
+        return 0
+    fi
+    return 1
+}
+
+# Pull image from GHCR and retag to local name
+pull_ghcr_image() {
+    local local_tag=$1
+    local asset_name=$2
+    local ghcr_image="${GH_REGISTRY}/${asset_name}:latest"
+
+    echo "    ☁️  Pulling ${ghcr_image}..."
+    if docker pull "$ghcr_image" 2>/dev/null; then
+        docker tag "$ghcr_image" "$local_tag"
+        echo "  ✅ $local_tag — pulled from GHCR"
         return 0
     fi
     return 1
@@ -175,7 +192,12 @@ process_image() {
         return 0
     fi
 
-    # Try downloading from CI artifacts
+    # Try pulling from GHCR (fastest — native Docker pull)
+    if [ "$force" != "true" ] && pull_ghcr_image "$local_tag" "$asset_name"; then
+        return 0
+    fi
+
+    # Try downloading from CI artifacts (fallback)
     if [ "$force" != "true" ] && command -v gh >/dev/null 2>&1; then
         echo "    ☁️  Trying CI artifact: ${asset_name} ..."
         if download_ci_image "$local_tag" "$asset_name"; then

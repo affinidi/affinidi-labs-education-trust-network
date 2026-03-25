@@ -424,6 +424,7 @@ echo "━━━━━━━━━━━━━━━━━━━━━━━━�
 DID_GEN_DIR="${PROJECT_ROOT}/governance-portal/rust-did-generation-helper"
 CACHE_DIR="${PROJECT_ROOT}/.docker-cache"
 GH_REPO="affinidi/affinidi-labs-education-trust-network"
+GH_REGISTRY="ghcr.io/affinidi"
 mkdir -p "$CACHE_DIR"
 
 # Smart build: Docker → CI artifact → local cache → build from source
@@ -437,6 +438,9 @@ fi
 
 if docker image inspect etn-did-gen:latest >/dev/null 2>&1; then
     log_info "generate-secrets image already exists — skipping"
+elif docker pull "${GH_REGISTRY}/etn-did-gen:latest" 2>/dev/null && \
+     docker tag "${GH_REGISTRY}/etn-did-gen:latest" etn-did-gen:latest; then
+    log_info "generate-secrets image pulled from GHCR"
 elif [ -n "$CI_RUN_ID" ] && \
      gh run download "$CI_RUN_ID" --repo "$GH_REPO" --name "etn-did-gen" \
         --dir "${CACHE_DIR}/etn-did-gen" && \
@@ -554,6 +558,9 @@ echo "Building setup-trust-registry Docker image (reusing cached layers)..."
 # Smart build: Docker → CI artifact → local cache → build from source
 if docker image inspect tr-did-gen:latest >/dev/null 2>&1; then
     log_info "setup-trust-registry image already exists — skipping"
+elif docker pull "${GH_REGISTRY}/etn-tr-did-gen:latest" 2>/dev/null && \
+     docker tag "${GH_REGISTRY}/etn-tr-did-gen:latest" tr-did-gen:latest; then
+    log_info "setup-trust-registry image pulled from GHCR"
 elif [ -n "$CI_RUN_ID" ] && \
      gh run download "$CI_RUN_ID" --repo "$GH_REPO" --name "etn-tr-did-gen" \
         --dir "${CACHE_DIR}/etn-tr-did-gen" && \
