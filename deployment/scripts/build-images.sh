@@ -29,7 +29,6 @@ set -e
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PROJECT_ROOT="$( cd "${SCRIPT_DIR}/../.." && pwd )"
 CACHE_DIR="${PROJECT_ROOT}/.docker-cache"
-COMPOSE_DIR="${PROJECT_ROOT}/deployment/docker"
 
 # Ensure BuildKit is enabled (required for --mount=type=cache in Dockerfiles)
 export DOCKER_BUILDKIT=1
@@ -115,11 +114,11 @@ download_ci_image() {
         local downloaded="${CACHE_DIR}/${asset_name}/${asset_name}.tar.gz"
         if [ -f "$downloaded" ]; then
             mv "$downloaded" "$tarball"
-            rm -rf "${CACHE_DIR}/${asset_name}"
+            rm -rf "${CACHE_DIR:?}/${asset_name:?}"
             gunzip -c "$tarball" | docker load -q >/dev/null 2>&1
             return 0
         fi
-        rm -rf "${CACHE_DIR}/${asset_name}"
+        rm -rf "${CACHE_DIR:?}/${asset_name:?}"
     fi
     return 1
 }
