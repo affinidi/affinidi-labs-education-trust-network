@@ -18,8 +18,13 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy source from the cloned repository
+# Cargo.toml defines a workspace with members: trust-registry, test-client, trql-client, trqp
+# All members must be present for workspace resolution, even if we only build trust-registry
 COPY affinidi-trust-registry-rs/Cargo.toml affinidi-trust-registry-rs/Cargo.lock ./
 COPY affinidi-trust-registry-rs/trust-registry/ trust-registry/
+COPY affinidi-trust-registry-rs/test-client/ test-client/
+COPY affinidi-trust-registry-rs/trql-client/ trql-client/
+COPY affinidi-trust-registry-rs/trqp/ trqp/
 COPY affinidi-trust-registry-rs/sample-data/ sample-data/
 
 # Cargo cache mounts:

@@ -37,6 +37,7 @@ jobs:
                     - image: etn-trust-registry
                       context: trust-registry
                       dockerfile: trust-registry/Dockerfile.trust-registry
+                      needs_trust_registry_rs: true
 
                     - image: etn-governance-portal
                       context: governance-portal/code
@@ -57,10 +58,17 @@ jobs:
                     - image: etn-tr-did-gen
                       context: trust-registry/affinidi-trust-registry-rs
                       dockerfile: trust-registry/Dockerfile.did-gen
+                      needs_trust_registry_rs: true
 
         steps:
             - name: Checkout
               uses: actions/checkout@v4
+
+            - name: Clone affinidi-trust-registry-rs
+              if: matrix.needs_trust_registry_rs
+              run: |
+                  git clone --depth 1 https://github.com/affinidi/affinidi-trust-registry-rs.git trust-registry/affinidi-trust-registry-rs
+                  cd trust-registry/affinidi-trust-registry-rs && git fetch --depth 1 origin 2c87c33 && git checkout 2c87c33
 
             - name: Set up Docker Buildx
               uses: docker/setup-buildx-action@v3
