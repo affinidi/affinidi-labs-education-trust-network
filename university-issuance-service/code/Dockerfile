@@ -6,8 +6,7 @@ FROM dart:stable AS build
 WORKDIR /app
 
 # Copy pubspec files first for better layer caching
-# Use glob for pubspec.lock since .gitignore excludes it — it may not exist
-COPY pubspec.yaml pubspec.loc* ./
+COPY pubspec.yaml pubspec.lock ./
 
 # Get dependencies — cache mount persists pub packages across builds
 RUN --mount=type=cache,target=/root/.pub-cache \

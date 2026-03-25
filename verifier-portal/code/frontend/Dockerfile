@@ -13,8 +13,12 @@ COPY pubspec.* ./
 RUN --mount=type=cache,target=/root/.pub-cache \
     flutter pub get
 
-# Copy source code (includes .env.ngrok which is declared as an asset in pubspec.yaml)
+# Copy source code
 COPY . .
+
+# Create placeholder .env.ngrok if missing (declared as Flutter asset in pubspec.yaml;
+# real config is injected at container startup via volume mount or entrypoint)
+RUN touch .env.ngrok
 
 # Re-resolve deps and build — cache mount makes pub get instant
 RUN --mount=type=cache,target=/root/.pub-cache \
