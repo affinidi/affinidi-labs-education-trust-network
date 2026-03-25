@@ -108,7 +108,7 @@ pull_ghcr_image() {
     local ghcr_image="${GH_REGISTRY}/${asset_name}:${GHCR_TAG}"
 
     echo "    ☁️  Pulling ${ghcr_image}..."
-    if docker pull "$ghcr_image" 2>/dev/null; then
+    if docker pull "$ghcr_image"; then
         docker tag "$ghcr_image" "$local_tag"
         echo "  ✅ $local_tag — pulled from GHCR (:${GHCR_TAG})"
         return 0
