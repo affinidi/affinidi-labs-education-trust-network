@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1
 # Use official Dart SDK image
 FROM dart:stable AS build
 
@@ -5,23 +6,20 @@ FROM dart:stable AS build
 WORKDIR /app
 
 # Copy pubspec files first for better layer caching
-# Use glob for pubspec.lock since .gitignore excludes it — it may not exist
-COPY pubspec.yaml pubspec.loc* ./
+COPY pubspec.yaml pubspec.lock ./
 
-# Get dependencies
-RUN dart pub get
+# Get dependencies — cache mount persists pub packages across builds
+RUN --mount=type=cache,target=/root/.pub-cache \
+    dart pub get
 
 # Copy source code (exclude .pub-cache and other build artifacts)
 COPY . .
 
-# Remove any local .dart_tool directory that might interfere and get dependencies again
-RUN rm -rf .dart_tool && dart pub get
-
-# Verify dependencies are properly resolved
-RUN dart pub deps
-
-# Precompile the app
-RUN dart compile exe bin/server.dart -o bin/server
+# Re-resolve deps for full source tree, then compile
+# Cache mount ensures packages are already downloaded — only resolution + compile runs
+RUN --mount=type=cache,target=/root/.pub-cache \
+    rm -rf .dart_tool && dart pub get && \
+    dart compile exe bin/server.dart -o bin/server
 
 # Runtime image - use debian slim instead of scratch for user management
 FROM debian:stable-slim

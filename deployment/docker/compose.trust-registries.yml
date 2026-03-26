@@ -4,8 +4,8 @@
 services:
   trust-registry-hk:
     build:
-      context: ../../trust-registry/affinidi-trust-registry-rs
-      dockerfile: trust-registry/Dockerfile
+      context: ../../trust-registry
+      dockerfile: Dockerfile.trust-registry
     image: trust-registry:local
     container_name: trust-registry-hk
     labels:
@@ -23,8 +23,8 @@ services:
 
   trust-registry-macau:
     build:
-      context: ../../trust-registry/affinidi-trust-registry-rs
-      dockerfile: trust-registry/Dockerfile
+      context: ../../trust-registry
+      dockerfile: Dockerfile.trust-registry
     image: trust-registry:local
     container_name: trust-registry-macau
     labels:
@@ -42,8 +42,8 @@ services:
 
   trust-registry-sg:
     build:
-      context: ../../trust-registry/affinidi-trust-registry-rs
-      dockerfile: trust-registry/Dockerfile
+      context: ../../trust-registry
+      dockerfile: Dockerfile.trust-registry
     image: trust-registry:local
     container_name: trust-registry-sg
     labels:

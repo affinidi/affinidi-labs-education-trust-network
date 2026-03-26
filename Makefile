@@ -1,8 +1,9 @@
 .PHONY: help student-ios student-android student-web \
         docker-ps docker-logs docker-logs-hk docker-logs-macau docker-logs-tr-hk docker-logs-edu \
         docker-logs-gov-hk docker-logs-gov-macau docker-logs-gov-sg docker-logs-verifier-backend docker-logs-verifier-frontend \
-        docker-stop docker-restart docker-up docker-rebuild docker-rebuild-hk \
-        docker-restart-quick docker-restart-hk dev-up dev-down cleanup
+        docker-stop docker-restart docker-up docker-build docker-rebuild docker-rebuild-hk \
+        docker-restart-quick docker-restart-hk docker-pull docker-cache-status docker-push \
+        dev-up dev-down cleanup
 
 COMPOSE_DIR=deployment/docker
 DC=docker compose
@@ -39,7 +40,13 @@ help:
 	@echo "  make docker-stop         - Stop all services"
 	@echo "  make docker-restart      - Restart all services"
 	@echo "  make docker-up           - Start all services"
-	@echo "  make docker-rebuild      - Rebuild and restart all services"
+	@echo "  make docker-build        - Smart build (skip if images exist)"
+	@echo "  make docker-rebuild      - Force rebuild all images"
+	@echo ""
+	@echo "PRE-BUILT IMAGES (CI artifacts):"
+	@echo "  make docker-pull         - Download images from latest CI build"
+	@echo "  make docker-cache-status - Show image status"
+	@echo "  make docker-push         - Save images locally + show CI trigger"
 	@echo ""
 	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
@@ -140,7 +147,7 @@ docker-restart:
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 docker-up:
-	@echo "🚀 Starting all services..."
+	@echo "🚀 Starting all services (using pre-built images)..."
 	@docker network create education-trust-network 2>/dev/null || true
 	@cd $(COMPOSE_DIR) && $(DC) -p etn-edu-ministries -f compose.edu-ministries.yml up -d
 	@cd $(COMPOSE_DIR) && $(DC) -p etn-trust-registries -f compose.trust-registries.yml up -d
@@ -148,14 +155,19 @@ docker-up:
 	@cd $(COMPOSE_DIR) && $(DC) -p etn-governance -f compose.governance.yml up -d
 	@cd $(COMPOSE_DIR) && $(DC) -p etn-nova-verifier -f compose.verifier.yml up -d
 
+docker-build:
+	@echo "⚡ Smart build — only builds images that don't exist..."
+	bash deployment/scripts/build-images.sh
+
 docker-rebuild:
-	@echo "🔨 Rebuilding and restarting all services (dependency order)..."
+	@echo "🔨 Force rebuilding all images (with BuildKit caching)..."
+	bash deployment/scripts/build-images.sh --force
 	@docker network create education-trust-network 2>/dev/null || true
-	@cd $(COMPOSE_DIR) && $(DC) -p etn-edu-ministries -f compose.edu-ministries.yml up -d --build
-	@cd $(COMPOSE_DIR) && $(DC) -p etn-trust-registries -f compose.trust-registries.yml up -d --build
-	@cd $(COMPOSE_DIR) && $(DC) -p etn-universities -f compose.universities.yml up -d --build
-	@cd $(COMPOSE_DIR) && $(DC) -p etn-governance -f compose.governance.yml up -d --build
-	@cd $(COMPOSE_DIR) && $(DC) -p etn-nova-verifier -f compose.verifier.yml up -d --build
+	@cd $(COMPOSE_DIR) && $(DC) -p etn-edu-ministries -f compose.edu-ministries.yml up -d
+	@cd $(COMPOSE_DIR) && $(DC) -p etn-trust-registries -f compose.trust-registries.yml up -d
+	@cd $(COMPOSE_DIR) && $(DC) -p etn-universities -f compose.universities.yml up -d
+	@cd $(COMPOSE_DIR) && $(DC) -p etn-governance -f compose.governance.yml up -d
+	@cd $(COMPOSE_DIR) && $(DC) -p etn-nova-verifier -f compose.verifier.yml up -d
 
 docker-rebuild-hk:
 	@echo "🔨 Rebuilding HK University service..."
@@ -168,6 +180,19 @@ docker-rebuild-gov:
 docker-rebuild-verifier:
 	@echo "🔨 Rebuilding Verifier Portal..."
 	@cd $(COMPOSE_DIR) && $(DC) -p etn-nova-verifier -f compose.verifier.yml up -d --build
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# BUILD CACHE (CI workflow artifacts)
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+docker-push:
+	@bash deployment/scripts/build-images.sh --push
+
+docker-pull:
+	@bash deployment/scripts/build-images.sh --pull
+
+docker-cache-status:
+	@bash deployment/scripts/build-images.sh --status
 
 docker-restart-quick:
 	@echo "⚡ Quick restart without rebuild..."

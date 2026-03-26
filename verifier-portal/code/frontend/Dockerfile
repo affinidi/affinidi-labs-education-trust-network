@@ -1,3 +1,4 @@
+# syntax=docker/dockerfile:1
 # Verifier Portal Frontend - Flutter Web
 FROM ghcr.io/cirruslabs/flutter:stable AS build
 
@@ -8,17 +9,21 @@ WORKDIR /app
 # Copy pubspec files first for better layer caching
 COPY pubspec.* ./
 
-# Get dependencies
-RUN flutter pub get
+# Get dependencies — cache mount persists pub packages across builds
+RUN --mount=type=cache,target=/root/.pub-cache \
+    flutter pub get
 
-# Copy source code (includes .env.ngrok which is declared as an asset in pubspec.yaml)
+# Copy source code
 COPY . .
 
-# Remove any local .dart_tool directory that might interfere
-RUN rm -rf .dart_tool && flutter pub get
+# Create placeholder .env.ngrok if missing (declared as Flutter asset in pubspec.yaml;
+# real config is injected at container startup via volume mount or entrypoint)
+RUN touch .env.ngrok
 
-# Build web app
-RUN flutter build web --release
+# Re-resolve deps and build — cache mount makes pub get instant
+RUN --mount=type=cache,target=/root/.pub-cache \
+    rm -rf .dart_tool && flutter pub get && \
+    flutter build web --release
 
 # Production stage
 FROM nginx:alpine

@@ -1,0 +1,9 @@
+# Exclude non-build files from Docker context
+hk/
+macau/
+sg/
+*.sh
+*.md
+docker-compose.yml
+Dockerfile.*
+generate-trust-registry-dids.sh

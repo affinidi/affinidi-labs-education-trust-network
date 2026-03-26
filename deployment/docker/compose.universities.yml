@@ -3,6 +3,7 @@
 
 services:
   hk-university-issuer:
+    image: etn-university-issuer:latest
     build:
       context: ../../university-issuance-service/code
       dockerfile: Dockerfile
@@ -22,6 +23,7 @@ services:
       - education-trust-network
 
   macau-university-issuer:
+    image: etn-university-issuer:latest
     build:
       context: ../../university-issuance-service/code
       dockerfile: Dockerfile

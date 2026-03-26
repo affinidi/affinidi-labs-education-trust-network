@@ -3,6 +3,7 @@
 
 services:
   education-ministries:
+    image: etn-edu-ministries:latest
     build:
       context: ../../education-ministries-did-hosting/code
       dockerfile: Dockerfile

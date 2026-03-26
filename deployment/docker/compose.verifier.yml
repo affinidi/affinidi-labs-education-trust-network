@@ -3,6 +3,7 @@
 
 services:
   nova-verifier-backend:
+    image: etn-verifier-backend:latest
     build:
       context: ../../verifier-portal/code/backend
       dockerfile: Dockerfile
@@ -22,6 +23,7 @@ services:
       - education-trust-network
 
   nova-verifier-frontend:
+    image: etn-verifier-frontend:latest
     build:
       context: ../../verifier-portal/code/frontend
       dockerfile: Dockerfile
