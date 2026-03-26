@@ -201,6 +201,19 @@ You will be prompted for these during setup:
 
 All values are saved to `deployment/.env.ngrok` and reused on subsequent runs.
 
+> **Need a Mediator and Control Plane DID?**
+>
+> The Mediator service and Control Plane DID (SERVICE_DID) are provided by [Affinidi](https://www.affinidi.com) as part of the **Affinidi Messaging Beta Program**. If you don't already have these credentials, you can request access:
+>
+> **[Join the Affinidi Messaging Beta Program](https://www.affinidi.com/affinidi-messaging-beta)**
+>
+> Once enrolled, you create:
+>
+> - A **Mediator** and get **Mediator DID** and **Mediator URL** for DIDComm message routing
+> - A **Control Plane DID (SERVICE_DID)** for publishing connection offers
+>
+> These are required for DIDComm-based credential issuance and verification flows in this demo.
+
 ---
 
 ### Installation
