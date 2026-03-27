@@ -19,6 +19,7 @@ An end‑to‑end reference implementation demonstrating how educational certifi
 - [Quick Start](#-quick-start)
 - [Project Structure](#-project-structure)
 - [Components](#-components)
+- [Docker Services](#-docker-services)
 - [Technologies](#️-technologies)
 - [Documentation](#-documentation)
 - [Service Ports](#-service-ports)
@@ -172,84 +173,159 @@ Nova Corp performs the following checks:
 - **CPU**: 4 cores minimum
 - **Disk**: 10GB free space
 
-#### Required Software
+#### Required Software (Host Machine)
 
-- [Docker Desktop 4.0+](https://www.docker.com/products/docker-desktop) (installed and running)
-- [ngrok account](https://dashboard.ngrok.com/signup) (free tier works)
-- Flutter SDK 3.5.0+
-- Dart SDK 3.5.0+
-- Git
+All backend services run inside Docker containers — you do **not** need Rust, Dart, or Flutter installed on your host (except for the Student mobile app).
+
+| Software                                                              | macOS / Linux                                   | Windows                                   |
+| --------------------------------------------------------------------- | ----------------------------------------------- | ----------------------------------------- |
+| [Docker Desktop 4.0+](https://www.docker.com/products/docker-desktop) | Required                                        | Required (with **WSL 2** backend enabled) |
+| [ngrok](https://ngrok.com/download)                                   | Required (free tier works)                      | Required                                  |
+| [Git](https://git-scm.com/)                                           | Required                                        | Required — use **Git Bash** or **WSL 2**  |
+| `jq`                                                                  | Required (`brew install jq` / `apt install jq`) | Required (`choco install jq` or via WSL)  |
+| `curl`                                                                | Pre-installed                                   | Pre-installed in Git Bash / WSL           |
+| [Flutter SDK 3.5.0+](https://docs.flutter.dev/get-started/install)    | Only for Student mobile app                     | Only for Student mobile app               |
+| [GitHub CLI (`gh`)](https://cli.github.com/)                          | Optional — enables CI artifact fallback         | Optional                                  |
+
+> **Windows Users**: All shell scripts use `bash`. Run commands from **Git Bash** or **WSL 2**. The `Makefile` targets may not work in `cmd.exe` or PowerShell — use the direct bash commands shown below instead.
 
 #### Configuration Requirements
 
-- ngrok auth token
+You will be prompted for these during setup:
+
+- ngrok auth token ([get one here](https://dashboard.ngrok.com/get-started/your-authtoken))
 - Mediator DID
 - Mediator URL
 - Control plane DID (SERVICE_DID)
+- Student details (name, email) for the demo credential
+
+All values are saved to `deployment/.env.ngrok` and reused on subsequent runs.
+
+> **Need a Mediator and Control Plane DID?**
+>
+> The Mediator service and Control Plane DID (SERVICE_DID) are provided by [Affinidi](https://www.affinidi.com) as part of the **Affinidi Messaging Beta Program**. If you don't already have these credentials, you can request access:
+>
+> **[Join the Affinidi Messaging Beta Program](https://www.affinidi.com/affinidi-messaging-beta)**
+>
+> Once enrolled, you create:
+>
+> - A **Mediator** and get **Mediator DID** and **Mediator URL** for DIDComm message routing
+> - A **Control Plane DID (SERVICE_DID)** for publishing connection offers
+>
+> These are required for DIDComm-based credential issuance and verification flows in this demo.
 
 ---
 
 ### Installation
 
-#### 1. Start the Complete Environment
+#### 1. Clone the Repository
+
+```bash
+git clone https://github.com/affinidi/affinidi-labs-education-trust-network.git
+cd affinidi-labs-education-trust-network
+```
+
+#### 2. Start the Complete Environment
+
+**macOS / Linux:**
 
 ```bash
 make dev-up
 ```
 
-This command will:
-
-1. ✅ Start ngrok tunnels for universities and education ministries
-2. ✅ Capture dynamic ngrok domains
-3. ✅ Generate all configurations and DIDs
-4. ✅ Launch Docker containers (Trust Registries, Universities, etc.)
-
----
-
-#### 2. Start Additional Services
-
-After the environment setup completes, start the remaining services in separate terminals:
+**Windows (Git Bash / WSL):**
 
 ```bash
-# Governance Portals
-make hk-gov        # Hong Kong Governance Portal (port 8050)
-make macau-gov     # Macau Governance Portal (port 8051)
-make sg-gov        # Singapore Governance Portal (port 8052)
-
-# Verifier Portal
-make verifier      # Nova Corp Verifier (port 4000)
-
-# Student App
-make student-ios   # iOS simulator
-# or
-make student-android   # Android emulator
+bash deployment/scripts/dev-up.sh
 ```
+
+The setup script runs a fully automated 12-step process:
+
+| Step | Description                                                   |
+| ---- | ------------------------------------------------------------- |
+| 1    | Authenticate with ngrok                                       |
+| 2    | Configure DIDComm Service DID                                 |
+| 3    | Configure Mediator (DID + URL)                                |
+| 4    | Start 3 ngrok tunnels (2 universities + education ministries) |
+| 5    | Capture ngrok domains                                         |
+| 5.5  | Collect student & program details                             |
+| 6    | Generate `.env.ngrok` configuration                           |
+| 7    | Generate Admin DIDs (via Docker — no Rust on host)            |
+| 8    | Generate Trust Registry DIDs (via Docker — no Rust on host)   |
+| 9    | Prepare Trust Registry configs                                |
+| 10   | Create all app environment files                              |
+| 11   | Run setup scripts (student app)                               |
+| 12   | Build/pull & start all 11 Docker containers                   |
+
+> **Pre-built images**: At the start, you are prompted to choose a Docker image tag:
+>
+> - `latest` — most recent build from any branch
+> - `main` — last stable build from the main branch
+>
+> Images are pulled from **GitHub Container Registry** (GHCR), so you skip build on first run. If GHCR is unreachable, the script falls back to CI artifacts → local cache → building from source.
 
 ---
 
-#### 3. Stop Services
+#### 3. Start the Student Mobile App
+
+After the environment setup completes, start the student app in a separate terminal:
+
+**macOS / Linux:**
+
+```bash
+make student-ios       # iOS simulator
+make student-android   # Android emulator/device
+make student-web       # Web browser
+```
+
+**Windows (Git Bash / WSL):**
+
+```bash
+bash deployment/scripts/student-app.sh android
+bash deployment/scripts/student-app.sh web
+```
+
+> **Note**: The Student Vault App is the only component that requires Flutter SDK on the host, as it runs natively on a mobile device or emulator.
+
+---
+
+#### 4. Stop Services
+
+**macOS / Linux:**
 
 ```bash
 make dev-down      # Stop ngrok tunnels and Docker services
 make cleanup       # Complete cleanup (removes all data)
 ```
 
+**Windows (Git Bash / WSL):**
+
+```bash
+bash deployment/scripts/dev-down.sh
+bash deployment/scripts/cleanup.sh
+```
+
 ---
 
 ### 💡 Pro Tips
 
+**macOS / Linux (Makefile):**
+
 ```bash
-# View all available commands
-make help
+make help               # View all available commands
+make docker-ps          # Check Docker container status
+make docker-logs        # View logs from all services
+make docker-rebuild     # Force rebuild all images from source
+make docker-pull        # Download pre-built images from CI
+make docker-cache-status # Show image status (GHCR / local / built)
+```
 
-# Check Docker container status
-make docker-ps
+**Windows (Git Bash / WSL):**
 
-# View logs from all services
-make docker-logs
-
-# Rebuild and restart all Docker services
-make docker-rebuild
+```bash
+bash deployment/scripts/build-images.sh --status   # Show image status
+bash deployment/scripts/build-images.sh --pull      # Download from CI
+bash deployment/scripts/build-images.sh --force     # Force rebuild
 ```
 
 ---
@@ -261,21 +337,30 @@ affinidi-labs-education-trust-network/
 ├── Makefile                          # All operation commands
 ├── README.md                         # This file
 │
+├── .github/workflows/               # CI/CD
+│   └── docker-publish.yml           # Builds & pushes all Docker images to GHCR
+│
 ├── deployment/                       # Deployment configuration
 │   ├── .env.ngrok                   # Environment config (auto-generated)
-│   ├── .env.example                 # Environment template
-│   ├── docker/                      # Docker compose files
-│   │   ├── docker-compose.localhost.yml
-│   │   └── docker-compose.yml
+│   ├── docker/                      # Docker compose files (split per service group)
+│   │   ├── compose.universities.yml
+│   │   ├── compose.edu-ministries.yml
+│   │   ├── compose.trust-registries.yml
+│   │   ├── compose.governance.yml
+│   │   └── compose.verifier.yml
 │   └── scripts/                     # Setup and utility scripts
-│       ├── setup_ngrok.sh
-│       └── cleanup.sh
+│       ├── setup_ngrok.sh           # Main 12-step setup orchestrator
+│       ├── build-images.sh          # Smart image builder (GHCR → CI → cache → build)
+│       ├── dev-up.sh / dev-down.sh
+│       ├── cleanup.sh
+│       └── student-app.sh
 │
-├── governance-portal/               # Trust registry admin (Flutter Web)
-├── student-vault-app/               # Student credential wallet (Flutter Mobile)
-├── university-issuance-service/     # Credential issuance backend (Dart)
-├── verifier-portal/                 # Credential verification (Dart)
-├── trust-registry/                  # Trust registry service (Rust)
+├── governance-portal/               # Trust registry admin (Flutter Web) → Docker
+├── student-vault-app/               # Student credential wallet (Flutter Mobile) → Native
+├── university-issuance-service/     # Credential issuance backend (Dart) → Docker
+├── verifier-portal/                 # Credential verification (Dart + Flutter Web) → Docker
+├── trust-registry/                  # Trust registry backend (Rust) → Docker
+├── education-ministries-did-hosting/ # DID document hosting (Dart) → Docker
 │
 └── docs/                            # Documentation
     ├── architecture.md
@@ -288,75 +373,86 @@ affinidi-labs-education-trust-network/
 
 ## 🧩 Components
 
-| Component                        | Technology       | Description                               | Deployment |
-| -------------------------------- | ---------------- | ----------------------------------------- | ---------- |
-| **Student Vault App**            | Flutter (Mobile) | Credential storage and management         | Terminal   |
-| **University Issuance Services** | Dart             | Credential issuance backends (HK & Macau) | Docker     |
-| **Verifier Portal**              | Dart             | Employer credential verification          | Terminal   |
-| **Governance Portal**            | Flutter (Web)    | Trust registry administration             | Terminal   |
-| **Trust Registry**               | Rust             | Trust registry backend service            | Docker     |
+| Component                            | Technology            | Description                                   | Deployment |
+| ------------------------------------ | --------------------- | --------------------------------------------- | ---------- |
+| **Student Vault App**                | Flutter (Mobile)      | Credential storage and management             | Native     |
+| **University Issuance Services**     | Dart                  | Credential issuance backends (HK & Macau)     | Docker     |
+| **Education Ministries DID Hosting** | Dart                  | DID document hosting for 3 ministries         | Docker     |
+| **Verifier Portal (Backend)**        | Dart                  | Employer credential verification API          | Docker     |
+| **Verifier Portal (Frontend)**       | Flutter (Web)         | Employer verification UI                      | Docker     |
+| **Governance Portals**               | Flutter (Web) + nginx | Trust registry administration (HK, Macau, SG) | Docker     |
+| **Trust Registries**                 | Rust                  | Trust registry backend (HK, Macau, SG)        | Docker     |
 
 ---
 
 ## 🐳 Docker Services
 
-The following services run in Docker containers:
+All 11 services run in Docker containers, organized into 5 compose projects:
 
-| Service                      | Port | Description                              |
-| ---------------------------- | ---- | ---------------------------------------- |
-| **HK University Issuer**     | 3000 | University of Hong Kong issuance service |
-| **Macau University Issuer**  | 3001 | University of Macau issuance service     |
-| **HK Trust Registry**        | 3232 | Hong Kong education trust registry       |
-| **Macau Trust Registry**     | 3233 | Macau education trust registry           |
-| **Singapore Trust Registry** | 3234 | Singapore education trust registry       |
+| Service                           | Container Name                   | Port | Compose Project      |
+| --------------------------------- | -------------------------------- | ---- | -------------------- |
+| **HK University Issuer**          | hk-university-issuer             | 3000 | etn-universities     |
+| **Macau University Issuer**       | macau-university-issuer          | 3001 | etn-universities     |
+| **Education Ministries**          | education-ministries-did-hosting | 3100 | etn-edu-ministries   |
+| **HK Trust Registry**             | trust-registry-hk                | 3232 | etn-trust-registries |
+| **Macau Trust Registry**          | trust-registry-macau             | 3233 | etn-trust-registries |
+| **Singapore Trust Registry**      | trust-registry-sg                | 3234 | etn-trust-registries |
+| **HK Governance Portal**          | hk-governance-portal             | 8050 | etn-governance       |
+| **Macau Governance Portal**       | macau-governance-portal          | 8051 | etn-governance       |
+| **Singapore Governance Portal**   | sg-governance-portal             | 8052 | etn-governance       |
+| **Nova Corp Verifier (Backend)**  | nova-verifier-backend            | 4001 | etn-nova-verifier    |
+| **Nova Corp Verifier (Frontend)** | nova-verifier-frontend           | 4000 | etn-nova-verifier    |
+
+Pre-built images are available from **GitHub Container Registry** (`ghcr.io/affinidi/etn-*`) with multi-platform support (linux/amd64 + linux/arm64, including Apple Silicon).
 
 ### Common Docker Commands
 
-#### Using Makefile (Recommended)
+#### Using Makefile (macOS / Linux)
 
 ```bash
-make docker-ps          # Check container status
+make docker-ps          # Check container status (grouped by service)
 make docker-logs        # View all logs
 make docker-stop        # Stop all services
-make docker-rebuild     # Rebuild and restart
+make docker-rebuild     # Force rebuild all images from source
+make docker-pull        # Download pre-built images from latest CI build
+make docker-cache-status # Show image availability (GHCR / local / cache)
 ```
 
-#### Using docker-compose Directly
+#### Using docker compose Directly
 
 ```bash
-# Navigate to deployment directory
 cd deployment/docker
 
-# Check container status
-docker-compose -f docker-compose.localhost.yml ps
-
-# View logs
-docker-compose -f docker-compose.localhost.yml logs -f
+# Check container status per project
+docker compose -p etn-universities -f compose.universities.yml ps
+docker compose -p etn-trust-registries -f compose.trust-registries.yml ps
+docker compose -p etn-governance -f compose.governance.yml ps
+docker compose -p etn-nova-verifier -f compose.verifier.yml ps
 
 # View specific service logs
+docker logs trust-registry-hk -f
 docker logs hk-university-issuer -f
-docker logs macau-university-issuer -f
+docker logs nova-verifier-backend -f
 
-# Restart services
-docker-compose -f docker-compose.localhost.yml restart
-
-# Stop and remove all containers
-docker-compose -f docker-compose.localhost.yml down
+# Restart a specific project
+docker compose -p etn-trust-registries -f compose.trust-registries.yml restart
 ```
 
 ---
 
 ## 🛠️ Technologies
 
-| Technology                     | Purpose                                    |
-| ------------------------------ | ------------------------------------------ |
-| **Flutter**                    | Mobile & web UIs (Clean Architecture)      |
-| **Dart**                       | Backend services (MVC pattern)             |
-| **Rust**                       | High-performance trust registry API        |
-| **Docker**                     | Container orchestration                    |
-| **DIDComm v2**                 | Secure peer-to-peer communication protocol |
-| **Riverpod**                   | State management for Flutter apps          |
-| **W3C Verifiable Credentials** | Credential format standard                 |
+| Technology                     | Purpose                                     |
+| ------------------------------ | ------------------------------------------- |
+| **Flutter**                    | Mobile & web UIs (Clean Architecture)       |
+| **Dart**                       | Backend services (MVC pattern)              |
+| **Rust**                       | High-performance trust registry API         |
+| **Docker + BuildKit**          | Container orchestration with build caching  |
+| **GHCR**                       | Pre-built multi-arch images (amd64 + arm64) |
+| **DIDComm v2**                 | Secure peer-to-peer communication protocol  |
+| **Riverpod**                   | State management for Flutter apps           |
+| **W3C Verifiable Credentials** | Credential format standard                  |
+| **ngrok**                      | Public tunnel endpoints for DID resolution  |
 
 ---
 
@@ -392,17 +488,20 @@ docker-compose -f docker-compose.localhost.yml down
 
 ## 🔌 Service Ports
 
-| Service                         | Port | Runtime  |
-| ------------------------------- | ---- | -------- |
-| **HK University Issuer**        | 3000 | Docker   |
-| **Macau University Issuer**     | 3001 | Docker   |
-| **HK Trust Registry**           | 3232 | Docker   |
-| **Macau Trust Registry**        | 3233 | Docker   |
-| **Singapore Trust Registry**    | 3234 | Docker   |
-| **Nova Corp Verifier**          | 4000 | Terminal |
-| **HK Governance Portal**        | 8050 | Terminal |
-| **Macau Governance Portal**     | 8051 | Terminal |
-| **Singapore Governance Portal** | 8052 | Terminal |
+| Service                           | Port | Runtime |
+| --------------------------------- | ---- | ------- |
+| **HK University Issuer**          | 3000 | Docker  |
+| **Macau University Issuer**       | 3001 | Docker  |
+| **Education Ministries**          | 3100 | Docker  |
+| **HK Trust Registry**             | 3232 | Docker  |
+| **Macau Trust Registry**          | 3233 | Docker  |
+| **Singapore Trust Registry**      | 3234 | Docker  |
+| **Nova Corp Verifier (Frontend)** | 4000 | Docker  |
+| **Nova Corp Verifier (Backend)**  | 4001 | Docker  |
+| **HK Governance Portal**          | 8050 | Docker  |
+| **Macau Governance Portal**       | 8051 | Docker  |
+| **Singapore Governance Portal**   | 8052 | Docker  |
+| **Ngrok Dashboard**               | 4040 | Host    |
 
 ---
 
@@ -410,16 +509,24 @@ docker-compose -f docker-compose.localhost.yml down
 
 To completely remove all services and data:
 
+**macOS / Linux:**
+
 ```bash
 make cleanup
 ```
 
+**Windows (Git Bash / WSL):**
+
+```bash
+bash deployment/scripts/cleanup.sh
+```
+
 This will:
 
-- ✅ Stop all Docker containers
-- ✅ Remove all Docker volumes and images
+- ✅ Stop all 11 Docker containers
+- ✅ Remove Docker volumes and networks
 - ✅ Terminate ngrok tunnels
-- ✅ Clean up generated configuration files
+- ✅ Clean up generated configuration files and DIDs
 
 ---
 
@@ -504,10 +611,19 @@ If setup was successful, three trust registries and three governance portals are
 
 1. Start your emulator or physical device:
 
+**macOS / Linux:**
+
 ```bash
 make student-ios      # For iOS
-# or
 make student-android  # For Android
+make student-web      # For Web browser
+```
+
+**Windows (Git Bash / WSL):**
+
+```bash
+bash deployment/scripts/student-app.sh android
+bash deployment/scripts/student-app.sh web
 ```
 
 2. Complete the registration/login process. Note: OTP authentication is mocked; only specific email domains are allowed.
